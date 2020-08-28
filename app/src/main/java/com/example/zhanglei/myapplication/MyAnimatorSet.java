@@ -3,7 +3,7 @@ package com.example.zhanglei.myapplication;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 public class MyAnimatorSet {
 

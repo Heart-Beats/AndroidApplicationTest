@@ -1,4 +1,4 @@
-package com.example.zhanglei.myapplication;
+package com.example.zhanglei.myapplication.fragment;
 
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
@@ -7,22 +7,32 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.Toast;
 import android.Manifest;
 
+import com.example.zhanglei.myapplication.ClickHelperListener;
+import com.example.zhanglei.myapplication.MyAnimatorSet;
+import com.example.zhanglei.myapplication.MyView;
+import com.example.zhanglei.myapplication.PictureSelectionActivity;
+import com.example.zhanglei.myapplication.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainFragment extends BaseFragment {
 
     private static final String TAG = "MainActivity";
 
@@ -34,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1;
 
+
     private MyView myView;
     private Button startAnimation;
     private Button pictureSelect;
@@ -42,22 +53,24 @@ public class MainActivity extends AppCompatActivity {
     private MyOnclickLisenter myOnclickLisenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        myView = findViewById(R.id.my_view);
-        startAnimation = findViewById(R.id.start_animation);
-        pictureSelect = findViewById(R.id.picture_select);
+    protected int layoutResId() {
+        return R.layout.fragment_main;
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        myView = view.findViewById(R.id.my_view);
+        startAnimation = view.findViewById(R.id.start_animation);
+        pictureSelect = view.findViewById(R.id.picture_select);
         myAnimatorSet = new MyAnimatorSet();
         myOnclickLisenter = new MyOnclickLisenter();
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
 
-        myView.setOnClickListener(new DoubleClickListener() {
+        myView.setOnClickListener(new ClickHelperListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onDoubleClick(View v) {
@@ -168,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     private void requestPermission() {
         List<String> requestPermissionsList = new ArrayList<>();
         for (String permission : permissionsList) {
-            if (ContextCompat.checkSelfPermission(this,
+            if (ContextCompat.checkSelfPermission(requireContext(),
                     permission) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissionsList.add(permission);
             }
@@ -176,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!requestPermissionsList.isEmpty()) {
             String[] requestPermissions = requestPermissionsList.toArray(new String[requestPermissionsList.size()]);
-            ActivityCompat.requestPermissions(this, requestPermissions, REQUEST_CODE);
+            ActivityCompat.requestPermissions(getActivity(), requestPermissions, REQUEST_CODE);
         } else {
             startPictureSelectionActivity();
         }
@@ -190,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 if (grantResults.length > 0) {
                     for (int result : grantResults) {
                         if (result != PackageManager.PERMISSION_GRANTED) {
-                            Toast.makeText(this, "必须同意所有权限才能使用本功能",
+                            Toast.makeText(requireContext(), "必须同意所有权限才能使用本功能",
                                     Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -207,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startPictureSelectionActivity() {
         Intent intent = new Intent();
-        intent.setClass(MainActivity.this, PictureSelectionActivity.class);
+        intent.setClass(requireContext(), PictureSelectionActivity.class);
         startActivity(intent);
     }
 

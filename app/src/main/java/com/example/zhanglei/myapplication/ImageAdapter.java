@@ -2,8 +2,8 @@ package com.example.zhanglei.myapplication;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +20,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
     private Context context;
     private RecyclerView recyclerView;
 
-    private final static List<String> imageUrls = Arrays.asList("https://img-my.csdn.net/uploads/201309/01/1378037235_3453.jpg",
+    private final static List<String> imageUrls = Arrays.asList(
+            "https://img-my.csdn.net/uploads/201309/01/1378037235_3453.jpg",
             "https://img-my.csdn.net/uploads/201309/01/1378037235_7476.jpg",
             "https://img-my.csdn.net/uploads/201309/01/1378037235_9280.jpg",
             "https://img-my.csdn.net/uploads/201309/01/1378037234_3539.jpg",
