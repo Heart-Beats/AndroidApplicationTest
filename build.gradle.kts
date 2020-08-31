@@ -2,29 +2,37 @@
 
 buildscript {
 
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:4.0.1")
-        
+	repositories {
+		// google()
+		// jcenter()
+		maven { url = uri("https://maven.aliyun.com/repository/central") }
+		maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
+		maven { url = uri("https://maven.aliyun.com/repository/google") }
+		maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+	}
+	dependencies {
+		classpath("com.android.tools.build:gradle:4.0.1")
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
 
-        val kotlin_version = "1.4.0"
-        classpath(kotlin("gradle-plugin", kotlin_version))
-    }
+		// NOTE: Do not place your application dependencies here; they belong
+		// in the individual module build.gradle files
+
+		val kotlin_version = "1.4.0"
+		classpath(kotlin("gradle-plugin", kotlin_version))
+	}
 }
 
 allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
+	repositories {
+		// google()
+		// jcenter()
+		maven { url = uri("https://maven.aliyun.com/repository/central") }
+		maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
+		maven { url = uri("https://maven.aliyun.com/repository/google") }
+		maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+	}
 }
 
 tasks.register("clean", Delete::class) {
-    this.delete(rootProject.buildDir)
+	this.delete(rootProject.buildDir)
 }
