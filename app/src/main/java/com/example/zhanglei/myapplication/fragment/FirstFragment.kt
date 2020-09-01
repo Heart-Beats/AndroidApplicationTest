@@ -1,10 +1,7 @@
 package com.example.zhanglei.myapplication.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.Fragment
 import com.example.zhanglei.myapplication.R
@@ -21,7 +18,6 @@ private const val ARG_PARAM2 = "param2"
 class FirstFragment : BaseFragment() {
     private var param1: String? = null
     private var param2: String? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -30,29 +26,30 @@ class FirstFragment : BaseFragment() {
         }
     }
 
-    override fun layoutResId(): Int {
-        return R.layout.fragment_first
-    }
+    override val layoutResId: Int
+        get() = R.layout.fragment_first
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-       motionlayout.setTransitionListener(object:MotionLayout.TransitionListener{
-           override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-               //TODO("Not yet implemented")
-           }
+        toolbar?.title = "第一页"
 
-           override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-               button.text ="动画开始"
-           }
+        motionlayout.setTransitionListener(object : MotionLayout.TransitionListener {
+            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
+                //TODO("Not yet implemented")
+            }
 
-           override fun onTransitionChange(motionLayout: MotionLayout, p1: Int, p2: Int, p3: Float) {
+            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+                button.text = "动画开始"
+            }
+
+            override fun onTransitionChange(motionLayout: MotionLayout, p1: Int, p2: Int, p3: Float) {
 //               Toast.makeText(requireContext(), "动画执行中", Toast.LENGTH_SHORT).show()
-           }
+            }
 
-           override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-               button.text ="动画结束"
-           }
-       })
+            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
+                button.text = "动画结束"
+            }
+        })
     }
 
     companion object {

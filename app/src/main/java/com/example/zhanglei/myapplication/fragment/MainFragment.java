@@ -22,6 +22,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.Toast;
 import android.Manifest;
+import android.widget.Toolbar;
 
 import com.example.zhanglei.myapplication.ClickHelperListener;
 import com.example.zhanglei.myapplication.MyAnimatorSet;
@@ -53,12 +54,14 @@ public class MainFragment extends BaseFragment {
     private MyOnclickLisenter myOnclickLisenter;
 
     @Override
-    protected int layoutResId() {
+    protected int getLayoutResId() {
         return R.layout.fragment_main;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view,savedInstanceState);
+        toolbar.setTitle("主页");
         myView = view.findViewById(R.id.my_view);
         startAnimation = view.findViewById(R.id.start_animation);
         pictureSelect = view.findViewById(R.id.picture_select);

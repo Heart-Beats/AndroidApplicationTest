@@ -1,5 +1,6 @@
 package com.example.zhanglei.myapplication.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
+import com.example.zhanglei.myapplication.R
 
 /**
  * @Author  张磊  on  2020/08/28 at 18:35
@@ -22,38 +24,32 @@ abstract class BaseFragment : Fragment() {
 
 	private val TAG = "BaseFragment"
 
-	private val layoutResId: Int by lazy {
-		layoutResId()
-	}
+	protected abstract val layoutResId: Int
 
-	private lateinit var toolbar: Toolbar
+	@JvmField
+	protected var toolbar: Toolbar? = null
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
 		val inflateView = inflater.inflate(layoutResId, container, false)
-		this.lifecycle.addObserver(object : LifecycleEventObserver {
 
-			override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-				when (event) {
-					Lifecycle.Event.ON_CREATE -> {
-						toolbar = Toolbar(requireContext())
-						val appCompatActivity = activity as? AppCompatActivity
-						appCompatActivity?.setSupportActionBar(toolbar)
-					}
-					else -> {
-					}
-				}
+		inflateView.findViewById<View>(R.id.toolbar).run {
+			if (this is Toolbar) {
+				toolbar = this
 			}
+		}
 
-		})
-
+		toolbar?.apply {
+			this.setTitleTextColor(Color.WHITE)
+		}
 		return inflateView
 	}
 
-	protected abstract fun layoutResId(): Int
-
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
 		super.onActivityCreated(savedInstanceState)
+		//Activity 创建之后设置toolbar
+		val appCompatActivity = activity as? AppCompatActivity
+		appCompatActivity?.setSupportActionBar(toolbar)
+
 		val currentDestination = try {
 			findNavController().currentDestination
 		} catch (e: Exception) {
@@ -71,8 +67,6 @@ abstract class BaseFragment : Fragment() {
 				if (toolbar?.title.isNullOrEmpty()) {
 					//当前页面 无 title 时的处理
 
-					toolbar?.title = currentDestination.label
-
 					currentDestination.label = when (currentDestination.className) {
 						// MainHomeFragment::class.java.name -> "首页"
 						// MainMrchFragment::class.java.name -> "商户中心"
@@ -89,10 +83,4 @@ abstract class BaseFragment : Fragment() {
 		}
 	}
 
-	override fun onStart() {
-		super.onStart()
-		val appCompatActivity = activity as? AppCompatActivity
-		Log.d(TAG, "onStart: $toolbar")
-		appCompatActivity?.setSupportActionBar(toolbar)
-	}
 }

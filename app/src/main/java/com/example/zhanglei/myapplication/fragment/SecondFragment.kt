@@ -39,10 +39,8 @@ class SecondFragment : BaseFragment() {
 		}
 	}
 
-
-	override fun layoutResId(): Int {
-		return R.layout.fragment_second
-	}
+	override val layoutResId: Int
+		get() = R.layout.fragment_second
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
