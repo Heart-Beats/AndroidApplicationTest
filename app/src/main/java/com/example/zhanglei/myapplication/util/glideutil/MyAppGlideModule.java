@@ -1,4 +1,4 @@
-package com.example.zhanglei.myapplication.util;
+package com.example.zhanglei.myapplication.util.glideutil;
 
 import android.content.Context;
 import android.util.Log;

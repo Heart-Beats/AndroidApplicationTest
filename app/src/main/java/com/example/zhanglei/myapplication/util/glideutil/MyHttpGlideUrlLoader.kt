@@ -1,4 +1,4 @@
-package com.example.zhanglei.myapplication.util
+package com.example.zhanglei.myapplication.util.glideutil
 
 import android.util.Log
 import com.bumptech.glide.load.Options
