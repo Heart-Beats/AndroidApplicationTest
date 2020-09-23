@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="btn_radius_5">5dp</dimen>
+    <dimen name="btn_radius_4">4dp</dimen>
+    <dimen name="btn_radius_8">8dp</dimen>
+    <dimen name="btn_radius_10">10dp</dimen>
+    <dimen name="btn_radius_12">12dp</dimen>
+    <dimen name="btn_radius_15">15dp</dimen>
+    <dimen name="btn_radius_20">20dp</dimen>
+    <dimen name="btn_radius_18">18dp</dimen>
+    <dimen name="margin_60">60dp</dimen>
+    <dimen name="margin_35">35dp</dimen>
+    <dimen name="margin_30">30dp</dimen>
+    <dimen name="margin_25">25dp</dimen>
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_18">18dp</dimen>
+    <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
+    <dimen name="line_wide">1dp</dimen>
+    <dimen name="activity_item_high">45dp</dimen>
+    <dimen name="tl_height_size">50dp</dimen>
+    <dimen name="fragment_item_height_40">40dp</dimen>
+    <dimen name="fragment_item_height_45">50dp</dimen>
+    <dimen name="fragment_item_height">50dp</dimen>
+    <dimen name="fragment_merchant_item_height">80dp</dimen>
+    <dimen name="item_high_45">45dp</dimen>
+    <dimen name="item_high_40">40dp</dimen>
+    <dimen name="item_high_30">30dp</dimen>
+    <dimen name="item_high_50">50dp</dimen>
+    <dimen name="item_high_72">72dp</dimen>
+    <!--常规字体大小-->
+    <dimen name="txt_size_10">10sp</dimen>
+    <dimen name="txt_size_11">11sp</dimen>
+    <dimen name="txt_size_12">12sp</dimen>
+    <dimen name="txt_size_13">13sp</dimen>
+    <dimen name="txt_size_14">14sp</dimen>
+    <dimen name="txt_size_16">16sp</dimen>
+    <dimen name="txt_size_18">18sp</dimen>
+    <dimen name="txt_size_20">20sp</dimen>
+    <dimen name="txt_size_24">24sp</dimen>
+    <dimen name="txt_size_30">30sp</dimen>
+    <dimen name="txt_size_36">36sp</dimen>
+    <dimen name="dp_40">40dp</dimen>
+    <dimen name="dialog_width">280dp</dimen>
+    <dimen name="custom_dialog_fragment_min_width_minor">72%</dimen>
+    <dimen name="custom_dialog_fragment_min_width_major">65%</dimen>
+</resources>

@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="custom_dialog_fragment" parent="android:Theme.Material.Light.Dialog.NoActionBar">
+        <!--设置竖屏时候的最小宽度-->
+        <item name="android:windowMinWidthMinor">@dimen/custom_dialog_fragment_min_width_minor</item>
+        <!--设置横屏时候的最小宽度-->
+        <item name="android:windowMinWidthMajor">@dimen/custom_dialog_fragment_min_width_major</item>
+        <item name="android:windowBackground">@drawable/shape_dialog_radius12_bg</item>
+    </style>
+
 </resources>

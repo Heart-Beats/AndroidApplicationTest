@@ -12,7 +12,7 @@ android {
 	compileSdkVersion(30)
 	defaultConfig {
 		applicationId = "com.example.zhanglei.myapplication"
-		minSdkVersion(15)
+		minSdkVersion(16)
 		targetSdkVersion(30)
 		versionCode = 1
 		versionName = "1.0"
@@ -26,7 +26,7 @@ android {
 			proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
 		}
 	}
-	buildToolsVersion = "28.0.3"
+	buildToolsVersion = "29.0.2"
 
 	compileOptions {
 		//支持新的API(java.util.streams、java.util.function等)
@@ -34,6 +34,7 @@ android {
 		this.sourceCompatibility = JavaVersion.VERSION_1_8
 		this.targetCompatibility = JavaVersion.VERSION_1_8
 	}
+
 }
 
 android.applicationVariants.all { variant ->
@@ -60,8 +61,9 @@ android.applicationVariants.all { variant ->
 
 dependencies {
 	implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-	//
-	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.0.4")
+	implementation("androidx.legacy:legacy-support-v4:1.0.0")
+
+	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.0.10")
 
 	implementation("androidx.appcompat:appcompat:1.2.0")
 	implementation("androidx.constraintlayout:constraintlayout:2.0.1")
@@ -69,6 +71,10 @@ dependencies {
 	implementation("androidx.cardview:cardview:1.0.0")
 	implementation("androidx.navigation:navigation-fragment-ktx:2.3.0")
 	implementation("androidx.navigation:navigation-ui-ktx:2.3.0")
+
+	//lottie动画库
+	implementation("com.airbnb.android:lottie:3.4.2")
+	implementation("com.scwang.smart:refresh-layout-kernel:2.0.1")
 
 	implementation("com.elvishew:xlog:1.6.1")
 
@@ -86,7 +92,7 @@ dependencies {
 	implementation("org.mockito:mockito-all:2.0.2-beta")
 	implementation("androidx.core:core-ktx:1.3.1")
 
-	implementation(kotlin("stdlib-jdk7", "1.4.0"))
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
 }
 
 repositories {

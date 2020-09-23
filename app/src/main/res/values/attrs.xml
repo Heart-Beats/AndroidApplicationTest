@@ -5,4 +5,10 @@
         <attr name="exampleColor" format="color" />
         <attr name="exampleDrawable" format="color|reference" />
     </declare-styleable>
+
+    <style name="LottieRefreshHeaderStyle">
+        <item name="background">@android:color/transparent</item>
+    </style>
+    <declare-styleable name="LottieRefreshHeader"/>
+
 </resources>
