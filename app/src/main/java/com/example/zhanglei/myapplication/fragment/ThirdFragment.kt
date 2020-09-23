@@ -18,7 +18,7 @@ class ThirdFragment : BaseFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		smart_refresh_layout.setRefreshHeader(object : LottieRefreshHeader(requireContext()) {
+		val lottieRefreshHeader = object : LottieRefreshHeader(requireContext()) {
 			override val headerLayout: Int
 				get() = R.layout.layout_lottie_refresh_header
 
@@ -29,12 +29,10 @@ class ThirdFragment : BaseFragment() {
 			override fun getSpinnerStyle(): SpinnerStyle {
 				return SpinnerStyle.Translate
 			}
-
-			override fun setPrimaryColors(vararg colors: Int) {
-
-			}
-
-		})
+		}
+		lottieRefreshHeader.setPullAnimation(rawRes = R.raw.refresh)
+		lottieRefreshHeader.setRefreshAnimation(url = "https://assets3.lottiefiles.com/packages/lf20_R6y0Xw.json")
+		smart_refresh_layout.setRefreshHeader(lottieRefreshHeader)
 	}
 
 }
