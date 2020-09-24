@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_mainFragment_to_thirdFragment2"
             app:destination="@id/thirdFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
     </fragment>
     <fragment
         android:id="@+id/firstFragment"
@@ -45,4 +48,9 @@
         android:name="com.example.zhanglei.myapplication.fragment.ThirdFragment"
         android:label="fragment_third"
         tools:layout="@layout/fragment_third" />
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.example.zhanglei.myapplication.VideoFragment"
+        android:label="fragment_video"
+        tools:layout="@layout/fragment_video" />
 </navigation>

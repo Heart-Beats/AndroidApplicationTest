@@ -12,7 +12,7 @@ android {
 	compileSdkVersion(30)
 	defaultConfig {
 		applicationId = "com.example.zhanglei.myapplication"
-		minSdkVersion(16)
+		minSdkVersion(19)
 		targetSdkVersion(30)
 		versionCode = 1
 		versionName = "1.0"
@@ -26,7 +26,7 @@ android {
 			proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
 		}
 	}
-	buildToolsVersion = "29.0.2"
+	buildToolsVersion = "29.0.3"
 
 	compileOptions {
 		//支持新的API(java.util.streams、java.util.function等)
@@ -60,7 +60,7 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
-	implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+	api(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 	implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.0.10")
@@ -93,8 +93,18 @@ dependencies {
 	implementation("androidx.core:core-ktx:1.3.1")
 
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
+
+	//视频播放库
+	implementation("com.shuyu:gsyVideoPlayer-java:7.1.6")
+
+	//根据你的需求ijk模式的so
+	implementation("com.shuyu:gsyVideoPlayer-armv5:7.1.6")
+	implementation("com.shuyu:gsyVideoPlayer-armv7a:7.1.6")
+	implementation("com.shuyu:gsyVideoPlayer-arm64:7.1.6")
+	implementation("com.shuyu:gsyVideoPlayer-x64:7.1.6")
+	implementation("com.shuyu:gsyVideoPlayer-x86:7.1.6")
 }
 
-repositories {
-	mavenCentral()
-}
+// repositories {
+// 	mavenCentral()
+// }

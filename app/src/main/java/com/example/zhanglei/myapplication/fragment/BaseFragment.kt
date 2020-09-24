@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -43,6 +45,8 @@ abstract class BaseFragment : Fragment() {
 
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
 		super.onActivityCreated(savedInstanceState)
+		requireActivity().onBackPressedDispatcher.addCallback(owner = viewLifecycleOwner, onBackPressed = onBackPressed())
+
 		//Activity 创建之后设置toolbar
 		val appCompatActivity = activity as? AppCompatActivity
 		appCompatActivity?.setSupportActionBar(toolbar)
@@ -76,6 +80,16 @@ abstract class BaseFragment : Fragment() {
 					//当前页面有 title
 					currentDestination.label = toolbar?.title
 				}
+			}
+		}
+	}
+
+	protected open fun onBackPressed(): OnBackPressedCallback.() -> Unit {
+		return {
+			try {
+				findNavController().popBackStack()
+			} catch (e: Exception) {
+				activity?.onBackPressed()
 			}
 		}
 	}

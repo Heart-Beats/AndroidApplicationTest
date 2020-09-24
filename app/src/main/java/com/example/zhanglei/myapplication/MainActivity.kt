@@ -1,10 +1,11 @@
 package com.example.zhanglei.myapplication
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.iterator
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.zhanglei.myapplication.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +13,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bottomNavigationView.setupWithNavController(findNavController(R.id.fragment))
+        val findNavController = findNavController(R.id.fragment).apply {
+            this.addOnDestinationChangedListener { controller, destination, arguments ->
+                val itemIds = bottomNavigationView.menu.iterator().asSequence().toList().map {
+                    it.itemId
+                }
+                when (destination.id) {
+                    in itemIds -> {
+                        bottomNavigationView.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        bottomNavigationView.visibility = View.INVISIBLE
+                    }
+                }
+            }
+        }
+        bottomNavigationView.setupWithNavController(findNavController)
     }
 }
