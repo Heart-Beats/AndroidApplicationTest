@@ -3,7 +3,6 @@ package com.example.zhanglei.myapplication.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import com.airbnb.lottie.LottieAnimationView
@@ -47,7 +46,7 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
 	override fun onInitialized(kernel: RefreshKernel, height: Int, maxDragHeight: Int) {
 		Log.d(TAG, "onInitialized: ")
 		//抽象类中的this不可在构造方法中使用，存在风险
-		val headerView = LayoutInflater.from(context).inflate(headerLayout, this)
+		val headerView = View.inflate(context, headerLayout, this)
 
 		lottieAnimationView = headerView.traverseFindFirstChildView(LottieAnimationView::class.java)
 

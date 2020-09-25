@@ -11,16 +11,19 @@ import androidx.core.view.get
 
 fun <T : View> View.traverseFindFirstChildView(findViewType: Class<T>): T? {
 	val parentView = this
-	if (parentView is ViewGroup) {
-		for (i in 0 until parentView.childCount) {
-			val childView = parentView[i]
-			return childView.traverseFindFirstChildView(findViewType)
-		}
+	if (findViewType.isInstance(parentView)) {
+		@Suppress("UNCHECKED_CAST")
+		return parentView as T
 	} else {
-		if (findViewType.isInstance(parentView)) {
-			@Suppress("UNCHECKED_CAST")
-			return parentView as T
+		if (parentView is ViewGroup) {
+			for (i in 0 until parentView.childCount) {
+				val childView = parentView[i]
+				val findView = childView.traverseFindFirstChildView(findViewType)
+				if (findView != null) {
+					return findView
+				}
+			}
 		}
+		return null
 	}
-	return null
 }

@@ -50,7 +50,7 @@
         tools:layout="@layout/fragment_third" />
     <fragment
         android:id="@+id/videoFragment"
-        android:name="com.example.zhanglei.myapplication.VideoFragment"
+        android:name="com.example.zhanglei.myapplication.fragment.VideoFragment"
         android:label="fragment_video"
         tools:layout="@layout/fragment_video" />
 </navigation>

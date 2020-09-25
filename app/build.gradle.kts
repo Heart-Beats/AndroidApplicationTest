@@ -35,6 +35,11 @@ android {
 		this.targetCompatibility = JavaVersion.VERSION_1_8
 	}
 
+	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
+		kotlinOptions {
+			this.jvmTarget = "1.8"
+		}
+	}
 }
 
 android.applicationVariants.all { variant ->

@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
-import com.example.zhanglei.myapplication.R
+import com.example.zhanglei.myapplication.util.traverseFindFirstChildView
 
 /**
  * @Author  张磊  on  2020/08/28 at 18:35
@@ -31,11 +31,7 @@ abstract class BaseFragment : Fragment() {
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 		val inflateView = inflater.inflate(layoutResId, container, false)
 
-		inflateView.findViewById<View>(R.id.toolbar).run {
-			if (this is Toolbar) {
-				toolbar = this
-			}
-		}
+		toolbar = inflateView.traverseFindFirstChildView(Toolbar::class.java)
 
 		toolbar?.apply {
 			this.setTitleTextColor(Color.WHITE)

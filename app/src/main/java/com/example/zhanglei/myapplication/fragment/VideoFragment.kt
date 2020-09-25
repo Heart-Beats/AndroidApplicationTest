@@ -1,4 +1,4 @@
-package com.example.zhanglei.myapplication
+package com.example.zhanglei.myapplication.fragment
 
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
@@ -7,12 +7,12 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.elvishew.xlog.XLog
-import com.example.zhanglei.myapplication.fragment.BaseFragment
+import com.example.zhanglei.myapplication.R
+import com.example.zhanglei.myapplication.util.initPlayer
 import com.shuyu.gsyvideoplayer.GSYVideoManager
-import com.shuyu.gsyvideoplayer.player.IjkPlayerManager
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
 import kotlinx.android.synthetic.main.fragment_video.*
-import tv.danmaku.ijk.media.player.IjkMediaPlayer
 
 class VideoFragment : BaseFragment() {
 
@@ -24,32 +24,23 @@ class VideoFragment : BaseFragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		toolbar?.title = "视频播放测试"
 
-		IjkPlayerManager.setLogLevel(IjkMediaPlayer.IJK_LOG_SILENT)
+		// 设置 Activity 根据传感器变化
+		// requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR)
 
-		val source1 = "https://shanhao-app-1259195890.cos.ap-shanghai.myqcloud.com/app-resources/merchant/videos.voice-manual/sample.mp4"
-		video_player.setUp(source1, true, "测试视频")
+		val url = "https://shanhao-app-1259195890.cos.ap-shanghai.myqcloud.com/app-resources/merchant/videos.voice-manual/sample.mp4"
 
-		// //增加title
-		// video_player.titleTextView.visibility = View.VISIBLE
-		// //设置返回键
-		// video_player.backButton.visibility = View.VISIBLE
-		//设置旋转
-		orientationUtils = OrientationUtils(activity, video_player)
-		//设置全屏按键功能,这是使用的是选择屏幕，而不是全屏
-		video_player.fullscreenButton.setOnClickListener {
-			orientationUtils.resolveByClick()
+		initPlayer(video_player, url)
+	}
 
-			video_player.startWindowFullscreen(requireContext(), true, true)
-		}
-		//是否可以滑动调整
-		video_player.setIsTouchWiget(true)
-		//设置返回按键功能
-		video_player.backButton.setOnClickListener {
-			back()
-		}
-		video_player.startPlayLogic()
-		video_player.setUp(source1, true, "测试视频")
+	private fun initPlayer(videoPlayer: StandardGSYVideoPlayer?, url: String) {
+
+		//外部辅助的旋转，帮助全屏
+		orientationUtils = OrientationUtils(requireActivity(), videoPlayer)
+
+		videoPlayer?.initPlayer(orientationUtils, url)
+
 	}
 
 	override fun onPause() {
@@ -78,11 +69,12 @@ class VideoFragment : BaseFragment() {
 
 	override fun onConfigurationChanged(newConfig: Configuration) {
 		super.onConfigurationChanged(newConfig)
-		video_player.onConfigurationChanged(requireActivity(), newConfig, orientationUtils, true, true)
+		XLog.d("配置改变")
+		// 需要播放自动随屏幕旋转 全屏/退出全屏
+		// video_player.onConfigurationChanged(requireActivity(), newConfig, orientationUtils, true, true)
 	}
 
 	private fun back() {
-		XLog.d("返回")
 		//先返回正常状态
 		if (orientationUtils.screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
 			video_player.fullscreenButton.performClick()
@@ -92,5 +84,4 @@ class VideoFragment : BaseFragment() {
 			findNavController().popBackStack()
 		}
 	}
-
 }
