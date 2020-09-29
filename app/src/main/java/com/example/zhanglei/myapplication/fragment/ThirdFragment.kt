@@ -1,8 +1,12 @@
 package com.example.zhanglei.myapplication.fragment
 
+import android.Manifest.*
 import android.os.Bundle
 import android.view.View
+import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.R
+import com.example.zhanglei.myapplication.util.DeviceInfoUtil
+import com.example.zhanglei.myapplication.util.reqPermissions
 import com.example.zhanglei.myapplication.widget.LottieRefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
@@ -33,6 +37,12 @@ class ThirdFragment : BaseFragment() {
 		lottieRefreshHeader.setPullAnimation(rawRes = R.raw.refresh)
 		lottieRefreshHeader.setRefreshAnimation(url = "https://assets3.lottiefiles.com/packages/lf20_R6y0Xw.json")
 		smart_refresh_layout.setRefreshHeader(lottieRefreshHeader)
+
+		reqPermissions(permission.READ_PHONE_STATE, allGrantedAction = {
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+				XLog.d(DeviceInfoUtil.getDeviceAllInfo(requireContext()))
+			}
+		})
 	}
 
 }

@@ -9,14 +9,11 @@ import androidx.navigation.fragment.findNavController
 import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.util.initPlayer
-import com.shuyu.gsyvideoplayer.GSYVideoManager
-import com.shuyu.gsyvideoplayer.utils.OrientationUtils
-import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+import com.example.zhanglei.myapplication.util.reqPermissions
+import com.example.zhanglei.myapplication.widget.MyStandardGSYVideoPlayer
 import kotlinx.android.synthetic.main.fragment_video.*
 
 class VideoFragment : BaseFragment() {
-
-	private lateinit var orientationUtils: OrientationUtils
 
 	override val layoutResId: Int
 		get() = R.layout.fragment_video
@@ -30,34 +27,16 @@ class VideoFragment : BaseFragment() {
 		// requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR)
 
 		val url = "https://shanhao-app-1259195890.cos.ap-shanghai.myqcloud.com/app-resources/merchant/videos.voice-manual/sample.mp4"
+		// val url = "http://7xjmzj.com1.z0.glb.clouddn.com/20171026175005_JObCxCE2.mp4"
 
 		initPlayer(video_player, url)
-	}
-
-	private fun initPlayer(videoPlayer: StandardGSYVideoPlayer?, url: String) {
-
-		//外部辅助的旋转，帮助全屏
-		orientationUtils = OrientationUtils(requireActivity(), videoPlayer)
-
-		videoPlayer?.initPlayer(orientationUtils, url)
 
 	}
 
-	override fun onPause() {
-		super.onPause()
-		video_player.onVideoPause()
-	}
-
-
-	override fun onResume() {
-		super.onResume()
-		video_player.onVideoResume()
-	}
-
-	override fun onDestroy() {
-		super.onDestroy()
-		GSYVideoManager.releaseAllVideos()
-		orientationUtils.releaseListener()
+	private fun initPlayer(videoPlayer: MyStandardGSYVideoPlayer, url: String) {
+		reqPermissions(allGrantedAction = {
+			videoPlayer.initPlayer(this, url)
+		})
 	}
 
 	override fun onBackPressed(): OnBackPressedCallback.() -> Unit {
@@ -76,7 +55,7 @@ class VideoFragment : BaseFragment() {
 
 	private fun back() {
 		//先返回正常状态
-		if (orientationUtils.screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+		if (video_player.orientationUtils?.screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
 			video_player.fullscreenButton.performClick()
 		} else {
 			//释放所有

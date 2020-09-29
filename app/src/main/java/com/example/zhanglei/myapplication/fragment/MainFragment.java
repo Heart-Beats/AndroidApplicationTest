@@ -37,10 +37,11 @@ public class MainFragment extends BaseFragment {
 
     private static final String TAG = "MainActivity";
 
-    private static String[] permissionsList = {
+    public static String[] permissionsList = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.INTERNET
+            Manifest.permission.INTERNET,
+            Manifest.permission.READ_PHONE_STATE
     };
 
     private static final int REQUEST_CODE = 1;

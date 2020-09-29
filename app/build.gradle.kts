@@ -12,7 +12,7 @@ android {
 	compileSdkVersion(30)
 	defaultConfig {
 		applicationId = "com.example.zhanglei.myapplication"
-		minSdkVersion(19)
+		minSdkVersion(23)
 		targetSdkVersion(30)
 		versionCode = 1
 		versionName = "1.0"
@@ -99,8 +99,12 @@ dependencies {
 
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
 
+	implementation("com.permissionx.guolindev:permissionx:1.4.0")
+
 	//视频播放库
 	implementation("com.shuyu:gsyVideoPlayer-java:7.1.6")
+	//是否需要ExoPlayer模式
+	implementation("com.shuyu:GSYVideoPlayer-exo2:7.1.6")
 
 	//根据你的需求ijk模式的so
 	implementation("com.shuyu:gsyVideoPlayer-armv5:7.1.6")
