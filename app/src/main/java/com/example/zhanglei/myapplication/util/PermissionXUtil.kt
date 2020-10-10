@@ -21,6 +21,7 @@ fun FragmentActivity.reqPermissions(vararg permissions: String = permissionsList
                                     deniedAction: (List<String>) -> Unit = {}) {
 	PermissionX.init(this)
 			.permissions(*permissions)
+			// .explainReasonBeforeRequest()
 			.onExplainRequestReason { scope, deniedList ->
 				val message = "本应用需要您同意以下权限才能正常使用"
 				scope.showRequestReasonDialog(deniedList, message, "确定", "取消")

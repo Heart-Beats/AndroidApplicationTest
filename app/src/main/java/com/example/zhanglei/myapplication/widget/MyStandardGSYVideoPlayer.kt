@@ -55,18 +55,20 @@ class MyStandardGSYVideoPlayer : StandardGSYVideoPlayer, LifecycleEventObserver 
 	}
 
 	override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
-		val fragment = source as? Fragment
-		if (fragment != null) {
-			//外部辅助的旋转，帮助全屏
-			orientationUtils = OrientationUtils(fragment.requireActivity(), this)
-		} else {
-			val activity = source as? FragmentActivity
-			if (activity != null) {
-				orientationUtils = OrientationUtils(activity, this)
-			}
-		}
-
 		when (event) {
+			Lifecycle.Event.ON_CREATE -> {
+				val fragment = source as? Fragment
+				if (fragment != null) {
+					//外部辅助的旋转，帮助全屏
+					orientationUtils = OrientationUtils(fragment.requireActivity(), this)
+				} else {
+					val activity = source as? FragmentActivity
+					if (activity != null) {
+						orientationUtils = OrientationUtils(activity, this)
+					}
+				}
+			}
+
 			Lifecycle.Event.ON_RESUME -> {
 				this.onVideoResume()
 			}

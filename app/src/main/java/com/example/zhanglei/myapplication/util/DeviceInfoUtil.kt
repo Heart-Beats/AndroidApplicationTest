@@ -8,8 +8,8 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
+import java.lang.reflect.Method
 import java.util.*
-
 
 /**
  * @Author  张磊  on  2020/09/28 at 9:58
@@ -40,7 +40,7 @@ object DeviceInfoUtil {
 	fun getIMEIDeviceId(context: Context): String {
 		val deviceId: String
 
-		deviceId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+		deviceId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 			Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
 		} else {
 			val mTelephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -174,6 +174,25 @@ object DeviceInfoUtil {
 		return Locale.getAvailableLocales().map { it.displayLanguage }
 	}
 
+	/**
+	 * 获取EMUI版本号
+	 */
+	fun getEMUI(): String {
+		// //[ro.build.version.emui]: [EmotionUI_10.1.0]
+		var buildVersion = ""
+		try {
+			val classType = Class.forName("android.os.SystemProperties")
+			val getMethod: Method = classType.getDeclaredMethod("get", String::class.java)
+			buildVersion = getMethod.invoke(classType, "ro.build.version.emui") as String
+		} catch (e: Exception) {
+			e.printStackTrace()
+		}
+		return buildVersion.split("_").last().split(".").first()
+	}
+
+	/**
+	 * 获取当前手机的一些相关信息
+	 */
 	@RequiresApi(Build.VERSION_CODES.O)
 	@RequiresPermission(Manifest.permission.READ_PHONE_STATE)
 	fun getDeviceAllInfo(context: Context): String {

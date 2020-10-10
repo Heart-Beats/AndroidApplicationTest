@@ -55,8 +55,9 @@ class VideoFragment : BaseFragment() {
 
 	private fun back() {
 		//先返回正常状态
-		if (video_player.orientationUtils?.screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-			video_player.fullscreenButton.performClick()
+		if (video_player.orientationUtils?.screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE ||
+				video_player.isIfCurrentIsFullscreen) {
+			video_player.onBackFullscreen()
 		} else {
 			//释放所有
 			video_player.setVideoAllCallBack(null)

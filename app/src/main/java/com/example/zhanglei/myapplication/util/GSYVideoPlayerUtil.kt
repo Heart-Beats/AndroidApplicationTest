@@ -25,7 +25,7 @@ fun MyStandardGSYVideoPlayer.initPlayer(lifecycleOwner: LifecycleOwner, url: Str
 	//初始化不打开外部的旋转
 	this.orientationUtils?.isEnable = false
 
-	Debuger.enable()
+	Debuger.disable()
 	IjkPlayerManager.setLogLevel(IjkMediaPlayer.IJK_LOG_SILENT)
 
 	val imageView = ImageView(this.context)
@@ -72,8 +72,8 @@ fun MyStandardGSYVideoPlayer.initPlayer(lifecycleOwner: LifecycleOwner, url: Str
 		this.backButton?.visibility = View.GONE
 		this.backButton?.setOnClickListener {
 			//先返回正常状态
-			if (this.orientationUtils?.screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-				this.fullscreenButton.performClick()
+			if (this.orientationUtils?.screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE || this.isIfCurrentIsFullscreen) {
+				this.onBackFullscreen()
 			} else {
 				//释放所有
 				this.setVideoAllCallBack(null)
