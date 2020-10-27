@@ -30,7 +30,7 @@ android {
 
 	compileOptions {
 		//支持新的API(java.util.streams、java.util.function等)
-		this.coreLibraryDesugaringEnabled = true
+		this.isCoreLibraryDesugaringEnabled = true
 		this.sourceCompatibility = JavaVersion.VERSION_1_8
 		this.targetCompatibility = JavaVersion.VERSION_1_8
 	}
@@ -71,11 +71,13 @@ dependencies {
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.0.10")
 
 	implementation("androidx.appcompat:appcompat:1.2.0")
-	implementation("androidx.constraintlayout:constraintlayout:2.0.1")
+	implementation("androidx.constraintlayout:constraintlayout:2.0.2")
 	implementation("androidx.recyclerview:recyclerview:1.1.0")
 	implementation("androidx.cardview:cardview:1.0.0")
 	implementation("androidx.navigation:navigation-fragment-ktx:2.3.0")
 	implementation("androidx.navigation:navigation-ui-ktx:2.3.0")
+
+	implementation("com.google.code.gson:gson:2.8.6")
 
 	//lottie动画库
 	implementation("com.airbnb.android:lottie:3.4.2")
@@ -95,7 +97,7 @@ dependencies {
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 	implementation("androidx.annotation:annotation:1.1.0")
 	implementation("org.mockito:mockito-all:2.0.2-beta")
-	implementation("androidx.core:core-ktx:1.3.1")
+	implementation("androidx.core:core-ktx:1.3.2")
 
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
 
@@ -113,7 +115,3 @@ dependencies {
 	implementation("com.shuyu:gsyVideoPlayer-x64:7.1.6")
 	implementation("com.shuyu:gsyVideoPlayer-x86:7.1.6")
 }
-
-// repositories {
-// 	mavenCentral()
-// }

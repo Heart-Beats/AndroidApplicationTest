@@ -12,7 +12,7 @@ buildscript {
 		maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
 	}
 	dependencies {
-		classpath("com.android.tools.build:gradle:4.0.2")
+		classpath("com.android.tools.build:gradle:4.1.0")
 
 		val kotlinVersion = "1.4.0"
 		classpath(kotlin("gradle-plugin", kotlinVersion))
