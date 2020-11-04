@@ -11,8 +11,17 @@ import com.elvishew.xlog.XLog
  */
 class MyApplication:Application() {
 
+	companion object {
+		private lateinit var mApplication: Application
+
+		fun getInstance(): Application {
+			return mApplication
+		}
+	}
+
 	override fun onCreate() {
 		super.onCreate()
+		mApplication = this
 
 		val logConfig = LogConfiguration.Builder()
 				.logLevel(if (isEnvTDebug()) {

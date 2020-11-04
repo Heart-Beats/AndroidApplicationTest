@@ -69,6 +69,14 @@ dependencies {
 	implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.0.10")
+	testImplementation("junit:junit:4.13")
+	androidTestImplementation("androidx.test.ext:junit:1.1.2")
+	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
+	implementation("androidx.annotation:annotation:1.1.0")
+	implementation("org.mockito:mockito-all:2.0.2-beta")
+	implementation("androidx.core:core-ktx:1.3.2")
 
 	implementation("androidx.appcompat:appcompat:1.2.0")
 	implementation("androidx.constraintlayout:constraintlayout:2.0.2")
@@ -92,15 +100,7 @@ dependencies {
 	//处理Glide注解，用于自定义Glide模块和自定义扩展类时必须引用
 	annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
 
-	testImplementation("junit:junit:4.13")
-	androidTestImplementation("androidx.test.ext:junit:1.1.2")
-	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-	implementation("androidx.annotation:annotation:1.1.0")
-	implementation("org.mockito:mockito-all:2.0.2-beta")
-	implementation("androidx.core:core-ktx:1.3.2")
-
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
-
+	//权限请求库
 	implementation("com.permissionx.guolindev:permissionx:1.4.0")
 
 	//视频播放库
@@ -114,4 +114,6 @@ dependencies {
 	implementation("com.shuyu:gsyVideoPlayer-arm64:7.1.6")
 	implementation("com.shuyu:gsyVideoPlayer-x64:7.1.6")
 	implementation("com.shuyu:gsyVideoPlayer-x86:7.1.6")
+
+	implementation("com.squareup.okhttp3:okhttp:4.9.0")
 }
