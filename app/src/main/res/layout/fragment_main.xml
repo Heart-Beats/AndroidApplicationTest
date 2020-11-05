@@ -71,4 +71,14 @@
         app:layout_constraintStart_toStartOf="@+id/start_animation"
         app:layout_constraintTop_toBottomOf="@+id/start_animation" />
 
+    <Button
+        android:id="@+id/download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_style"
+        android:text="下载"
+        app:layout_constraintStart_toStartOf="@+id/picture_select"
+        app:layout_constraintTop_toTopOf="@+id/play_video" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

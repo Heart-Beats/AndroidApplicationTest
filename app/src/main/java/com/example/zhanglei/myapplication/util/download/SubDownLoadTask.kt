@@ -9,24 +9,29 @@ import java.io.RandomAccessFile
  * @Author  张磊  on  2020/11/04 at 15:06
  * Email: 913305160@qq.com
  */
-data class SubDownLoadTask(
+internal data class SubDownLoadTask(
 		val downLoadUrl: String,
-		val startPos: Long,
-		val endPos: Long,
-		var currentPos: Long,
+		val startPos: Long? = null,
+		val endPos: Long? = null,
+		var currentPos: Long = 0,
 		var downloadStatus: DownloadStatus = DownloadStatus.NOT_DOWNLOADED,
 		val saveFile: File,
 		val downloadStatusListener: OnDownloadStatusListener
 ) : Callback {
 
 	private val okHttpClient = OkHttpClient()
+	private var requestCall: Call? = null
 
 	fun startDownLoad() {
 		val request = Request.Builder()
-				.url(downLoadUrl)
-				.addHeader("RANGE", "bytes=$startPos-$endPos")
+				.url(downLoadUrl).apply {
+					if (startPos != null && startPos >= 0) {
+						addHeader("RANGE", "bytes=$startPos-$endPos")
+					}
+				}
 				.build()
-		okHttpClient.newCall(request).enqueue(this)
+		requestCall = okHttpClient.newCall(request)
+		requestCall?.enqueue(this)
 	}
 
 	override fun onFailure(call: Call, e: IOException) {
@@ -43,16 +48,30 @@ data class SubDownLoadTask(
 		val byteArray = ByteArray(1024 * 1024)
 
 		var len: Int
-		body?.byteStream()?.use {
-			while (it.read(byteArray).also { len = it } != -1) {
-				randomAccessFile.write(byteArray, 0, len)
-				println("正在下载")
-				downloadStatus = DownloadStatus.DOWNLOADING
-				currentPos += len
+		body?.byteStream()?.use { inputStream ->
+			while (inputStream.read(byteArray).also { len = it } != -1) {
+				if (downloadStatus != DownloadStatus.DOWNLOAD_PAUSE) {
+					randomAccessFile.write(byteArray, 0, len)
+					downloadStatus = DownloadStatus.DOWNLOADING
+					currentPos += len
+
+				}
 				downloadStatusListener.downloadStatusChage(downloadStatus)
 			}
 		}
 		downloadStatus = DownloadStatus.DOWNLOAD_COMPLETE
 		downloadStatusListener.downloadStatusChage(downloadStatus)
+	}
+
+	fun downLoadPause() {
+		downloadStatus = DownloadStatus.DOWNLOAD_PAUSE
+	}
+
+	fun downloadCancel() {
+		if (requestCall?.isCanceled() != true) {
+			requestCall?.cancel()
+			downloadStatus = DownloadStatus.DOWNLOAD_CANCEL
+			downloadStatusListener.downloadStatusChage(downloadStatus)
+		}
 	}
 }

@@ -26,6 +26,8 @@ import com.example.zhanglei.myapplication.MyAnimatorSet;
 import com.example.zhanglei.myapplication.MyView;
 import com.example.zhanglei.myapplication.PictureSelectionActivity;
 import com.example.zhanglei.myapplication.R;
+import com.example.zhanglei.myapplication.util.download.DownloadListener;
+import com.example.zhanglei.myapplication.util.download.DownloadManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,7 @@ public class MainFragment extends BaseFragment {
     private Button pictureSelect;
     private MyAnimatorSet myAnimatorSet;
     private Button playVideo;
+    private Button download;
 
     private MyOnclickListener myOnclickListener;
 
@@ -72,6 +75,7 @@ public class MainFragment extends BaseFragment {
         playVideo = view.findViewById(R.id.play_video);
         myAnimatorSet = new MyAnimatorSet();
         myOnclickListener = new MyOnclickListener();
+        download = view.findViewById(R.id.download);
     }
 
     @Override
@@ -97,6 +101,7 @@ public class MainFragment extends BaseFragment {
         startAnimation.setOnClickListener(myOnclickListener);
         pictureSelect.setOnClickListener(myOnclickListener);
         playVideo.setOnClickListener(myOnclickListener);
+        download.setOnClickListener(myOnclickListener);
     }
 
     private void setScaleAnimation() {
@@ -179,6 +184,17 @@ public class MainFragment extends BaseFragment {
                 case R.id.play_video:
                     FragmentKt.findNavController(MainFragment.this).
                             navigate(R.id.action_mainFragment_to_videoFragment);
+                case R.id.download:
+                    String downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk";
+
+                    DownloadManager.INSTANCE.startDownLoad(downloadUrl, 3, new DownloadListener() {
+
+                        @Override
+                        public void downloadIng(int progress) {
+                            super.downloadIng(progress);
+                            System.out.println("下载中 == " + progress);
+                        }
+                    });
                 default:
                     break;
             }

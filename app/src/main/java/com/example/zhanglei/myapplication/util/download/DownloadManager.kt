@@ -13,15 +13,15 @@ object DownloadManager {
 		this.downloadListener = downloadListener
 	}
 
-	fun downloadError() {
-		downloadListener?.downloadError()
-	}
-
-	fun downloadComplete() {
-		downloadListener?.downloadComplete()
-	}
-
-	fun downloadIng(progress: Long) {
-		downloadListener?.downloadIng(progress)
+	internal fun downloadStatusChange(downloadStatus: DownloadStatus, progress: Int = 0) {
+		when (downloadStatus) {
+			DownloadStatus.DOWNLOAD_ERROR -> downloadListener?.downloadError()
+			DownloadStatus.DOWNLOADING -> downloadListener?.downloadIng(progress)
+			DownloadStatus.DOWNLOAD_COMPLETE -> downloadListener?.downloadComplete()
+			DownloadStatus.DOWNLOAD_PAUSE -> downloadListener?.downloadPause()
+			DownloadStatus.DOWNLOAD_CANCEL -> downloadListener?.downloadCancel()
+			else -> {
+			}
+		}
 	}
 }

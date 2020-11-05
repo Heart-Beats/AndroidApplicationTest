@@ -8,5 +8,7 @@ enum class DownloadStatus(statusDesc: String) {
     NOT_DOWNLOADED("未下载"),
     DOWNLOADING("下载中"),
     DOWNLOAD_COMPLETE("下载完成"),
-    DOWNLOAD_ERROR("下载错误")
+    DOWNLOAD_ERROR("下载错误"),
+    DOWNLOAD_PAUSE("下载暂停"),
+    DOWNLOAD_CANCEL("取消下载")
 }

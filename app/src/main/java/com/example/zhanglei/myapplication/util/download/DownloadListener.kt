@@ -4,11 +4,15 @@ package com.example.zhanglei.myapplication.util.download
  * @Author  张磊  on  2020/11/04 at 20:47
  * Email: 913305160@qq.com
  */
-interface DownloadListener {
+open class DownloadListener {
 
-	fun downloadError()
+	open fun downloadError() {}
 
-	fun downloadComplete()
+	open fun downloadComplete() {}
 
-	fun downloadIng(progress: Long)
+	open fun downloadIng(progress: Int) {}
+
+	open fun downloadPause() {}
+
+	open fun downloadCancel() {}
 }
