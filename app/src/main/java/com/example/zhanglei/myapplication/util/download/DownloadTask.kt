@@ -6,15 +6,21 @@ import android.util.Log
 import androidx.core.content.edit
 import com.example.zhanglei.myapplication.MyApplication
 import com.example.zhanglei.myapplication.util.gsonParseJson2List
+import com.example.zhanglei.myapplication.util.toJson
+import com.example.zhanglei.myapplication.util.toJsonList
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.File
+import java.lang.reflect.Modifier
 import java.net.HttpURLConnection
+
 
 /**
  * @Author  张磊  on  2020/11/04 at 15:03
@@ -37,16 +43,17 @@ internal class DownloadTask(private val downloadUrl: String, private val maxDown
 
 		MainScope().launch {
 
-			val okHttpClient = OkHttpClient()
-			val requestBuilder = Request.Builder().url(downloadUrl)
-			fileSize = async(Dispatchers.IO) {
-				okHttpClient.newCall(requestBuilder.build()).execute().body?.contentLength() ?: 0
-			}.await()
-
-			requestBuilder.addHeader("RANGE", "bytes=0-")
-			val statusCode = async(Dispatchers.IO){
-				okHttpClient.newCall(requestBuilder.build()).execute().code
-			}.await()
+			// val okHttpClient = OkHttpClient()
+			// val requestBuilder = Request.Builder().url(downloadUrl)
+			// fileSize = withContext(Dispatchers.IO) {
+			// 	okHttpClient.newCall(requestBuilder.build()).execute().body?.contentLength() ?: 0
+			// }
+			//
+			// requestBuilder.addHeader("RANGE", "bytes=0-")
+			// val statusCode = withContext(Dispatchers.IO) {
+			// 	okHttpClient.newCall(requestBuilder.build()).execute().code
+			// }
+			val statusCode = 206
 
 			Log.d(TAG, "startDownload: fileSize == $fileSize , statusCode = $statusCode")
 
@@ -64,7 +71,13 @@ internal class DownloadTask(private val downloadUrl: String, private val maxDown
 					initSubTask(saveFile)
 				}
 			}
-			startAsyncDownload()
+
+			// startAsyncDownload()
+
+			println(subDownLoadTasks[0].toJson())
+			// println(subDownLoadTasks.toJsonList())
+
+			println(Gson().toJson(subDownLoadTasks))
 		}
 	}
 
@@ -104,8 +117,8 @@ internal class DownloadTask(private val downloadUrl: String, private val maxDown
 			//结束位置：自身在分配大小list 位置的前面所有项和-1（包括自身）， 如： [2,1,1] ==》 [1,2,3]
 			val endPos = partSizeList.take(index + 1).reduce { sum, size -> sum + size } - 1
 
-			val subDownLoadTask = SubDownLoadTask(downloadUrl, startPos = startPos, endPos = endPos, saveFile = file,
-					downloadStatusListener = downloadListener)
+			val subDownLoadTask = SubDownLoadTask(
+					downloadUrl, startPos = startPos, endPos = endPos, saveFile = file)
 			subDownLoadTasks.add(subDownLoadTask)
 		}
 	}
@@ -114,7 +127,7 @@ internal class DownloadTask(private val downloadUrl: String, private val maxDown
 	 * 不支持断点续传，单线程下载任务
 	 */
 	private fun initSubTask(file: File) {
-		val subDownLoadTask = SubDownLoadTask(downloadUrl, saveFile = file, downloadStatusListener = downloadListener)
+		val subDownLoadTask = SubDownLoadTask(downloadUrl, saveFile = file)
 		subDownLoadTasks.clear()
 		subDownLoadTasks.add(subDownLoadTask)
 	}
@@ -122,14 +135,17 @@ internal class DownloadTask(private val downloadUrl: String, private val maxDown
 	private fun startAsyncDownload() {
 		subDownLoadTasks.forEach {
 			if (it.downloadStatus != DownloadStatus.DOWNLOAD_COMPLETE) {
-				it.startDownLoad()
+				it.startDownLoad(downloadListener)
 			}
 		}
 	}
 
-	private inner class DownloadStatusListener : OnDownloadStatusListener {
+	 private inner class DownloadStatusListener : OnDownloadStatusListener {
 
-		override fun downloadStatusChage(status: DownloadStatus) {
+		@Transient
+		private var lastDownloadProgress = -1
+
+		override fun downloadStatusChange(status: DownloadStatus) {
 			when (status) {
 				DownloadStatus.DOWNLOAD_ERROR -> {
 					subDownLoadTasks.forEach {
@@ -147,10 +163,19 @@ internal class DownloadTask(private val downloadUrl: String, private val maxDown
 
 				DownloadStatus.DOWNLOADING -> {
 					val sum = subDownLoadTasks.fold(0L) { sum, subDownLoadTask ->
-						sum + subDownLoadTask.currentPos - (subDownLoadTask.startPos ?: 0) + 1
+						sum + subDownLoadTask.completeSize - (subDownLoadTask.startPos ?: 0)
 					}
 
-					DownloadManager.downloadStatusChange(downloadStatus = status, progress = (sum / fileSize * 100).toInt())
+					subDownLoadTasks.forEach {
+						println(it)
+					}
+
+					println("下载总计 == $sum")
+					val currentProgress = (sum * 100 / fileSize).toInt()
+					if (currentProgress != lastDownloadProgress) {
+						DownloadManager.downloadStatusChange(downloadStatus = status, progress = currentProgress)
+						lastDownloadProgress = currentProgress
+					}
 				}
 
 				DownloadStatus.DOWNLOAD_COMPLETE -> {
@@ -158,11 +183,13 @@ internal class DownloadTask(private val downloadUrl: String, private val maxDown
 								it.downloadStatus == DownloadStatus.DOWNLOAD_COMPLETE
 							}) {
 						DownloadManager.downloadStatusChange(downloadStatus = status)
+
+						println(subDownLoadTasks.toJsonList())
 					}
 
-					getSharedPreferences().edit {
-						this.putString("SUB_DOWN_LOAD_TASKS", Gson().toJson(subDownLoadTasks))
-					}
+					// getSharedPreferences().edit {
+					// 	this.putString("SUB_DOWN_LOAD_TASKS", Gson().toJson(subDownLoadTasks))
+					// }
 				}
 				DownloadStatus.DOWNLOAD_PAUSE -> {
 					DownloadManager.downloadStatusChange(downloadStatus = status)

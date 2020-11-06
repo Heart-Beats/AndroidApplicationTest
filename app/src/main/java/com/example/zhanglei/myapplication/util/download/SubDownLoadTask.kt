@@ -1,5 +1,6 @@
 package com.example.zhanglei.myapplication.util.download
 
+import android.telephony.mbms.DownloadStatusListener
 import okhttp3.*
 import java.io.File
 import java.io.IOException
@@ -13,16 +14,22 @@ internal data class SubDownLoadTask(
 		val downLoadUrl: String,
 		val startPos: Long? = null,
 		val endPos: Long? = null,
-		var currentPos: Long = 0,
+		var completeSize: Long = startPos ?: 0,
 		var downloadStatus: DownloadStatus = DownloadStatus.NOT_DOWNLOADED,
-		val saveFile: File,
-		val downloadStatusListener: OnDownloadStatusListener
+		val saveFile: File
 ) : Callback {
 
-	private val okHttpClient = OkHttpClient()
 	private var requestCall: Call? = null
 
-	fun startDownLoad() {
+	// @Transient
+	private var downloadStatusListener: OnDownloadStatusListener? = null
+
+	fun startDownLoad(downloadListener: OnDownloadStatusListener) {
+		this.downloadStatusListener = downloadListener
+
+		//OkHttpClient该对象不可作为属性被 Gson 序列化，需注意
+
+		val okHttpClient = OkHttpClient()
 		val request = Request.Builder()
 				.url(downLoadUrl).apply {
 					if (startPos != null && startPos >= 0) {
@@ -35,15 +42,15 @@ internal data class SubDownLoadTask(
 	}
 
 	override fun onFailure(call: Call, e: IOException) {
-		println("下载出错")
 		downloadStatus = DownloadStatus.DOWNLOAD_ERROR
-		downloadStatusListener.downloadStatusChage(downloadStatus)
+		downloadStatusListener?.downloadStatusChange(downloadStatus)
 	}
 
 	override fun onResponse(call: Call, response: Response) {
 		val body = response.body
 		val randomAccessFile = RandomAccessFile(saveFile, "rwd")
-		randomAccessFile.seek(currentPos)
+		//randomAccessFile.seek(pos): pos 代表要跳过的字节数，若为 0 则表示未见开头
+		randomAccessFile.seek(completeSize)
 
 		val byteArray = ByteArray(1024 * 1024)
 
@@ -53,25 +60,26 @@ internal data class SubDownLoadTask(
 				if (downloadStatus != DownloadStatus.DOWNLOAD_PAUSE) {
 					randomAccessFile.write(byteArray, 0, len)
 					downloadStatus = DownloadStatus.DOWNLOADING
-					currentPos += len
-
+					completeSize += len
 				}
-				downloadStatusListener.downloadStatusChage(downloadStatus)
+				downloadStatusListener?.downloadStatusChange(downloadStatus)
 			}
 		}
 		downloadStatus = DownloadStatus.DOWNLOAD_COMPLETE
-		downloadStatusListener.downloadStatusChage(downloadStatus)
+		downloadStatusListener?.downloadStatusChange(downloadStatus)
 	}
 
 	fun downLoadPause() {
 		downloadStatus = DownloadStatus.DOWNLOAD_PAUSE
+		downloadStatusListener?.downloadStatusChange(downloadStatus)
 	}
 
 	fun downloadCancel() {
 		if (requestCall?.isCanceled() != true) {
 			requestCall?.cancel()
 			downloadStatus = DownloadStatus.DOWNLOAD_CANCEL
-			downloadStatusListener.downloadStatusChage(downloadStatus)
+			downloadStatusListener?.downloadStatusChange(downloadStatus)
+			downloadStatusListener = null
 		}
 	}
 }

@@ -185,16 +185,16 @@ public class MainFragment extends BaseFragment {
                     FragmentKt.findNavController(MainFragment.this).
                             navigate(R.id.action_mainFragment_to_videoFragment);
                 case R.id.download:
-                    String downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk";
-
-                    DownloadManager.INSTANCE.startDownLoad(downloadUrl, 3, new DownloadListener() {
+                    // String downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk";
+                    String downloadUrl = "https://images.pexels.com/photos/4993088/pexels-photo-4993088.jpeg?cs=srgb&dl=pexels-rachel-claire-4993088.jpg&fm=jpg";
+                    DownloadManager.INSTANCE.startDownLoad(downloadUrl,  new DownloadListener() {
 
                         @Override
                         public void downloadIng(int progress) {
                             super.downloadIng(progress);
                             System.out.println("下载中 == " + progress);
                         }
-                    });
+                    },3);
                 default:
                     break;
             }

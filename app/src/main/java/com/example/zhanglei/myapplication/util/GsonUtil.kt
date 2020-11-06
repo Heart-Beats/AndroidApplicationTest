@@ -1,6 +1,9 @@
 package com.example.zhanglei.myapplication.util
 
 import com.google.gson.Gson
+import org.json.JSONArray
+import org.json.JSONObject
+import java.lang.reflect.Modifier
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -23,3 +26,42 @@ class ParameterizedTypeImpl(private val clz: Class<*>) : ParameterizedType {
 
     override fun getActualTypeArguments(): Array<Type> = arrayOf(clz)
 }
+
+fun Any.toJson(): String {
+    val jsonObject = JSONObject()
+    this::class.java.declaredFields.forEach {
+        it.isAccessible = true
+
+        println("属性名 == ${it.name}, 属性值 == ${it.get(this)} ， 属性类型 == ${it.type}")
+
+        if (!it.type.isNeedAllFields()) {
+            if (!Modifier.isTransient(it.modifiers)) {
+                jsonObject.put(it.name, it.get(this))
+            }
+        } else {
+            jsonObject.put(it.name, it.get(this)?.toJson())
+        }
+        it.isAccessible = false
+    }
+    return jsonObject.toString()
+}
+
+fun <T> Class<T>.isNeedAllFields(): Boolean {
+    return when {
+        this == java.lang.Byte::class.java || this == java.lang.Short::class.java || this == java.lang.Integer::class.java
+                || this == java.lang.Long::class.java || this == java.lang.Character::class.java
+                || this == java.lang.Float::class.java || this == java.lang.Double::class.java || this == java.lang.Boolean::class.java
+                || this.isPrimitive || this == String::class.java || this.isEnum
+        -> false
+        else -> true
+    }
+}
+
+inline fun <reified T> List<T>.toJsonList(): String {
+    val jsonArray = JSONArray()
+    this.forEach {
+        jsonArray.put(it?.toJson())
+    }
+    return jsonArray.toString()
+}
+

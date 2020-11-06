@@ -8,15 +8,17 @@ object DownloadManager {
 
 	private var downloadListener: DownloadListener? = null
 
-	fun startDownLoad(downloadUrl: String, maxDownloadCore: Int = 1, downloadListener: DownloadListener) {
+	fun startDownLoad(downloadUrl: String, downloadListener: DownloadListener, maxDownloadCore: Int = 5) {
 		DownloadTask(downloadUrl, maxDownloadCore).startDownload()
 		this.downloadListener = downloadListener
 	}
 
-	internal fun downloadStatusChange(downloadStatus: DownloadStatus, progress: Int = 0) {
+
+	internal fun downloadStatusChange(downloadStatus: DownloadStatus, progress: Int? = null) {
+		println("下载状态 == $downloadStatus, 下载进度 == $progress")
 		when (downloadStatus) {
 			DownloadStatus.DOWNLOAD_ERROR -> downloadListener?.downloadError()
-			DownloadStatus.DOWNLOADING -> downloadListener?.downloadIng(progress)
+			DownloadStatus.DOWNLOADING -> downloadListener?.downloadIng(progress ?: 0)
 			DownloadStatus.DOWNLOAD_COMPLETE -> downloadListener?.downloadComplete()
 			DownloadStatus.DOWNLOAD_PAUSE -> downloadListener?.downloadPause()
 			DownloadStatus.DOWNLOAD_CANCEL -> downloadListener?.downloadCancel()

@@ -6,5 +6,5 @@ package com.example.zhanglei.myapplication.util.download
  */
 interface OnDownloadStatusListener {
 
-	fun downloadStatusChage(status: DownloadStatus)
+	fun downloadStatusChange(status: DownloadStatus)
 }
