@@ -4,8 +4,13 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +28,7 @@ import androidx.navigation.fragment.FragmentKt;
 
 import com.example.zhanglei.myapplication.ClickHelperListener;
 import com.example.zhanglei.myapplication.MyAnimatorSet;
+import com.example.zhanglei.myapplication.MyApplication;
 import com.example.zhanglei.myapplication.MyView;
 import com.example.zhanglei.myapplication.PictureSelectionActivity;
 import com.example.zhanglei.myapplication.R;
@@ -31,6 +37,7 @@ import com.example.zhanglei.myapplication.util.download.DownloadManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * @author 张磊
@@ -65,7 +72,7 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view,savedInstanceState);
+        super.onViewCreated(view, savedInstanceState);
         if (toolbar != null) {
             toolbar.setTitle("主页");
         }
@@ -76,6 +83,26 @@ public class MainFragment extends BaseFragment {
         myAnimatorSet = new MyAnimatorSet();
         myOnclickListener = new MyOnclickListener();
         download = view.findViewById(R.id.download);
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkRequest request = new NetworkRequest.Builder()
+                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .build();
+        connectivityManager.registerNetworkCallback(request, new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(@NonNull Network network) {
+                System.out.println("wifi可用");
+                DownloadManager.INSTANCE.resumeDownLoad();
+            }
+
+            @Override
+            public void onLost(@NonNull Network network) {
+                System.out.println("wifi断开连接");
+                DownloadManager.INSTANCE.pauseDownload();
+            }
+        });
     }
 
     @Override
@@ -102,6 +129,13 @@ public class MainFragment extends BaseFragment {
         pictureSelect.setOnClickListener(myOnclickListener);
         playVideo.setOnClickListener(myOnclickListener);
         download.setOnClickListener(myOnclickListener);
+        download.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                DownloadManager.INSTANCE.cancelDownload();
+                return true;
+            }
+        });
     }
 
     private void setScaleAnimation() {
@@ -185,16 +219,15 @@ public class MainFragment extends BaseFragment {
                     FragmentKt.findNavController(MainFragment.this).
                             navigate(R.id.action_mainFragment_to_videoFragment);
                 case R.id.download:
-                    // String downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk";
-                    String downloadUrl = "https://images.pexels.com/photos/4993088/pexels-photo-4993088.jpeg?cs=srgb&dl=pexels-rachel-claire-4993088.jpg&fm=jpg";
-                    DownloadManager.INSTANCE.startDownLoad(downloadUrl,  new DownloadListener() {
+                    String downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk";
+                    // String downloadUrl = "https://images.pexels.com/photos/4993088/pexels-photo-4993088.jpeg?cs=srgb&dl=pexels-rachel-claire-4993088.jpg&fm=jpg";
+                    DownloadManager.INSTANCE.startDownLoad(MyApplication.Companion.getInstance(),downloadUrl, new DownloadListener() {
 
                         @Override
                         public void downloadIng(int progress) {
                             super.downloadIng(progress);
-                            System.out.println("下载中 == " + progress);
                         }
-                    },3);
+                    }, 3);
                 default:
                     break;
             }

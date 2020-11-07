@@ -5,10 +5,10 @@ package com.example.zhanglei.myapplication.util.download
  * Email: 913305160@qq.com
  */
 enum class DownloadStatus(statusDesc: String) {
-    NOT_DOWNLOADED("未下载"),
-    DOWNLOADING("下载中"),
-    DOWNLOAD_COMPLETE("下载完成"),
-    DOWNLOAD_ERROR("下载错误"),
-    DOWNLOAD_PAUSE("下载暂停"),
-    DOWNLOAD_CANCEL("取消下载")
+	READY_TO_DOWNLOAD("准备下载"),
+	DOWNLOADING("下载中"),
+	DOWNLOAD_COMPLETE("下载完成"),
+	DOWNLOAD_PAUSE("下载暂停"),
+	DOWNLOAD_CANCEL("取消下载"),
+	DOWNLOAD_ERROR("下载出错")
 }

@@ -1,6 +1,8 @@
 package com.example.zhanglei.myapplication.util.download
 
-import android.telephony.mbms.DownloadStatusListener
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import okhttp3.*
 import java.io.File
 import java.io.IOException
@@ -15,25 +17,26 @@ internal data class SubDownLoadTask(
 		val startPos: Long? = null,
 		val endPos: Long? = null,
 		var completeSize: Long = startPos ?: 0,
-		var downloadStatus: DownloadStatus = DownloadStatus.NOT_DOWNLOADED,
+		var downloadStatus: DownloadStatus = DownloadStatus.READY_TO_DOWNLOAD,
 		val saveFile: File
 ) : Callback {
 
 	private var requestCall: Call? = null
 
-	// @Transient
 	private var downloadStatusListener: OnDownloadStatusListener? = null
 
-	fun startDownLoad(downloadListener: OnDownloadStatusListener) {
+	fun startDownLoad(downloadListener: OnDownloadStatusListener?) {
 		this.downloadStatusListener = downloadListener
+		startRequest()
+	}
 
-		//OkHttpClient该对象不可作为属性被 Gson 序列化，需注意
-
+	private fun startRequest() {
+		//OkHttpClient该对象不可作为属性直接被 Gson 序列化，需注意
 		val okHttpClient = OkHttpClient()
 		val request = Request.Builder()
 				.url(downLoadUrl).apply {
 					if (startPos != null && startPos >= 0) {
-						addHeader("RANGE", "bytes=$startPos-$endPos")
+						addHeader("RANGE", "bytes=$completeSize-$endPos")
 					}
 				}
 				.build()
@@ -57,7 +60,7 @@ internal data class SubDownLoadTask(
 		var len: Int
 		body?.byteStream()?.use { inputStream ->
 			while (inputStream.read(byteArray).also { len = it } != -1) {
-				if (downloadStatus != DownloadStatus.DOWNLOAD_PAUSE) {
+				if (downloadStatus != DownloadStatus.DOWNLOAD_PAUSE || downloadStatus != DownloadStatus.DOWNLOAD_CANCEL) {
 					randomAccessFile.write(byteArray, 0, len)
 					downloadStatus = DownloadStatus.DOWNLOADING
 					completeSize += len
@@ -70,8 +73,23 @@ internal data class SubDownLoadTask(
 	}
 
 	fun downLoadPause() {
-		downloadStatus = DownloadStatus.DOWNLOAD_PAUSE
-		downloadStatusListener?.downloadStatusChange(downloadStatus)
+		if (downloadStatus != DownloadStatus.DOWNLOAD_COMPLETE) {
+			downloadStatus = DownloadStatus.DOWNLOAD_PAUSE
+			downloadStatusListener?.downloadStatusChange(downloadStatus)
+		}
+	}
+
+	fun downLoadResume() {
+		if (downloadStatus != DownloadStatus.DOWNLOAD_COMPLETE) {
+			downloadStatus = DownloadStatus.READY_TO_DOWNLOAD
+			downloadStatusListener?.downloadStatusChange(downloadStatus)
+
+			MainScope().launch {
+				//延迟500ms, 确保网络改变唤醒生效
+				delay(500)
+				startRequest()
+			}
+		}
 	}
 
 	fun downloadCancel() {

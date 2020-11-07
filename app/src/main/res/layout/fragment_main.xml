@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_style"
-        android:text="下载"
+        android:text="下载/长按取消下载"
         app:layout_constraintStart_toStartOf="@+id/picture_select"
         app:layout_constraintTop_toTopOf="@+id/play_video" />
 

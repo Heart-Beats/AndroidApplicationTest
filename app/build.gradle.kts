@@ -74,6 +74,7 @@ dependencies {
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
+	implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
 	implementation("androidx.annotation:annotation:1.1.0")
 	implementation("org.mockito:mockito-all:2.0.2-beta")
 	implementation("androidx.core:core-ktx:1.3.2")
