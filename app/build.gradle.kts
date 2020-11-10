@@ -117,4 +117,6 @@ dependencies {
 	implementation("com.shuyu:gsyVideoPlayer-x86:7.1.6")
 
 	implementation("com.squareup.okhttp3:okhttp:4.9.0")
+
+	implementation("com.github.Heart-Beats:Downloader:v1.0.0")
 }

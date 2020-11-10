@@ -32,12 +32,13 @@ import com.example.zhanglei.myapplication.MyApplication;
 import com.example.zhanglei.myapplication.MyView;
 import com.example.zhanglei.myapplication.PictureSelectionActivity;
 import com.example.zhanglei.myapplication.R;
-import com.example.zhanglei.myapplication.util.download.DownloadListener;
-import com.example.zhanglei.myapplication.util.download.DownloadManager;
+import com.hl.downloader.DownloadListener;
+import com.hl.downloader.DownloadManager;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 /**
  * @author 张磊
@@ -129,12 +130,9 @@ public class MainFragment extends BaseFragment {
         pictureSelect.setOnClickListener(myOnclickListener);
         playVideo.setOnClickListener(myOnclickListener);
         download.setOnClickListener(myOnclickListener);
-        download.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                DownloadManager.INSTANCE.cancelDownload();
-                return true;
-            }
+        download.setOnLongClickListener(v -> {
+            DownloadManager.INSTANCE.cancelDownload();
+            return true;
         });
     }
 
@@ -221,13 +219,14 @@ public class MainFragment extends BaseFragment {
                 case R.id.download:
                     String downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk";
                     // String downloadUrl = "https://images.pexels.com/photos/4993088/pexels-photo-4993088.jpeg?cs=srgb&dl=pexels-rachel-claire-4993088.jpg&fm=jpg";
-                    DownloadManager.INSTANCE.startDownLoad(MyApplication.Companion.getInstance(),downloadUrl, new DownloadListener() {
+                    DownloadManager.INSTANCE.startDownLoad(MyApplication.Companion.getInstance(), downloadUrl, new DownloadListener() {
 
                         @Override
-                        public void downloadIng(int progress) {
-                            super.downloadIng(progress);
+                        public void downloadIng(@NotNull String progress) {
+                            System.out.println(progress);
                         }
                     }, 3);
+                    break;
                 default:
                     break;
             }
