@@ -1,29 +1,28 @@
-package com.example.zhanglei.myapplication;
+package com.example.zhanglei.myapplication.adapter;
 
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-import android.view.ViewGroup;
 
 /**
  * Adapter的包装类，用于添加 RecyclerView 的头尾布局
  *
+ * @author zhanglei
  */
 
 public abstract class BaseNormalAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    enum ITEM_TYPE {
-        HEADER,
-        FOOTER,
-        NORMAL
+    private enum ITEM_TYPE {
+        HEADER, FOOTER, NORMAL
     }
 
-    private RecyclerView.Adapter mAdapter;
-    private View mHeaderView;
-    private View mFooterView;
+    private final RecyclerView.Adapter<RecyclerView.ViewHolder> mAdapter;
+    private final View mHeaderView;
+    private final View mFooterView;
 
-    BaseNormalAdapterWrapper(RecyclerView.Adapter adapter) {
+    BaseNormalAdapterWrapper(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
         mAdapter = adapter;
         this.mHeaderView = getHeaderView();
         this.mFooterView = getFooterView();
@@ -66,21 +65,17 @@ public abstract class BaseNormalAdapterWrapper extends RecyclerView.Adapter<Recy
         }
     }
 
+    /**
+     * 给包装的 adapter 添加头布局
+     *
+     * @return 添加的头部view
+     */
     abstract View getHeaderView();
 
+    /**
+     * 给包装的 adapter 添加尾布局
+     *
+     * @return 添加的尾部view
+     */
     abstract View getFooterView();
-
-/*    private class HeadViewHolder extends RecyclerView.ViewHolder {
-
-        public HeadViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
-
-    private class FooterViewHolder extends RecyclerView.ViewHolder {
-
-        public FooterViewHolder(View itemView) {
-            super(itemView);
-        }
-    }*/
 }
