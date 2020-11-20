@@ -12,6 +12,7 @@ buildscript {
 		maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
 
 		maven { url = uri("https://jitpack.io") }
+		google()
 	}
 	dependencies {
 		classpath("com.android.tools.build:gradle:4.1.1")
@@ -31,6 +32,7 @@ allprojects {
 		maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
 
 		maven { url = uri("https://jitpack.io") }
+		google()
 	}
 }
 

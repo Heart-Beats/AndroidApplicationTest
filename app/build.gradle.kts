@@ -79,6 +79,7 @@ dependencies {
 	implementation("org.mockito:mockito-all:2.0.2-beta")
 	implementation("androidx.core:core-ktx:1.3.2")
 
+	implementation("androidx.core:core:1.0.0")
 	implementation("androidx.appcompat:appcompat:1.2.0")
 	implementation("androidx.constraintlayout:constraintlayout:2.0.2")
 	implementation("androidx.recyclerview:recyclerview:1.1.0")

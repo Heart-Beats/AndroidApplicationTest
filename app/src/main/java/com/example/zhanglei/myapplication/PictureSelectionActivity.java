@@ -129,7 +129,7 @@ public class PictureSelectionActivity extends AppCompatActivity {
                     LinearLayoutCompat.LayoutParams lp = new LinearLayoutCompat.LayoutParams(widthPixels, 200);
 
                     @Override
-                    View getHeaderView() {
+                    protected View getHeaderView() {
                         TextView headView = new TextView(PictureSelectionActivity.this);
                         headView.setText("我是头部");
                         headView.setGravity(Gravity.CENTER);
@@ -139,7 +139,7 @@ public class PictureSelectionActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    View getFooterView() {
+                    protected View getFooterView() {
                         TextView footerView = new TextView(PictureSelectionActivity.this);
                         footerView.setText("我是尾部");
                         footerView.setGravity(Gravity.CENTER);

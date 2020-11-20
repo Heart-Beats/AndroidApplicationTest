@@ -1,14 +1,10 @@
 package com.example.zhanglei.myapplication.util
 
-import android.R
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context.NOTIFICATION_SERVICE
-import android.graphics.Color
 import android.os.Build
 import androidx.annotation.DrawableRes
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.zhanglei.myapplication.MyApplication

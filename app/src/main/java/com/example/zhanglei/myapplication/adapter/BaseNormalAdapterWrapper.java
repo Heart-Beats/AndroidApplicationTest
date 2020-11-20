@@ -18,11 +18,11 @@ public abstract class BaseNormalAdapterWrapper extends RecyclerView.Adapter<Recy
         HEADER, FOOTER, NORMAL
     }
 
-    private final RecyclerView.Adapter<RecyclerView.ViewHolder> mAdapter;
+    private final RecyclerView.Adapter mAdapter;
     private final View mHeaderView;
     private final View mFooterView;
 
-    BaseNormalAdapterWrapper(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
+    protected BaseNormalAdapterWrapper(RecyclerView.Adapter adapter) {
         mAdapter = adapter;
         this.mHeaderView = getHeaderView();
         this.mFooterView = getFooterView();
@@ -70,12 +70,12 @@ public abstract class BaseNormalAdapterWrapper extends RecyclerView.Adapter<Recy
      *
      * @return 添加的头部view
      */
-    abstract View getHeaderView();
+    protected abstract View getHeaderView();
 
     /**
      * 给包装的 adapter 添加尾布局
      *
      * @return 添加的尾部view
      */
-    abstract View getFooterView();
+    protected abstract View getFooterView();
 }
