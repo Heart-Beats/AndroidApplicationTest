@@ -104,6 +104,7 @@ public class MainFragment extends BaseFragment {
                 DownloadManager.INSTANCE.pauseDownload();
             }
         });
+
     }
 
     @Override
@@ -216,6 +217,7 @@ public class MainFragment extends BaseFragment {
                 case R.id.play_video:
                     FragmentKt.findNavController(MainFragment.this).
                             navigate(R.id.action_mainFragment_to_videoFragment);
+                    break;
                 case R.id.download:
                     String downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk";
                     // String downloadUrl = "https://images.pexels.com/photos/4993088/pexels-photo-4993088.jpeg?cs=srgb&dl=pexels-rachel-claire-4993088.jpg&fm=jpg";

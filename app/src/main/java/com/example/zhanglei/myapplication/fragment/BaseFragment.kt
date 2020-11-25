@@ -1,5 +1,6 @@
 package com.example.zhanglei.myapplication.fragment
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -21,16 +22,29 @@ import com.example.zhanglei.myapplication.util.traverseFindFirstChildView
  */
 abstract class BaseFragment : Fragment() {
 
-	private val TAG = "BaseFragment"
+	companion object {
+		private const val TAG = "BaseFragment"
+	}
 
 	protected abstract val layoutResId: Int
 
 	@JvmField
 	protected var toolbar: Toolbar? = null
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		val inflateView = inflater.inflate(layoutResId, container, false)
+	override fun onAttach(context: Context) {
+		super.onAttach(context)
+		Log.d(TAG, "onAttach =====> $this")
+	}
 
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		Log.d(TAG, "onCreate =====> $this")
+	}
+
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+		Log.d(TAG, "onCreateView =====> $this")
+
+		val inflateView = inflater.inflate(layoutResId, container, false)
 		toolbar = inflateView.traverseFindFirstChildView(Toolbar::class.java)
 
 		toolbar?.apply {
@@ -39,8 +53,20 @@ abstract class BaseFragment : Fragment() {
 		return inflateView
 	}
 
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+		Log.d(TAG, "onViewCreated =====> $this")
+		val activity = activity
+		val callback = onBackPressed()
+		if (activity != null && callback != null) {
+			activity.onBackPressedDispatcher.addCallback(owner = viewLifecycleOwner, onBackPressed = callback)
+		}
+	}
+
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
 		super.onActivityCreated(savedInstanceState)
+		Log.d(TAG, "onActivityCreated =====> $this")
+
 		requireActivity().onBackPressedDispatcher.addCallback(owner = viewLifecycleOwner, onBackPressed = onBackPressed())
 
 		//Activity 创建之后设置toolbar
@@ -78,6 +104,41 @@ abstract class BaseFragment : Fragment() {
 				}
 			}
 		}
+	}
+
+	override fun onStart() {
+		super.onStart()
+		Log.d(TAG, "onStart =====> $this")
+	}
+
+	override fun onResume() {
+		super.onResume()
+		Log.d(TAG, "onResume =====> $this")
+	}
+
+	override fun onPause() {
+		super.onPause()
+		Log.d(TAG, "onPause =====> $this")
+	}
+
+	override fun onStop() {
+		super.onStop()
+		Log.d(TAG, "onStop =====> $this")
+	}
+
+	override fun onDestroyView() {
+		super.onDestroyView()
+		Log.d(TAG, "onDestroyView =====> $this")
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		Log.d(TAG, "onDestroy =====> $this")
+	}
+
+	override fun onDetach() {
+		super.onDetach()
+		Log.d(TAG, "onDetach =====> $this")
 	}
 
 	protected open fun onBackPressed(): OnBackPressedCallback.() -> Unit {

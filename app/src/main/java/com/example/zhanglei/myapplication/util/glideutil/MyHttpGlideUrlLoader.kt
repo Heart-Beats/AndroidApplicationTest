@@ -20,9 +20,9 @@ import java.net.URL
  */
 class MyHttpGlideUrlLoader(private var modelCache: ModelCache<MyGlideUrl, MyGlideUrl>) : HttpGlideUrlLoader() {
 
-
-    private val TAG = "MyHttpGlideUrlLoader"
-
+    companion object {
+        private const val TAG = "MyHttpGlideUrlLoader"
+    }
 
     inner class MyGlideUrl(private val url: URL?) : GlideUrl(url) {
 
