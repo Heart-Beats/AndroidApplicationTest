@@ -4,7 +4,7 @@
 buildscript {
 
 	repositories {
-		// google()
+		google()
 		// jcenter()
 		maven { url = uri("https://maven.aliyun.com/repository/central") }
 		maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
@@ -12,7 +12,6 @@ buildscript {
 		maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
 
 		maven { url = uri("https://jitpack.io") }
-		google()
 	}
 	dependencies {
 		classpath("com.android.tools.build:gradle:4.1.1")
@@ -24,15 +23,14 @@ buildscript {
 
 allprojects {
 	repositories {
-		// google()
-		// jcenter()
+		google()
+		jcenter()
 		maven { url = uri("https://maven.aliyun.com/repository/central") }
 		maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
 		maven { url = uri("https://maven.aliyun.com/repository/google") }
 		maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
 
 		maven { url = uri("https://jitpack.io") }
-		google()
 	}
 }
 

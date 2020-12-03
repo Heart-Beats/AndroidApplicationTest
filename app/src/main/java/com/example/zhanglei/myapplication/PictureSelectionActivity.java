@@ -16,7 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.zhanglei.myapplication.adapter.BaseNormalAdapterWrapper;
+import com.example.zhanglei.myapplication.adapters.BaseNormalAdapterWrapper;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.filter.Filter;

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.MainFragment">
+    tools:context=".fragments.MainFragment">
 
     <com.example.zhanglei.myapplication.MyView
         android:id="@+id/my_view"
@@ -25,13 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/button_style"
         android:text="开始动画"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/picture_select"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_view" />
 
@@ -39,15 +39,12 @@
         android:id="@+id/picture_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="96dp"
-        android:layout_marginRight="96dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/item_click_bg"
         android:text="开始图片选择"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/start_animation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_view" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/start_animation" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -64,9 +61,9 @@
         android:id="@+id/play_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:background="@drawable/button_style"
         android:text="播放视频"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/start_animation"
         app:layout_constraintStart_toStartOf="@+id/start_animation"
         app:layout_constraintTop_toBottomOf="@+id/start_animation" />
@@ -79,6 +76,16 @@
         android:text="下载/长按取消下载"
         app:layout_constraintStart_toStartOf="@+id/picture_select"
         app:layout_constraintTop_toTopOf="@+id/play_video" />
+
+    <Button
+        android:id="@+id/goto_notify_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_style"
+        android:text="创建通知"
+        app:layout_constraintStart_toStartOf="@+id/play_video"
+        app:layout_constraintTop_toBottomOf="@+id/play_video" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

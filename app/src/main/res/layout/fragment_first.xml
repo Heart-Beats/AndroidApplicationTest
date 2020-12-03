@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/fragment_first_scene"
-    tools:context="com.example.zhanglei.myapplication.fragment.FirstFragment">
+    tools:context="com.example.zhanglei.myapplication.fragments.FirstFragment">
 
     <TextView
         android:id="@+id/textView"

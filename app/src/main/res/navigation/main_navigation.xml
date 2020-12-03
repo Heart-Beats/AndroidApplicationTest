@@ -7,50 +7,57 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.zhanglei.myapplication.fragment.MainFragment"
+        android:name="com.example.zhanglei.myapplication.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_firstFragment"
             app:destination="@id/firstFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:launchSingleTop="true"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:launchSingleTop="true" />
         <action
             android:id="@+id/action_mainFragment_to_secondFragment"
             app:destination="@id/secondFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:launchSingleTop="true"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_mainFragment_to_thirdFragment2"
+            app:destination="@id/thirdFragment"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_mainFragment_to_videoFragment"
+            app:destination="@id/videoFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
         <action
-            android:id="@+id/action_mainFragment_to_thirdFragment2"
-            app:destination="@id/thirdFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_videoFragment"
-            app:destination="@id/videoFragment" />
+            android:id="@+id/action_mainFragment_to_notifyFragment"
+            app:destination="@id/notifyFragment" />
     </fragment>
+
+
     <fragment
         android:id="@+id/firstFragment"
-        android:name="com.example.zhanglei.myapplication.fragment.FirstFragment"
+        android:name="com.example.zhanglei.myapplication.fragments.FirstFragment"
         android:label="fragment_first"
-        tools:layout="@layout/fragment_first"/>
+        tools:layout="@layout/fragment_first" />
     <fragment
         android:id="@+id/secondFragment"
-        android:name="com.example.zhanglei.myapplication.fragment.SecondFragment"
+        android:name="com.example.zhanglei.myapplication.fragments.SecondFragment"
         android:label="fragment_second"
-        tools:layout="@layout/fragment_second"/>
+        tools:layout="@layout/fragment_second" />
     <fragment
         android:id="@+id/thirdFragment"
-        android:name="com.example.zhanglei.myapplication.fragment.ThirdFragment"
+        android:name="com.example.zhanglei.myapplication.fragments.ThirdFragment"
         android:label="fragment_third"
         tools:layout="@layout/fragment_third" />
     <fragment
         android:id="@+id/videoFragment"
-        android:name="com.example.zhanglei.myapplication.fragment.VideoFragment"
+        android:name="com.example.zhanglei.myapplication.fragments.VideoFragment"
         android:label="fragment_video"
         tools:layout="@layout/fragment_video" />
+    <fragment
+        android:id="@+id/notifyFragment"
+        android:name="com.example.zhanglei.myapplication.fragments.NotifyFragment"
+        android:label="fragment_notify"
+        tools:layout="@layout/fragment_notify" />
 </navigation>

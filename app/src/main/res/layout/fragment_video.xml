@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.VideoFragment">
+    tools:context=".fragments.VideoFragment">
 
 
-    <com.example.zhanglei.myapplication.widget.MyStandardGSYVideoPlayer
+    <com.example.zhanglei.myapplication.widgets.MyStandardGSYVideoPlayer
         android:id="@+id/video_player"
         android:layout_width="0dp"
         android:layout_height="200dp"

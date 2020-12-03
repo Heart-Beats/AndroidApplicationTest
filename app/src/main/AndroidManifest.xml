@@ -5,11 +5,12 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+    <uses-permission
+        android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".MyApplication"
@@ -21,16 +22,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".MainActivity2"></activity>
         <activity android:name=".PictureSelectionActivity" />
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait">
 
-            <!--android:configChanges ——》 消除Activity受configChanges值的影响，如：横竖屏就会导致Activity的重启 -->
-            <!--android:screenOrientation ——》 控制Activity启动时候的方向，在适当的时候，用代码动态设置屏幕根据传感器转动
-                                                （setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);） -->
+            <!-- android:configChanges ——》 消除Activity受configChanges值的影响，如：横竖屏就会导致Activity的重启 -->
+            <!--
+                android:screenOrientation ——》 控制Activity启动时候的方向，在适当的时候，用代码动态设置屏幕根据传感器转动
+                                                （setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);）
+            -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
