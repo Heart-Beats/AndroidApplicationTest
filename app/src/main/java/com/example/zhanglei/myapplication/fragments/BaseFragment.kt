@@ -40,6 +40,11 @@ abstract class BaseFragment : Fragment() {
 		super.onCreate(savedInstanceState)
 		Log.d(TAG, "onCreate =====> $this")
 
+		// 测试过渡动画
+		// val inflater = TransitionInflater.from(requireContext())
+		// enterTransition = inflater.inflateTransition(R.transition.fade)
+		// exitTransition = inflater.inflateTransition(R.transition.slide_right)
+
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,9 +64,7 @@ abstract class BaseFragment : Fragment() {
 		Log.d(TAG, "onViewCreated =====> $this")
 		val activity = activity
 		val callback = onBackPressed()
-		if (activity != null && callback != null) {
-			activity.onBackPressedDispatcher.addCallback(owner = viewLifecycleOwner, onBackPressed = callback)
-		}
+		activity?.onBackPressedDispatcher?.addCallback(owner = viewLifecycleOwner, onBackPressed = callback)
 	}
 
 	override fun onActivityCreated(savedInstanceState: Bundle?) {

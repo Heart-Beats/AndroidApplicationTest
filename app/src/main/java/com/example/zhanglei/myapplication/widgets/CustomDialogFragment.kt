@@ -17,7 +17,7 @@ import com.example.zhanglei.myapplication.R
  */
 class CustomDialogFragment : DialogFragment() {
 
-    private val logTag: String? = CustomDialogFragment::class.java.simpleName
+    private val logTag: String? = this::class.java.simpleName
 
     var resStyleTheme: Int? = 0
     var resLayout: Int? = 0

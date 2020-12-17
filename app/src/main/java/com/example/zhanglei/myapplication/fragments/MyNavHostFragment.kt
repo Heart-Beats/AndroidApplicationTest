@@ -66,18 +66,27 @@ class MyNavHostFragment : NavHostFragment() {
                 this.setPopEnterAnim(popEnterAnim)
                 this.setPopExitAnim(popExitAnim)
             }.build()
+            Log.d("MyFragmentNavigator", "navigate: 处理后的动画 == ${navOptions?.toAnimString()}")
 
-            println("新的导航选项 == $enterAnim, $exitAnim，$popEnterAnim，$popExitAnim")
             return super.navigate(destination, args, newNavOptions, navigatorExtras)
         }
 
+        /**
+         * @param  navOptions 经过 NavController 处理后的导航选项，只要 action 存在，它就不会为 null，即使调用 navigate() 传入 null
+         * @param  propertyName 处理的动画属性名
+         * @return 动画对应的资源 id , -1 即无动画
+         */
         private fun handleDefaultAnim(navOptions: NavOptions?, propertyName: String): Int {
             try {
                 //使用反射取得所需的属性对应的 get 方法
                 val methodName = "get${propertyName[0].toUpperCase()}" + propertyName.substring(1)
                 val getPropertyFunction = NavOptions::class.java.getMethod(methodName)
+                Log.d("MyFragmentNavigator", "handleDefaultAnim--$propertyName: navOptions中设置的动画 ==" +
+                        " ${navOptions?.toAnimString()}")
 
-                return if (navOptions == null || getPropertyFunction.invoke(navOptions) == -1) {
+                return if (navOptions == null || getPropertyFunction.invoke(navOptions) == NavAnimations.NO_ANIM) {
+                    -1
+                } else if (getPropertyFunction.invoke(navOptions) == -1) {
                     // 当 navOptions 为空或者 navOptions 未设置动画（解析 action 时动画资源默认值都为 -1 ） ----> 使用共通动画
                     navAnimations?.run {
                         val getAnimFunction = this::class.java.getMethod(methodName)
@@ -91,12 +100,20 @@ class MyNavHostFragment : NavHostFragment() {
                 return -1
             }
         }
-    }
 
-    data class NavAnimations(
-            @AnimRes var enterAnim: Int? = null,
-            @AnimRes var exitAnim: Int? = null,
-            @AnimRes var popEnterAnim: Int? = null,
-            @AnimRes var popExitAnim: Int? = null,
-    )
+        fun NavOptions.toAnimString(): String {
+            return "NavOptions(mEnterAnim=$enterAnim , mExitAnim=$exitAnim , mPopEnterAnim=$popEnterAnim , mPopExitAnim=$popExitAnim )"
+        }
+    }
+}
+
+data class NavAnimations(
+        @AnimRes var enterAnim: Int? = null,
+        @AnimRes var exitAnim: Int? = null,
+        @AnimRes var popEnterAnim: Int? = null,
+        @AnimRes var popExitAnim: Int? = null,
+) {
+    companion object {
+        const val NO_ANIM = 0
+    }
 }

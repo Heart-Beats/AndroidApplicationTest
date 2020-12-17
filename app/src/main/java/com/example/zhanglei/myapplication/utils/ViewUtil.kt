@@ -9,6 +9,11 @@ import androidx.core.view.get
  * Email: 913305160@qq.com
  */
 
+/**
+ * 用于从 ViewGroup 及其所有后代子 View 中查找指定的 View 类型
+ * @param  findViewType 需要查找的子 View 类型
+ * @return 若找到返回第一个找到的 子 View， 否则返回 null
+ */
 fun <T : View> View.traverseFindFirstChildView(findViewType: Class<T>): T? {
 	val parentView = this
 	if (findViewType.isInstance(parentView)) {

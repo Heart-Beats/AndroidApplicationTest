@@ -78,6 +78,7 @@ dependencies {
 	implementation("androidx.annotation:annotation:1.1.0")
 	implementation("org.mockito:mockito-all:2.0.2-beta")
 	implementation("androidx.core:core-ktx:1.3.2")
+	implementation("org.jetbrains.anko:anko-commons:0.10.8")
 
 	implementation("androidx.core:core:1.3.2")
 	implementation("androidx.appcompat:appcompat:1.2.0")
@@ -120,4 +121,5 @@ dependencies {
 	implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
 	implementation("com.github.Heart-Beats:Downloader:v1.0.1")
+	implementation ("com.contrarywind:Android-PickerView:4.1.9")
 }

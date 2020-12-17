@@ -235,7 +235,7 @@ class MainFragment : BaseFragment(), View.OnClickListener {
                 myAnimatorSet?.start()
             }
             R.id.picture_select -> requestPermission()
-            R.id.play_video -> findNavController().navigate(R.id.action_mainFragment_to_videoFragment)
+            R.id.play_video -> findNavController().navigate(R.id.action_mainFragment_to_videoFragment, null, null)
             R.id.download -> {
                 val downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk"
                 // String downloadUrl = "https://images.pexels.com/photos/4993088/pexels-photo-4993088.jpeg?cs=srgb&dl=pexels-rachel-claire-4993088.jpg&fm=jpg";
