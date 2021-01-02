@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_mainFragment_to_notifyFragment"
             app:destination="@id/notifyFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_hookFragment"
+            app:destination="@id/hookFragment" />
     </fragment>
 
 
@@ -60,4 +63,9 @@
         android:name="com.example.zhanglei.myapplication.fragments.NotifyFragment"
         android:label="fragment_notify"
         tools:layout="@layout/fragment_notify" />
+    <fragment
+        android:id="@+id/hookFragment"
+        android:name="com.example.zhanglei.myapplication.fragments.HookFragment"
+        android:label="fragment_hook"
+        tools:layout="@layout/fragment_hook" />
 </navigation>

@@ -100,6 +100,7 @@ class MainFragment : BaseFragment(), View.OnClickListener {
         download?.setOnClickListener(this)
 
         goto_notify_fragment?.setOnClickListener(this)
+        goto_hook_fragment?.setOnClickListener(this)
 
         download?.setOnLongClickListener {
             cancelDownload()
@@ -246,6 +247,7 @@ class MainFragment : BaseFragment(), View.OnClickListener {
                 }, 3)
             }
             R.id.goto_notify_fragment -> findNavController().navigate(R.id.action_mainFragment_to_notifyFragment)
+            R.id.goto_hook_fragment -> findNavController().navigate(R.id.action_mainFragment_to_hookFragment)
             else -> {
             }
         }

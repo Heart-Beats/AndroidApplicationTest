@@ -122,4 +122,7 @@ dependencies {
 
 	implementation("com.github.Heart-Beats:Downloader:v1.0.1")
 	implementation ("com.contrarywind:Android-PickerView:4.1.9")
+
+	implementation("me.weishu:epic:0.11.0")
+	implementation(project(mapOf("path" to ":method-proxy-library")))
 }
