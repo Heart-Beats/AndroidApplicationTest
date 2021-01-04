@@ -47,7 +47,11 @@
         android:id="@+id/secondFragment"
         android:name="com.example.zhanglei.myapplication.fragments.SecondFragment"
         android:label="fragment_second"
-        tools:layout="@layout/fragment_second" />
+        tools:layout="@layout/fragment_second" >
+        <action
+            android:id="@+id/action_secondFragment_to_notifyFragment"
+            app:destination="@id/notifyFragment" />
+    </fragment>
     <fragment
         android:id="@+id/thirdFragment"
         android:name="com.example.zhanglei.myapplication.fragments.ThirdFragment"

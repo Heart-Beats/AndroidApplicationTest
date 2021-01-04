@@ -1,17 +1,23 @@
-package com.example.zhanglei.myapplication.fragments
+package com.example.zhanglei.myapplication.utils
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.AnimRes
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavDestination
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigator
+import androidx.navigation.*
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
-import com.example.zhanglei.myapplication.R
+import androidx.navigation.fragment.R
+import com.elvishew.xlog.XLog
+import java.util.regex.Pattern
+
+/**
+ * @Author  张磊  on  2020/12/30 at 16:23
+ * Email: 913305160@qq.com
+ */
 
 /**
  * @Author  张磊  on  2020/12/02 at 14:02
@@ -115,5 +121,50 @@ data class NavAnimations(
 ) {
     companion object {
         const val NO_ANIM = 0
+    }
+}
+
+fun NavController.navigateFromUrl(url: String) {
+    val uri = Uri.parse(url)
+    if (uri.scheme == "http" || uri.scheme == "https") {
+        val newUri = Uri.parse("${uri.scheme}://url=${uri}")
+
+        if (this.graph.hasDeepLink(newUri)) {
+            handleMatchDeepLinkForUrl(this, newUri)
+            this.navigate(newUri)
+        } else {
+            XLog.d("未找到与 $newUri 所匹配的深链接页面")
+        }
+    } else if (uri.scheme == "native") {
+        if (this.graph.hasDeepLink(uri)) {
+            this.navigate(uri)
+        } else {
+            XLog.d("未找到与 $uri 所匹配的深链接页面")
+        }
+    }
+}
+
+private fun handleMatchDeepLinkForUrl(navController: NavController, newUri: Uri) {
+    //将自身导航以及所有子 NavDestination 添加到列表中 -----> 过滤出匹配给定深链接的 NavDestination
+    val navDestinationList = mutableListOf<NavDestination>(navController.graph)
+    navController.graph.forEach {
+        navDestinationList.add(it)
+    }
+    navDestinationList.filter {
+        it.hasDeepLink(newUri)
+    }.forEach {
+        val deepLinks = ReflectHelper(NavDestination::class.java).getFiledValue<ArrayList<NavDeepLink>>(it, "mDeepLinks")
+        deepLinks?.onEach { navDeepLink ->
+            navDeepLink.uriPattern?.run {
+                val reflectHelper = ReflectHelper(NavDeepLink::class.java)
+                when {
+                    this.startsWith("http://") -> Pattern.compile("""^\Qhttp://url=\E(.+?)""")
+                    this.startsWith("https://") -> Pattern.compile("""^\Qhttps://url=\E(.+?)""")
+                    else -> reflectHelper.getFiledValue<Pattern>(navDeepLink, "mPattern")
+                }?.also { pattern ->
+                    reflectHelper.setFiledValue(navDeepLink, "mPattern", pattern)
+                }
+            }
+        }
     }
 }

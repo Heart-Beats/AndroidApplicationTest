@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.zhanglei.myapplication.fragments.MyNavHostFragment
+import com.example.zhanglei.myapplication.utils.MyNavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView

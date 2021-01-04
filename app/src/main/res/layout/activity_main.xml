@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/nav_host_fragment"
-        android:name="com.example.zhanglei.myapplication.fragments.MyNavHostFragment"
+        android:name="com.example.zhanglei.myapplication.utils.MyNavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"
