@@ -1,6 +1,7 @@
 package com.example.zhanglei.myapplication.widgets
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -19,7 +20,9 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 
 abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
 
-	private val TAG = "LottieRefreshHeader"
+	companion object {
+		private const val TAG = "LottieRefreshHeader"
+	}
 
 	abstract val headerLayout: Int
 
@@ -44,7 +47,7 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
 	 * @param maxDragHeight 最大拖动高度
 	 */
 	override fun onInitialized(kernel: RefreshKernel, height: Int, maxDragHeight: Int) {
-		Log.d(TAG, "onInitialized: ")
+		Log.d(TAG, "onInitialized: 头部高度==$height, 最大下拉高度==$maxDragHeight")
 		//抽象类中的this不可在构造方法中使用，存在风险
 		val headerView = View.inflate(context, headerLayout, this)
 
@@ -59,22 +62,39 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
 	}
 
 	override fun setPrimaryColors(vararg colors: Int) {
+		this.setBackgroundColor(colors.getOrNull(0) ?: Color.TRANSPARENT)
 	}
 
-	//下拉和释放时布局移动回调
+	/**
+	 * 下拉和释放时布局移动回调 , 在 percent 达到 1.0 时 ，松手即会触发 onReleased --> onStartAnimator --> onFinish
+	 * 		percent = offset / (height * headerTriggerRate）， headerTriggerRate 默认设置 refreshLayout.setHeaderTriggerRate(1)
+	 *
+	 * @param isDragging true 手指正在拖动 false 回弹动画
+	 * @param percent 下拉的百分比 值 = offset/footerHeight (0 - percent - (footerHeight+maxDragHeight) / footerHeight )
+	 * @param offset 下拉的像素偏移量  0 - offset - (footerHeight+maxDragHeight)
+	 * @param height 高度 HeaderHeight or FooterHeight (offset 可以超过 height 此时 percent 大于 1)
+	 * @param maxDragHeight 最大拖动高度 offset 可以超过 height 参数 但是不会超过 maxDragHeight
+	 */
 	override fun onMoving(isDragging: Boolean, percent: Float, offset: Int, height: Int, maxDragHeight: Int) {
-		Log.d(TAG, "onMoving: 百分比 == $percent, 偏移 == $offset, 头部高度 == $height, 最大拖动高度 == $maxDragHeight")
+		Log.d(TAG, "onMoving: 正在下拉中==$isDragging, 百分比 == $percent, 偏移 == $offset, 头部高度 == $height, 最大拖动高度 ==$maxDragHeight")
 		if (isDragging) {
 			//isDragging 表示下拉
-			if (!pullAnimationSource.isCanUse()) {
-				lottieAnimationView?.progress = offset.toFloat() / maxDragHeight / 2
+			val animationProgress = if (!pullAnimationSource.isCanUse()) {
+				offset.run {
+					if (this <= height) this / height.toFloat() else 1f
+				}
 			} else {
-				lottieAnimationView?.progress = percent
+				offset / maxDragHeight.toFloat()
 			}
+
+			Log.d(TAG, "onMoving: 当前动画进度 == $animationProgress")
+			lottieAnimationView?.progress = animationProgress
 		}
 	}
 
-	//松手释放时回调
+	/**
+	 * 松手释放时回调
+	 */
 	override fun onReleased(refreshLayout: RefreshLayout, height: Int, maxDragHeight: Int) {
 		Log.d(TAG, "onReleased: ")
 		lottieAnimationView?.pauseAnimation()

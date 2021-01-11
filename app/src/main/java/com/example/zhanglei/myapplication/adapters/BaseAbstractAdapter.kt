@@ -19,11 +19,21 @@ abstract class BaseAbstractAdapter<T>(var data: List<T>) : RecyclerView.Adapter<
     var onViewHolderInitListener: (viewHolder: ViewHolder, position: Int, data: T?) -> Unit = { _, _, _ -> }
     var onBindItemListener: (viewHolder: ViewHolder, data: T?) -> Unit = { _, _ -> }
 
-    inner class ViewHolder(itemView: View, viewType: Int) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val viewType: Int) : RecyclerView.ViewHolder(itemView) {
+
+        /**
+         * 该属性需要在数据改变时重新设置 ViewHolder 对应的数据
+         * onBindViewHolder（）中默认已实现，若想自己设置请确保数据正确，否则对应回调方法的参数也会不正确
+         */
+        var initData: T? = null
+            set(value) {
+                //重新设置 ViewHolder对应的数据时，同时更新监听方法的参数
+                onViewHolderInitListener(this, viewType, value)
+                field = value
+            }
 
         init {
-            val data = getDataForHeaderAndFooter(viewType)
-            onViewHolderInitListener(this, viewType, data)
+            initData = getDataForHeaderAndFooter(viewType)
         }
 
         fun <V : View> getView(viewId: Int): V? {
@@ -47,6 +57,10 @@ abstract class BaseAbstractAdapter<T>(var data: List<T>) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = getDataForHeaderAndFooter(position)
+
+        if (holder.initData != data) {
+            holder.initData = data
+        }
         onBindItemListener(holder, data)
     }
 
@@ -93,4 +107,6 @@ abstract class BaseAbstractAdapter<T>(var data: List<T>) : RecyclerView.Adapter<
         this.data = newData
         notifyDataSetChanged()
     }
+
+
 }

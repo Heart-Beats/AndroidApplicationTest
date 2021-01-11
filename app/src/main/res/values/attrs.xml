@@ -7,7 +7,7 @@
     </declare-styleable>
 
     <style name="LottieRefreshHeaderStyle">
-        <item name="background">@android:color/transparent</item>
+        <!--<item name="background">@android:color/transparent</item>-->
     </style>
     <declare-styleable name="LottieRefreshHeader"/>
 

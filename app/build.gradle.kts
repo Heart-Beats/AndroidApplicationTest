@@ -92,7 +92,7 @@ dependencies {
 
 	//lottie动画库
 	implementation("com.airbnb.android:lottie:3.5.0")
-	implementation("com.scwang.smart:refresh-layout-kernel:2.0.1")
+	implementation("com.scwang.smart:refresh-layout-kernel:2.0.3")
 
 	implementation("com.elvishew:xlog:1.7.2")
 

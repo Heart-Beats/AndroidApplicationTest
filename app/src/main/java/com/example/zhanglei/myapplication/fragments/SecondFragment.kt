@@ -5,6 +5,10 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.zhanglei.myapplication.R
@@ -91,7 +95,7 @@ class SecondFragment : BaseFragment() {
 		}.apply {
 			this.onViewHolderInitListener = { viewHolder, _, _ ->
 				viewHolder.itemView.setOnClickListener {
-					// findNavController().navigate(R.id.action_secondFragment_to_notifyFragment)
+					findNavController().navigate(R.id.action_secondFragment_to_notifyFragment)
 				}
 			}
 
@@ -108,5 +112,11 @@ class SecondFragment : BaseFragment() {
 			}
 		}
 		recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+		lifecycle.addObserver(object : LifecycleEventObserver {
+			override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+				println("$source --- $event")
+			}
+		})
 	}
 }
