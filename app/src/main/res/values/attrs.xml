@@ -6,9 +6,12 @@
         <attr name="exampleDrawable" format="color|reference" />
     </declare-styleable>
 
-    <style name="LottieRefreshHeaderStyle">
-        <!--<item name="background">@android:color/transparent</item>-->
-    </style>
-    <declare-styleable name="LottieRefreshHeader"/>
+    <declare-styleable name="LottieRefreshHeader">
+        <attr name="pull_lottie_animation_res" format="reference" />
+        <attr name="pull_lottie_animation_url" format="string|reference" />
+        <attr name="refresh_lottie_animation_res" format="reference" />
+        <attr name="refresh_lottie_animation_url" format="string|reference" />
+        <attr name="primary_background" format="color|reference" />
+    </declare-styleable>
 
 </resources>

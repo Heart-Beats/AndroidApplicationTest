@@ -7,18 +7,16 @@ import android.os.Build
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
 import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
-import com.example.zhanglei.myapplication.utils.flyme.StatusbarColorUtils.*
+import com.example.zhanglei.myapplication.utils.flyme.StatusbarColorUtils
 
 object StatusBarUtil {
 
     /**
      * 根据insetTop值设置view的paddingTop
      */
-    @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
     fun viewPaddingInsetTop(view: View) {
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
             view.updatePadding(top = insets.systemWindowInsetTop)
@@ -30,9 +28,8 @@ object StatusBarUtil {
     /**
      * 根据insetTop值设置view的高度
      */
-    @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
     fun viewHeightInsetTop(view: View) {
-        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
             view.updateLayoutParams {
                 height = insets.systemWindowInsetTop
             }
@@ -51,18 +48,16 @@ object StatusBarUtil {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = Color.TRANSPARENT
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        } else
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        }
     }
 
     /**
      * 修改状态栏颜色，支持4.4以上版本
      * @param activity
-     * @param colorId
+     * @param color
      */
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun setStatusBarColor(activity: Activity, color: Int) {
         val window = activity.window
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
@@ -75,7 +70,7 @@ object StatusBarUtil {
     /**
      * 状态栏亮色模式，设置状态栏黑色文字、图标，
      * 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android
-     * @param activity
+     * @param window
      * @return 1:MIUUI 2:Flyme 3:android6.0
      */
     fun statusBarLightMode(window: Window): Int {
@@ -110,7 +105,7 @@ object StatusBarUtil {
     /**
      * 已知系统类型时，设置状态栏黑色文字、图标。
      * 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android
-     * @param activity
+     * @param window
      * @param type 1:MIUUI 2:Flyme 3:android6.0
      */
     fun statusBarLightMode(window: Window, type: Int) {
@@ -150,7 +145,7 @@ object StatusBarUtil {
     private fun flymeSetStatusBarLightMode(window: Window, dark: Boolean): Boolean {
         var result = false
         try {
-            setStatusBarDarkIcon(window, dark)
+            StatusbarColorUtils.setStatusBarDarkIcon(window, dark)
             result = true
         } catch (e: Exception) {
         }
@@ -159,7 +154,7 @@ object StatusBarUtil {
 
     /**
      * 需要MIUIV6以上
-     * @param Window
+     * @param window
      * @param dark 是否把状态栏文字及图标颜色设置为深色
      * @return  boolean 成功执行返回true
      */
@@ -167,7 +162,7 @@ object StatusBarUtil {
         var result = false
         val clazz = window::class.java
         try {
-            var darkModeFlag = 0
+            val darkModeFlag: Int
             val layoutParams = Class.forName("android.view.MiuiWindowManager\$LayoutParams")
             val field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE")
             darkModeFlag = field.getInt(layoutParams)

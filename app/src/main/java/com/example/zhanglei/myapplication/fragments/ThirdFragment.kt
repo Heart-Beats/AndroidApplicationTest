@@ -1,16 +1,13 @@
 package com.example.zhanglei.myapplication.fragments
 
-import android.Manifest.*
-import android.graphics.Color
+import android.Manifest.permission
 import android.os.Bundle
 import android.view.View
 import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.utils.DeviceInfoUtil
 import com.example.zhanglei.myapplication.utils.reqPermissions
-import com.example.zhanglei.myapplication.widgets.LottieRefreshHeader
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.constant.RefreshState
+import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeader
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle
 import kotlinx.android.synthetic.main.fragment_third.*
 
@@ -26,10 +23,6 @@ class ThirdFragment : BaseFragment() {
 		val lottieRefreshHeader = object : LottieRefreshHeader(requireContext()) {
 			override val headerLayout: Int
 				get() = R.layout.layout_lottie_refresh_header
-
-			override fun onStateChanged(refreshLayout: RefreshLayout, oldState: RefreshState, newState: RefreshState) {
-
-			}
 
 			override fun getSpinnerStyle(): SpinnerStyle {
 				return SpinnerStyle.Translate

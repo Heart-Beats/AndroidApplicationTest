@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.zhanglei.myapplication.utils.StatusBarUtil
 import com.example.zhanglei.myapplication.utils.initInsetPadding
 
 open class BaseActivity : AppCompatActivity() {
