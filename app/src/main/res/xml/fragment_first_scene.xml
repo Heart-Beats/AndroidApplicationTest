@@ -4,7 +4,7 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <Transition
-        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetEnd="@+id/toUp"
         motion:constraintSetStart="@id/start"
         motion:duration="2000"
         motion:motionInterpolator="easeInOut"
@@ -30,7 +30,7 @@
                android:translationX="50dp"
                motion:waveOffset="0dp" />
        </KeyFrameSet>
-        <OnClick motion:targetId="@id/button" />
+        <OnClick />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
@@ -62,9 +62,21 @@
                 motion:attributeName="textSize"
                 motion:customDimension="10sp" />
         </Constraint>
+        <Constraint
+            android:id="@+id/imageFilterView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toBottomOf="@+id/toolbar"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="121dp" >
+            <CustomAttribute
+                motion:attributeName="crossfade"
+                motion:customFloatValue="0" />
+        </Constraint>
     </ConstraintSet>
 
-    <ConstraintSet android:id="@+id/end">
+    <ConstraintSet android:id="@+id/toUp">
         <Constraint
             android:id="@+id/textView"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -110,6 +122,18 @@
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintHorizontal_bias="0.007"
             android:alpha="0.2" />
+        <Constraint
+            android:id="@+id/imageFilterView"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toBottomOf="@+id/toolbar"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="121dp" >
+            <CustomAttribute
+                motion:attributeName="crossfade"
+                motion:customFloatValue="1" />
+        </Constraint>
     </ConstraintSet>
     <Transition
         motion:constraintSetStart="@+id/start"

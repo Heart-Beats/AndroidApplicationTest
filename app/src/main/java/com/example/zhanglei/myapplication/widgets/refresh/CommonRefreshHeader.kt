@@ -2,10 +2,8 @@ package com.jkj.huilaidian.merchant.widget.refresh
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import com.example.zhanglei.myapplication.R
-import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeader
+import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeaderFooter
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle
 
 /**
@@ -13,7 +11,7 @@ import com.scwang.smart.refresh.layout.constant.SpinnerStyle
  * Email: 913305160@qq.com
  */
 class CommonRefreshHeader @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : LottieRefreshHeader(context, attrs, defStyleAttr) {
+    : LottieRefreshHeaderFooter(context, attrs, defStyleAttr) {
 
     var initBottomOffset = 0
 

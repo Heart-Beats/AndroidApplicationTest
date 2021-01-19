@@ -7,7 +7,6 @@ import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.utils.DeviceInfoUtil
 import com.example.zhanglei.myapplication.utils.reqPermissions
-import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeader
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle
 import kotlinx.android.synthetic.main.fragment_third.*
 

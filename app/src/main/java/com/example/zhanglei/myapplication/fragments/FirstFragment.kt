@@ -15,6 +15,10 @@ class FirstFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         toolbar?.title = "第一页"
 
+        button.setOnClickListener {
+            motionlayout.transitionToState(R.id.toUp)
+        }
+
         motionlayout.setTransitionListener(object : MotionLayout.TransitionListener {
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
                 //TODO("Not yet implemented")

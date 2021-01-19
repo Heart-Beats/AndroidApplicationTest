@@ -54,4 +54,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/imageFilterView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="121dp"
+        app:altSrc="@drawable/video_pause_pressed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:overlay="false"
+        app:srcCompat="@drawable/video_play_pressed"
+        tools:src="@drawable/video_play_pressed" />
+
+
 </androidx.constraintlayout.motion.widget.MotionLayout>

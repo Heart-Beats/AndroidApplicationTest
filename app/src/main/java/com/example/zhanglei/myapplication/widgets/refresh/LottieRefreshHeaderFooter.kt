@@ -6,11 +6,11 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
-import androidx.annotation.RawRes
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieDrawable
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.utils.traverseFindFirstChildView
+import com.scwang.smart.refresh.layout.api.RefreshFooter
 import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshKernel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -21,7 +21,7 @@ import com.scwang.smart.refresh.layout.constant.RefreshState
  * Email: 913305160@qq.com
  */
 
-abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
+abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFooter {
 
     companion object {
         private const val TAG = "LottieRefreshHeader"
@@ -51,7 +51,7 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
             }
 
             it.getDrawable(R.styleable.LottieRefreshHeader_primary_background)?.run {
-                this@LottieRefreshHeader.background = this
+                this@LottieRefreshHeaderFooter.background = this
             }
         }.recycle()
     }
@@ -99,22 +99,24 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
      */
     override fun onMoving(isDragging: Boolean, percent: Float, offset: Int, height: Int, maxDragHeight: Int) {
         Log.d(TAG, "onMoving: 正在下拉中==$isDragging, 百分比 == $percent, 偏移 == $offset, 头部高度 == $height, 最大拖动高度 ==$maxDragHeight")
-        if (isDragging) {
-            //isDragging 表示下拉
-            val animationProgress = if (!pullAnimationSource.isCanUse()) {
-                //下拉动画不可用时
-                offset.run {
-                    if (this <= height) {
-                        //下拉未超过头布局时
-                        this / height.toFloat()
-                    } else 1f
+        if (this::lottieAnimationView.isInitialized) {
+            if (isDragging) {
+                //isDragging 表示下拉
+                val animationProgress = if (!pullAnimationSource.isCanUse()) {
+                    //下拉动画不可用时
+                    offset.run {
+                        if (this <= height) {
+                            //下拉未超过头布局时
+                            this / height.toFloat()
+                        } else 1f
+                    }
+                } else {
+                    offset / maxDragHeight.toFloat()
                 }
-            } else {
-                offset / maxDragHeight.toFloat()
-            }
 
-            Log.d(TAG, "onMoving: 当前动画进度 == $animationProgress")
-            lottieAnimationView.progress = animationProgress
+                Log.d(TAG, "onMoving: 当前动画进度 == $animationProgress")
+                lottieAnimationView.progress = animationProgress
+            }
         }
     }
 
@@ -123,7 +125,9 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
      */
     override fun onReleased(refreshLayout: RefreshLayout, height: Int, maxDragHeight: Int) {
         Log.d(TAG, "onReleased: ")
-        lottieAnimationView.pauseAnimation()
+        if (::lottieAnimationView.isInitialized) {
+            lottieAnimationView.pauseAnimation()
+        }
     }
 
     /**
@@ -134,20 +138,24 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
      */
     override fun onStartAnimator(refreshLayout: RefreshLayout, height: Int, maxDragHeight: Int) {
         Log.d(TAG, "onStartAnimator: 开始动画")
-        if (!refreshAnimationSource.isCanUse()) {
-            lottieAnimationView.resumeAnimation()
-        } else {
-            lottieAnimationView.setAnimation(refreshAnimationSource)
-            Log.d(TAG, "onStartAnimator: 执行刷新动画")
-            lottieAnimationView.playAnimation()
-            //刷新动画重复执行
-            lottieAnimationView.repeatCount = LottieDrawable.INFINITE
+        if (::lottieAnimationView.isInitialized) {
+            if (!refreshAnimationSource.isCanUse()) {
+                lottieAnimationView.resumeAnimation()
+            } else {
+                lottieAnimationView.setAnimation(refreshAnimationSource)
+                Log.d(TAG, "onStartAnimator: 执行刷新动画")
+                lottieAnimationView.playAnimation()
+                //刷新动画重复执行
+                lottieAnimationView.repeatCount = LottieDrawable.INFINITE
+            }
         }
     }
 
     /**
+     * 该方法执行时机：在状态变为 LoadFinish 之后才执行
+     *
      * onStartAnimator --> onFinish 之间的刷新时间：
-     *          开始刷新到调用 finishRefresh() 和 finishLoadMore()之间的时间 + 结束刷新中设置的延迟时间
+     *          开始刷新到调用 finishRefresh() 或 finishLoadMore()之间的时间 + 结束刷新中设置的延迟时间
      *
      * 自定义刷新动画结束时回调,之后头部会慢慢收起 ------> onStartAnimator() 方法中需设置动画
      * @param refreshLayout RefreshLayout
@@ -156,12 +164,14 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
      */
     override fun onFinish(refreshLayout: RefreshLayout, success: Boolean): Int {
         Log.d(TAG, "onFinish: 结束刷新动画")
-        if (lottieAnimationView.isAnimating) {
-            lottieAnimationView.cancelAnimation()
-        }
-        if (pullAnimationSource.isCanUse()) {
-            //刷新动画结束后重置下拉动画
-            lottieAnimationView.setAnimation(pullAnimationSource)
+        if (::lottieAnimationView.isInitialized) {
+            if (lottieAnimationView.isAnimating) {
+                lottieAnimationView.cancelAnimation()
+            }
+            if (pullAnimationSource.isCanUse()) {
+                //刷新动画结束后重置下拉动画
+                lottieAnimationView.setAnimation(pullAnimationSource)
+            }
         }
         return 0
     }
@@ -178,9 +188,17 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
      * @param refreshLayout RefreshLayout
      * @param oldState 改变之前的状态
      * @param newState 改变之后的状态
+     *
+     * 完整状态流转： None --->PullUpToLoad  --->PullUpCanceled --->ReleaseToLoad --->LoadReleased --->Loading --->LoadFinish --->None
+     *                          上拉中           取消上拉加载      达到松手刷新临界        开始松手       加载刷新      加载结束
+     * 下拉刷新时，产生的事件也一样
      */
     override fun onStateChanged(refreshLayout: RefreshLayout, oldState: RefreshState, newState: RefreshState) {
 
+    }
+
+    override fun setNoMoreData(noMoreData: Boolean): Boolean {
+        return noMoreData
     }
 
     fun setPullAnimation(rawRes: Int? = null, url: String? = null) {
@@ -189,14 +207,5 @@ abstract class LottieRefreshHeader : FrameLayout, RefreshHeader {
 
     fun setRefreshAnimation(rawRes: Int? = null, url: String? = null) {
         this.refreshAnimationSource = LottieAnimationSource(rawRes, url)
-    }
-
-    private fun LottieAnimationView.setAnimation(lottieAnimationSource: LottieAnimationSource) {
-        lottieAnimationSource.rawRes?.also {
-            this.setAnimation(it)
-        }
-        lottieAnimationSource.url?.also {
-            this.setAnimationFromUrl(it)
-        }
     }
 }
