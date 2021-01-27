@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieDrawable
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.utils.traverseFindFirstChildView
@@ -142,11 +143,21 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
             if (!refreshAnimationSource.isCanUse()) {
                 lottieAnimationView.resumeAnimation()
             } else {
-                lottieAnimationView.setAnimation(refreshAnimationSource)
-                Log.d(TAG, "onStartAnimator: 执行刷新动画")
-                lottieAnimationView.playAnimation()
-                //刷新动画重复执行
-                lottieAnimationView.repeatCount = LottieDrawable.INFINITE
+
+                //使用 lottieComposition 同步加载动画解决因 lottieAnimationView.setAnimation() 异步加载导致的动画闪烁问题
+                val lottieComposition = refreshAnimationSource.rawRes?.run {
+                    LottieCompositionFactory.fromRawResSync(context, this).value
+                } ?: refreshAnimationSource.url?.run {
+                    LottieCompositionFactory.fromUrlSync(context, this).value
+                }
+
+                lottieComposition?.run {
+                    lottieAnimationView.setComposition(this)
+                    Log.d(TAG, "onStartAnimator: 执行刷新动画")
+                    lottieAnimationView.playAnimation()
+                    //刷新动画重复执行
+                    lottieAnimationView.repeatCount = LottieDrawable.INFINITE
+                }
             }
         }
     }

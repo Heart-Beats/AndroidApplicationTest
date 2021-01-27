@@ -7,6 +7,7 @@ import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.utils.DeviceInfoUtil
 import com.example.zhanglei.myapplication.utils.reqPermissions
+import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeaderFooter
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle
 import kotlinx.android.synthetic.main.fragment_third.*
 
@@ -19,15 +20,15 @@ class ThirdFragment : BaseFragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val lottieRefreshHeader = object : LottieRefreshHeader(requireContext()) {
+		val lottieRefreshHeader = object : LottieRefreshHeaderFooter(requireContext()) {
 			override val headerLayout: Int
 				get() = R.layout.layout_lottie_refresh_header
 
 			override fun getSpinnerStyle(): SpinnerStyle {
-				return SpinnerStyle.Translate
+				return SpinnerStyle.FixedFront
 			}
 		}
-		lottieRefreshHeader.setPullAnimation(rawRes = R.raw.refresh)
+		lottieRefreshHeader.setPullAnimation(url = "https://assets4.lottiefiles.com/private_files/lf30_hp2n68rf.json")
 		lottieRefreshHeader.setRefreshAnimation(url = "https://assets3.lottiefiles.com/packages/lf20_R6y0Xw.json")
 		smart_refresh_layout.setRefreshHeader(lottieRefreshHeader)
 		smart_refresh_layout.setHeaderMaxDragRate(1f) //最大下拉高度与Header标准高度的倍数

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -10,5 +11,5 @@
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:lottie_url="https://assets4.lottiefiles.com/private_files/lf30_hp2n68rf.json"/>
+        tools:lottie_url="https://assets4.lottiefiles.com/private_files/lf30_hp2n68rf.json"/>
 </FrameLayout>
