@@ -80,6 +80,11 @@ dependencies {
 	implementation("androidx.core:core-ktx:1.3.2")
 	implementation("org.jetbrains.anko:anko-commons:0.10.8")
 
+	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+	implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
+	implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
+	implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+
 	implementation("androidx.core:core:1.3.2")
 	implementation("androidx.appcompat:appcompat:1.2.0")
 	implementation("androidx.constraintlayout:constraintlayout:2.0.4")

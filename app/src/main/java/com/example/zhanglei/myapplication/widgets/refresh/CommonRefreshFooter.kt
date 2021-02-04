@@ -1,4 +1,4 @@
-package com.example.zhanglei.myapplication.widgets.refresh
+package com.jkj.huilaidian.merchant.widget.refresh
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import com.example.zhanglei.myapplication.R
+import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeaderFooter
 import com.scwang.smart.refresh.layout.api.RefreshKernel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
@@ -27,15 +28,18 @@ class CommonRefreshFooter @JvmOverloads constructor(context: Context, attrs: Att
     private var stopAnimation: Boolean = false
     private var noMoreData: Boolean = false
 
-    override val headerLayout: Int
+    override val headerOrFooterLayout: Int
         get() = R.layout.layout_common_refresh_footer
+
+    override val hasLottieAnimationView: Boolean
+        get() = false
 
     override fun getSpinnerStyle(): SpinnerStyle {
         return SpinnerStyle.Translate
     }
 
     override fun onInitialized(kernel: RefreshKernel, height: Int, maxDragHeight: Int) {
-        View.inflate(context, headerLayout, this)
+        View.inflate(context, headerOrFooterLayout, this)
     }
 
     override fun onFinish(refreshLayout: RefreshLayout, success: Boolean): Int {
@@ -73,7 +77,7 @@ class CommonRefreshFooter @JvmOverloads constructor(context: Context, attrs: Att
                 stopAnimation = false
 
                 val valueAnimator = ValueAnimator.ofFloat(0f, 360f)
-                valueAnimator.setDuration(500).setInterpolator(LinearInterpolator())
+                valueAnimator.setDuration(500).interpolator = LinearInterpolator()
                 valueAnimator.repeatCount = ValueAnimator.INFINITE
                 valueAnimator.addUpdateListener {
                     pull_to_refresh.rotation = it.animatedValue as Float
@@ -85,7 +89,6 @@ class CommonRefreshFooter @JvmOverloads constructor(context: Context, attrs: Att
             }
 
             RefreshState.LoadFinish -> {
-                // rotationAnimation.cancel()
                 stopAnimation = true
                 pull_to_refresh.visibility = View.GONE
             }

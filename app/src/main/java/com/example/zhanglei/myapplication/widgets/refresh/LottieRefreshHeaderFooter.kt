@@ -25,10 +25,15 @@ import com.scwang.smart.refresh.layout.constant.RefreshState
 abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFooter {
 
     companion object {
-        private const val TAG = "LottieRefreshHeader"
+        private const val TAG = "LottieRefreshHeaderFoot"
     }
 
-    abstract val headerLayout: Int
+    abstract val headerOrFooterLayout: Int
+
+    /**
+     * 此变量用来声明布局文件 headerOrFooterLayout 中是否存在 LottieAnimationView
+     */
+    abstract val hasLottieAnimationView: Boolean
 
     protected lateinit var lottieAnimationView: LottieAnimationView
 
@@ -38,20 +43,20 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        context.obtainStyledAttributes(attrs, R.styleable.LottieRefreshHeader, defStyleAttr, 0).also {
-            val pullLottieAnimationRes = it.getResourceId(R.styleable.LottieRefreshHeader_pull_lottie_animation_res, 0)
-            val pullLottieAnimationUrl = it.getString(R.styleable.LottieRefreshHeader_pull_lottie_animation_url)
+        context.obtainStyledAttributes(attrs, R.styleable.LottieRefreshHeaderFooter, defStyleAttr, 0).also {
+            val pullLottieAnimationRes = it.getResourceId(R.styleable.LottieRefreshHeaderFooter_pull_lottie_animation_res, 0)
+            val pullLottieAnimationUrl = it.getString(R.styleable.LottieRefreshHeaderFooter_pull_lottie_animation_url)
             if (pullLottieAnimationRes != 0 || pullLottieAnimationUrl != null) {
                 setPullAnimation(rawRes = pullLottieAnimationRes, url = pullLottieAnimationUrl)
             }
 
-            val refreshLottieAnimationRes = it.getResourceId(R.styleable.LottieRefreshHeader_refresh_lottie_animation_res, 0)
-            val refreshLottieAnimationUrl = it.getString(R.styleable.LottieRefreshHeader_pull_lottie_animation_url)
+            val refreshLottieAnimationRes = it.getResourceId(R.styleable.LottieRefreshHeaderFooter_refresh_lottie_animation_res, 0)
+            val refreshLottieAnimationUrl = it.getString(R.styleable.LottieRefreshHeaderFooter_pull_lottie_animation_url)
             if (refreshLottieAnimationRes != 0 || refreshLottieAnimationUrl != null) {
                 setRefreshAnimation(rawRes = refreshLottieAnimationRes, url = refreshLottieAnimationUrl)
             }
 
-            it.getDrawable(R.styleable.LottieRefreshHeader_primary_background)?.run {
+            it.getDrawable(R.styleable.LottieRefreshHeaderFooter_primary_background)?.run {
                 this@LottieRefreshHeaderFooter.background = this
             }
         }.recycle()
@@ -68,17 +73,31 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
      * @param height HeaderHeight or FooterHeight
      * @param maxDragHeight 最大拖动高度
      */
+
     override fun onInitialized(kernel: RefreshKernel, height: Int, maxDragHeight: Int) {
         Log.d(TAG, "onInitialized: 头部高度==$height, 最大下拉高度==$maxDragHeight")
-        //抽象类中的this不可在构造方法中使用，存在风险
-        val headerView = View.inflate(context, headerLayout, this)
-
-        lottieAnimationView = headerView.traverseFindFirstChildView(LottieAnimationView::class.java)
-                ?: throw Exception("布局文件中没有LottieAnimationView")
-
-        //下拉动画需在下拉回调之前设置
-        this.lottieAnimationView.setAnimation(pullAnimationSource)
+        ensureLottieAnimationView()
     }
+
+    protected fun ensureLottieAnimationView(afterAction: () -> Unit = {}) {
+        if (hasLottieAnimationView) {
+            if (!lottieAnimationViewIsInitialized()) {
+                Log.d(TAG, "ensureLottieAnimationView: lottieAnimationView 未初始化，开始初始化")
+
+                //抽象类中的this不可在构造方法中使用，存在风险
+                val headerView = View.inflate(context, headerOrFooterLayout, this)
+
+                lottieAnimationView = headerView.traverseFindFirstChildView(LottieAnimationView::class.java)
+                        ?: throw Exception("布局文件中没有LottieAnimationView")
+
+                //下拉动画需在下拉回调之前设置
+                this.lottieAnimationView.setAnimation(pullAnimationSource)
+            }
+            afterAction()
+        }
+    }
+
+    private fun lottieAnimationViewIsInitialized() = ::lottieAnimationView.isInitialized
 
     /**
      * SmartRefreshLayout 调用 setPrimaryColors 或 setPrimaryColorsId 后会回调， 在其中可以设置刷新头的背景
@@ -100,7 +119,8 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
      */
     override fun onMoving(isDragging: Boolean, percent: Float, offset: Int, height: Int, maxDragHeight: Int) {
         Log.d(TAG, "onMoving: 正在下拉中==$isDragging, 百分比 == $percent, 偏移 == $offset, 头部高度 == $height, 最大拖动高度 ==$maxDragHeight")
-        if (this::lottieAnimationView.isInitialized) {
+
+        ensureLottieAnimationView {
             if (isDragging) {
                 //isDragging 表示下拉
                 val animationProgress = if (!pullAnimationSource.isCanUse()) {
@@ -116,6 +136,7 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
                 }
 
                 Log.d(TAG, "onMoving: 当前动画进度 == $animationProgress")
+                lottieAnimationView.visibility = if (animationProgress <= 0) View.INVISIBLE else View.VISIBLE
                 lottieAnimationView.progress = animationProgress
             }
         }
@@ -126,7 +147,8 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
      */
     override fun onReleased(refreshLayout: RefreshLayout, height: Int, maxDragHeight: Int) {
         Log.d(TAG, "onReleased: ")
-        if (::lottieAnimationView.isInitialized) {
+
+        ensureLottieAnimationView {
             lottieAnimationView.pauseAnimation()
         }
     }
@@ -139,7 +161,8 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
      */
     override fun onStartAnimator(refreshLayout: RefreshLayout, height: Int, maxDragHeight: Int) {
         Log.d(TAG, "onStartAnimator: 开始动画")
-        if (::lottieAnimationView.isInitialized) {
+
+        ensureLottieAnimationView {
             if (!refreshAnimationSource.isCanUse()) {
                 lottieAnimationView.resumeAnimation()
             } else {
@@ -175,7 +198,8 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
      */
     override fun onFinish(refreshLayout: RefreshLayout, success: Boolean): Int {
         Log.d(TAG, "onFinish: 结束刷新动画")
-        if (::lottieAnimationView.isInitialized) {
+
+        ensureLottieAnimationView {
             if (lottieAnimationView.isAnimating) {
                 lottieAnimationView.cancelAnimation()
             }
@@ -219,4 +243,5 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
     fun setRefreshAnimation(rawRes: Int? = null, url: String? = null) {
         this.refreshAnimationSource = LottieAnimationSource(rawRes, url)
     }
+
 }

@@ -6,7 +6,7 @@
         <attr name="exampleDrawable" format="color|reference" />
     </declare-styleable>
 
-    <declare-styleable name="LottieRefreshHeader">
+    <declare-styleable name="LottieRefreshHeaderFooter">
         <attr name="pull_lottie_animation_res" format="reference" />
         <attr name="pull_lottie_animation_url" format="string|reference" />
         <attr name="refresh_lottie_animation_res" format="reference" />
@@ -14,4 +14,18 @@
         <attr name="primary_background" format="color|reference" />
     </declare-styleable>
 
+    <!-- ViewGroup 本身定义可用的属性 -->
+    <declare-styleable name="CornerLayout">
+
+    </declare-styleable>
+
+    <!-- 自定义 ViewGroup 属性集合以 "XXX_Layout" 命名，其中的子 View 才可直接使用此 ViewGroup 中的布局参数 -->
+    <declare-styleable name="CornerLayout_Layout">
+        <attr name="corner" format="flags">
+            <flag name="leftTop" value="0x01" />
+            <flag name="rightTop" value="0x02" />
+            <flag name="leftBottom" value="0x04" />
+            <flag name="rightBottom" value="0x08" />
+        </attr>
+    </declare-styleable>
 </resources>
