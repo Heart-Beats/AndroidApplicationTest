@@ -14,7 +14,7 @@ buildscript {
 		maven { url = uri("https://jitpack.io") }
 	}
 	dependencies {
-		classpath("com.android.tools.build:gradle:4.1.1")
+		classpath("com.android.tools.build:gradle:4.1.2")
 
 		val kotlinVersion = "1.4.0"
 		classpath(kotlin("gradle-plugin", kotlinVersion))

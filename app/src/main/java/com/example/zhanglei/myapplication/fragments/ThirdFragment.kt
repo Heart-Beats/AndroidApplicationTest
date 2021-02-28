@@ -21,8 +21,11 @@ class ThirdFragment : BaseFragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		val lottieRefreshHeader = object : LottieRefreshHeaderFooter(requireContext()) {
-			override val headerLayout: Int
+			override val headerOrFooterLayout: Int
 				get() = R.layout.layout_lottie_refresh_header
+
+			override val hasLottieAnimationView: Boolean
+				get() = true
 
 			override fun getSpinnerStyle(): SpinnerStyle {
 				return SpinnerStyle.FixedFront
