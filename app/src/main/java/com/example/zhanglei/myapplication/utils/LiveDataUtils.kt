@@ -10,10 +10,23 @@ import androidx.lifecycle.MutableLiveData
  * Email: 913305160@qq.com
  */
 
-fun <T> LiveData<T>.onceObserve(owner: LifecycleOwner, onChanged: (T) -> Unit) {
+/**
+ * 设置唯一观察者，若已有观察者则设置不生效
+ */
+fun <T> LiveData<T>.onceFirstObserve(owner: LifecycleOwner, onChanged: (T) -> Unit) {
 	if (!this.hasObservers()) {
 		this.observe(owner, onChanged)
 	}
+}
+
+/**
+ * 设置唯一观察者，若已有观察者则全部移除，仅设置的观察者生效
+ */
+fun <T> LiveData<T>.onceLastObserve(owner: LifecycleOwner, onChanged: (T) -> Unit) {
+	if (this.hasObservers()) {
+		this.removeObservers(owner)
+	}
+	this.observe(owner, onChanged)
 }
 
 fun <T> MutableLiveData<T>.setSafeValue(obj: T?) {

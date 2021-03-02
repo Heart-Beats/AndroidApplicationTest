@@ -1,31 +1,31 @@
 package com.example.zhanglei.myapplication.fragments
 
 import android.os.Bundle
-import android.view.View
-import com.example.zhanglei.myapplication.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.example.zhanglei.myapplication.databinding.FragmentHookBinding
+import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
 import com.mdit.library.proxy.Enhancer
 import de.robv.android.xposed.DexposedBridge
 import de.robv.android.xposed.XC_MethodHook
-import kotlinx.android.synthetic.main.fragment_hook.*
 import java.lang.reflect.Proxy
 
 
-class HookFragment : BaseFragment() {
+class HookFragment : ViewBindingBaseFragment<FragmentHookBinding>() {
 
-	override val layoutResId: Int
-		get() = R.layout.fragment_hook
+	override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): FragmentHookBinding {
+		return FragmentHookBinding.inflate(inflater, container, false)
+	}
 
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-
+	override fun FragmentHookBinding.onViewCreated(savedInstanceState: Bundle?) {
 		val textModifyText = TextModifyText()
 
-		origin_function.setOnClickListener {
+		originFunction.setOnClickListener {
 			val modify = textModifyText.modify("我是原始修改的 Text 内容")
-			display_content.text = modify
+			displayContent.text = modify
 		}
 
-		dynamic_proxy_function.setOnClickListener {
+		dynamicProxyFunction.setOnClickListener {
 			//动态代理必须将被代理的对象给替换掉，才会一直生效，为对象层面
 			val textModify = Proxy.newProxyInstance(textModifyText::class.java.classLoader, textModifyText::class.java.interfaces) { _, method, args ->
 				println("开始代理")
@@ -34,10 +34,10 @@ class HookFragment : BaseFragment() {
 				"我是动态代理后修改的 Text 内容"   //此处可以修改方法执行的返回值
 			} as TextModify
 
-			display_content.text = textModify.modify("我是原始修改的 Text 内容")
+			displayContent.text = textModify.modify("我是原始修改的 Text 内容")
 		}
 
-		epic_hook_function.setOnClickListener {
+		epicHookFunction.setOnClickListener {
 			//hook 方法，添加拦截处理后一直生效，为方法层面处理
 			DexposedBridge.findAndHookMethod(TextModifyText::class.java, "modify2", String::class.java, object : XC_MethodHook() {
 				/**
@@ -49,10 +49,10 @@ class HookFragment : BaseFragment() {
 					param?.result = "我是 epic hook 方法后修改的 Text 内容"
 				}
 			})
-			display_content.text = textModifyText.modify2("我是原始修改的 Text 内容")
+			displayContent.text = textModifyText.modify2("我是原始修改的 Text 内容")
 		}
 
-		Intercept_method_function.setOnClickListener {
+		InterceptMethodFunction.setOnClickListener {
 			/*
 			* 底层为 CGLIB 实现的 类代理，与 Java 的动态代理一样，都需要替换掉被代理的对象，也为对象层面
 			* 其中需要注意的是该方式有限制：必须保证被代理的类和它的所有方法都可被继承才行，否则运行即会报错，
@@ -75,7 +75,7 @@ class HookFragment : BaseFragment() {
 
 			val textModifyText1 = enhancer.create() as TextModifyText
 			// display_content.text = textModifyText1.modify("我是原始修改的 Text 内容")
-			display_content.text = textModifyText1.modify2("我是原始修改的 Text 内容")  // 可代理非接口中的方法
+			displayContent.text = textModifyText1.modify2("我是原始修改的 Text 内容")  // 可代理非接口中的方法
 			// display_content.text = textModifyText1.modify3("我是原始修改的 Text 内容")   //modify3 方法不可继承，无法进行代理
 		}
 	}

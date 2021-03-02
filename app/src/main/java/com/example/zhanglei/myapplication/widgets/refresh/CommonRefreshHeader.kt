@@ -1,11 +1,10 @@
-package com.jkj.huilaidian.merchant.widget.refresh
+package com.example.zhanglei.myapplication.widgets.refresh
 
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import com.example.zhanglei.myapplication.R
-import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeaderFooter
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle
 
 /**

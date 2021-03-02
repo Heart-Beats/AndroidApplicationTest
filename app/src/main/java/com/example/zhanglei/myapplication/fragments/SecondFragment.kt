@@ -3,7 +3,8 @@ package com.example.zhanglei.myapplication.fragments
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -13,16 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.adapters.BaseAbstractAdapter
-import kotlinx.android.synthetic.main.fragment_second.*
+import com.example.zhanglei.myapplication.databinding.FragmentSecondBinding
+import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
 
-class SecondFragment : BaseFragment() {
+class SecondFragment : ViewBindingBaseFragment<FragmentSecondBinding>() {
 
-	override val layoutResId: Int
-		get() = R.layout.fragment_second
+	override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): FragmentSecondBinding {
+		return FragmentSecondBinding.inflate(inflater, container, false)
+	}
 
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-
+	override fun FragmentSecondBinding.onViewCreated(savedInstanceState: Bundle?) {
 		val data = listOf(
 				"https://img.ui.cn/data/file/6/5/4/3268456.jpg?imageMogr2/auto-orient/format/jpg/strip/thumbnail/!900%3E/quality/90/",
 				"https://img.ui.cn/data/file/7/5/4/3268457.jpg?imageMogr2/auto-orient/format/jpg/strip/thumbnail/!900%3E/quality/90/",
@@ -104,6 +105,7 @@ class SecondFragment : BaseFragment() {
 				if (imageView != null && data != null) {
 					Glide.with(imageView.context)
 							.load(data)
+							.circleCrop()
 							.placeholder(ColorDrawable(Color.CYAN))
 							.skipMemoryCache(true)
 //                .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -119,4 +121,5 @@ class SecondFragment : BaseFragment() {
 			}
 		})
 	}
+
 }

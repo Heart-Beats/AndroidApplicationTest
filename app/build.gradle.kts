@@ -6,8 +6,9 @@ plugins {
 
 apply {
 	plugin("kotlin-android")
-	plugin("kotlin-android-extensions")
 	plugin("kotlin-kapt")
+	plugin("kotlin-parcelize")
+	from("../app_common.gradle.kts")
 }
 
 android {
@@ -60,6 +61,10 @@ android {
 		this.targetCompatibility = JavaVersion.VERSION_1_8
 	}
 
+	buildFeatures {
+		this.viewBinding = true //启动viewBinding
+	}
+
 	flavorDimensions("MyApp")
 	productFlavors {
 		create("MyAppT") {
@@ -76,36 +81,34 @@ android {
 
 	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
 		kotlinOptions {
+			this.useIR = true
 			this.jvmTarget = "1.8"
 		}
 	}
+
 }
 
-android.applicationVariants.all { variant ->
-
-	val buildType = variant.buildType.name
-
-	//获取当前时间的"YYYY-MM-dd"格式。
-	// val createTime = new Date().format("YYYY-MM-dd", java.util.TimeZone.getTimeZone("GMT+08:00"))
-	println(variant.packageApplicationProvider?.get()?.outputDirectory)
-
-	// def output = variant.outputFile()
-
-	variant.outputs.forEach {
-		if (buildType == "release" || buildType == "debug") {
-			//variant.getPackageApplicationProvider().get().outputDirectory = new File("/Volumes/Morley/User/张磊")
-			val fileName = "XX_${buildType}.apk"
-			println("文件名：-----------------${fileName}")
-
-			it.outputFile.renameTo(File("${it.outputFile.path}/fileName"))
-		}
-	}
-	true
-}
+// android.applicationVariants.all {
+// 	val buildType = this.buildType.name
+//
+// 	//获取当前时间的"YYYY-MM-dd"格式。
+// 	// val createTime = new Date().format("YYYY-MM-dd", java.util.TimeZone.getTimeZone("GMT+08:00"))
+//
+// 	this.outputs.all {
+// 		if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl)
+// 			if (buildType == "release" || buildType == "debug") {
+// 				//variant.getPackageApplicationProvider().get().outputDirectory = new File("/Volumes/Morley/User/张磊")
+// 				val fileName = "myapplication-${this.versionCode}_${buildType}.apk"
+// 				println("文件名：-----------------${fileName}")
+// 				this.outputFileName = fileName
+// 			}
+// 	}
+// }
 
 dependencies {
 	api(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 	implementation("androidx.legacy:legacy-support-v4:1.0.0")
+	implementation("com.google.android.material:material:1.3.0-alpha04")
 
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.1")
 	testImplementation("junit:junit:4.13.2")
@@ -128,7 +131,6 @@ dependencies {
 	implementation("androidx.appcompat:appcompat:1.2.0")
 	implementation("androidx.constraintlayout:constraintlayout:2.0.4")
 	implementation("androidx.recyclerview:recyclerview:1.1.0")
-	implementation("androidx.cardview:cardview:1.0.0")
 	implementation("androidx.navigation:navigation-fragment-ktx:2.3.2")
 	implementation("androidx.navigation:navigation-ui-ktx:2.3.2")
 

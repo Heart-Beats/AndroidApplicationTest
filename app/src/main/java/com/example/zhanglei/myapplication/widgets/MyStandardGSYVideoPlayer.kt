@@ -2,6 +2,7 @@ package com.example.zhanglei.myapplication.widgets
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
@@ -11,8 +12,6 @@ import com.example.zhanglei.myapplication.R
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
-import kotlinx.android.synthetic.main.layout_my_video_standard.view.*
-
 
 /**
  * @Author  张磊  on  2020/09/25 at 18:58
@@ -22,6 +21,8 @@ class MyStandardGSYVideoPlayer : StandardGSYVideoPlayer, LifecycleEventObserver 
 
 	var orientationUtils: OrientationUtils? = null
 		private set
+
+	private var play: ImageView? = null
 
 	constructor(context: Context?) : super(context)
 	constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -33,7 +34,8 @@ class MyStandardGSYVideoPlayer : StandardGSYVideoPlayer, LifecycleEventObserver 
 	//增加自定义的 ui 需要在此方法中进行一些初始设置，否则大小屏切换会有问题，比如：事件丢失
 	override fun init(context: Context?) {
 		super.init(context)
-		play.setOnClickListener {
+		play = findViewById(R.id.play)
+		play?.setOnClickListener {
 			clickStartIcon()
 		}
 	}
@@ -51,7 +53,7 @@ class MyStandardGSYVideoPlayer : StandardGSYVideoPlayer, LifecycleEventObserver 
 			CURRENT_STATE_AUTO_COMPLETE -> R.drawable.ic_replay_24
 			else -> R.drawable.ic_play_24
 		}
-		play.setImageResource(playResource)
+		play?.setImageResource(playResource)
 	}
 
 	override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {

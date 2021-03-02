@@ -140,7 +140,7 @@ enum class TimeUnit(val unitName: String, val baseValue: Long) {
     YEARS("Years", MONTHS.baseValue * 12)
 }
 
-fun TimeUnit.getChronoUnit(): ChronoUnit? {
+private fun TimeUnit.getChronoUnit(): ChronoUnit? {
     ChronoUnit.values().forEach {
         if (it.toString() == this.unitName) {
             return it

@@ -1,25 +1,29 @@
 package com.example.zhanglei.myapplication.fragments
 
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
-import com.example.zhanglei.myapplication.R
-import kotlinx.android.synthetic.main.fragment_first.*
+import com.example.zhanglei.myapplication.databinding.FragmentFirstBinding
+import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
 
-class FirstFragment : BaseFragment() {
+class FirstFragment : ViewBindingBaseFragment<FragmentFirstBinding>() {
 
-    override val layoutResId: Int
-        get() = R.layout.fragment_first
+    override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): FragmentFirstBinding {
+        return FragmentFirstBinding.inflate(inflater, container, false)
+    }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun FragmentFirstBinding.onViewCreated(savedInstanceState: Bundle?) {
         toolbar?.title = "第一页"
-
         button.setOnClickListener {
-            motionlayout.transitionToState(R.id.toUp)
+            if (motionLayout.currentState == motionLayout.startState) {
+                motionLayout.transitionToEnd()
+            } else {
+                motionLayout.transitionToStart()
+            }
         }
 
-        motionlayout.setTransitionListener(object : MotionLayout.TransitionListener {
+        motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
             override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
                 //TODO("Not yet implemented")
             }

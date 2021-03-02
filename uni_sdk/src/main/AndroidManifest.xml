@@ -1,0 +1,272 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.hl.unisdk"
+    >
+    <!-- Barcode(二维码)  begin -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <!-- Barcode(二维码)  end -->
+
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <!-- Maps(地图) begin -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- Maps(地图) end -->
+
+
+    <!-- Share(分享)  begin -->
+    <!-- Share - 新浪微博分享 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Share - 腾讯微博分享 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <!-- Share - 微信分享 -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+
+    <!-- Speech(语音识别)  begin -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- Speech(语音识别)  end -->
+
+
+    <!-- Statistic(统计)  begin -->
+    <!-- Statistic - 友盟统计 -->
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <!-- Statistic(统计)  end -->
+
+    <!-- 小米分享 -->
+    <uses-permission android:name="com.xiaomi.permission.AUTH_SERVICE" />
+
+    <!-- 蓝牙 ibeacon权限-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <!-- 基座删除的部分权限 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
+    <application
+        android:allowBackup="true"
+        android:allowClearUserData="true"
+        android:largeHeap="true"
+        android:supportsRtl="true">
+
+        <!-- Statistic(统计)-友盟统计 begin -->
+        <!-- 官方网站：http://www.umeng.com/analytics -->
+        <!-- meta-data节点android:name="UMENG_APPKEY"项中android:value值为友盟网站申请的APPKEY -->
+        <!-- meta-data节点android:name="UMENG_CHANNEL"项中android:value值为发行渠道标识，可任意取值，用于各种发行渠道效果统计 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="55b1b625e0f55a138300449d" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="googleplay" />
+        <!-- 友盟统计  配置  end -->
+
+        <provider
+            android:name="io.dcloud.common.util.DCloud_FileProvider"
+            android:authorities="${apk.applicationId}.dc.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/dcloud_file_provider" />
+        </provider>
+
+        <!-- Maps(地图) begin -->
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="1245f55df04583e53eb0fbf511be9a08" />
+        <service android:name="com.amap.api.location.APSService" />
+        <!-- Maps(地图) end -->
+
+        <!-- Oauth 授权登陆 start -->
+        <!-- Oauth QQ start -->
+        <!-- QQ 分享 配置和授权登陆相同 -->
+        <meta-data
+            android:name="QQ_APPID"
+            android:value="1104455702" />
+
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="1104455702" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- Oauth QQ end -->
+
+        <!-- Share(分享) begin -->
+        <!-- Share - 新浪微博分享 -->
+        <!-- 官方网站：http://open.weibo.com/ -->
+        <meta-data
+            android:name="SINA_REDIRECT_URI"
+            android:value="http://www.dcloud.io/" />
+        <meta-data
+            android:name="SINA_SECRET"
+            android:value="b8fa3ec4b7e47a152044d9e8265cf593" />
+        <meta-data
+            android:name="SINA_APPKEY"
+            android:value="_3662743235" />
+        <!-- 分享 -->
+
+
+        <!-- Share - 腾讯微博分享 -->
+        <!-- 官方网站：http://dev.t.qq.com/ -->
+        <meta-data
+            android:name="TENCENT_REDIRECT_URI"
+            android:value="%腾讯微博开放平台申请应用配置的回调地址%" />
+        <meta-data
+            android:name="TENCENT_SECRET"
+            android:value="%腾讯微博开放平台申请应用的Secret%" />
+        <meta-data
+            android:name="TENCENT_APPKEY"
+            android:value="_%腾讯微博开放平台申请应用的Appkey，注意前面要添加下划线%" />
+
+        <activity
+            android:name="io.dcloud.share.tencent.WebAuthorize"
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <!-- 微信分享 配置begin -->
+        <meta-data
+            android:name="WX_SECRET"
+            android:value="fdc6251421d3d688a563b4f00dd540e7" />
+        <meta-data
+            android:name="WX_APPID"
+            android:value="wx0411fa6a39d61297" />
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="wx0411fa6a39d61297" />
+            </intent-filter>
+        </activity>
+        <!-- 微信分享 配置 end -->
+
+        <!-- 微信支付配置 start -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop" />
+
+        <meta-data
+            android:name="WX_APPID"
+            android:value="wx0411fa6a39d61297" />
+
+        <!-- 微信支付配置end -->
+        <!-- 小米分享 -->
+        <meta-data
+            android:name="MIUI_APPID"
+            android:value="_%小米分享的APPID%" />
+        <meta-data
+            android:name="MIUI_APPSECRET"
+            android:value="%小米分享的appSecret%" />
+        <meta-data
+            android:name="MIUI_REDIRECT_URI"
+            android:value="%小米分享的回调地址%" />
+
+        <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
+        <!-- 小米分享 end -->
+
+        <!--百度语音识别 start-->
+        <meta-data
+            android:name="com.baidu.speech.APP_ID"
+            android:value="11770490" />
+        <meta-data
+            android:name="com.baidu.speech.API_KEY"
+            android:value="cDFRHjbhBklzS1ZKFBnz9cHg" />
+        <meta-data
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="vZK4rC7ueQTMrhavm3qVlnGicPTeUCEr" />
+
+        <service
+            android:name="com.baidu.speech.VoiceRecognitionService"
+            android:exported="false" />
+        <!--百度语音识别 end-->
+
+        <activity
+            android:name="io.dcloud.PandoraEntryActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|mcc|mnc|fontScale|keyboard"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:permission="com.miui.securitycenter.permission.AppPermissionsEditor"
+            android:screenOrientation="user"
+            android:theme="@style/DCloudTheme"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <data android:scheme="h56131bcf" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

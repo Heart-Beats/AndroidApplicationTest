@@ -1,26 +1,33 @@
 package com.example.zhanglei.myapplication
 
+
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import androidx.annotation.IdRes
 import androidx.core.view.children
-import androidx.navigation.findNavController
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.zhanglei.myapplication.activities.base.ViewBindingBaseActivity
+import com.example.zhanglei.myapplication.databinding.ActivityMainBinding
 import com.example.zhanglei.myapplication.utils.MyNavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.firstChild
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override val viewBinding: ActivityMainBinding
+        get() = ActivityMainBinding.inflate(layoutInflater)
 
-        val myNavHostFragment = nav_host_fragment as MyNavHostFragment
+    private fun getFragmentFragmentById(@IdRes id: Int): Fragment? {
+        return supportFragmentManager.findFragmentById(id)
+    }
+
+    override fun ActivityMainBinding.onViewCreated(savedInstanceState: Bundle?) {
+        val myNavHostFragment = getFragmentFragmentById(R.id.nav_host_fragment) as MyNavHostFragment
         myNavHostFragment.setCommonNavAnimations {
             this.enterAnim = R.anim.slide_in_right
             this.exitAnim = R.anim.slide_out_left
@@ -28,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             this.popExitAnim = R.anim.slide_out_right
         }
 
-        val findNavController = findNavController(R.id.nav_host_fragment).apply {
+        val findNavController = myNavHostFragment.findNavController().apply {
             this.addOnDestinationChangedListener { _, destination, _ ->
                 val itemIds = bottomNavigationView.menu.children.toList().map {
                     it.itemId
@@ -48,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             initTouchHandle()
         }
     }
+
 
     private fun BottomNavigationView.initTouchHandle() {
 

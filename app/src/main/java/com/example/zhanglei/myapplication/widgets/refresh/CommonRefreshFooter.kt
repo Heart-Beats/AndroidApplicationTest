@@ -1,4 +1,4 @@
-package com.jkj.huilaidian.merchant.widget.refresh
+package com.example.zhanglei.myapplication.widgets.refresh
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -6,13 +6,14 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.motion.widget.MotionLayout
 import com.example.zhanglei.myapplication.R
-import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeaderFooter
 import com.scwang.smart.refresh.layout.api.RefreshKernel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle
-import kotlinx.android.synthetic.main.layout_common_refresh_footer.view.*
 
 /**
  * @Author  张磊  on  2021/01/18 at 11:23
@@ -28,6 +29,10 @@ class CommonRefreshFooter @JvmOverloads constructor(context: Context, attrs: Att
     private var stopAnimation: Boolean = false
     private var noMoreData: Boolean = false
 
+    private var stateTips: TextView? = null
+    private var motionLayout: MotionLayout? = null
+    private var pullToRefresh: ImageView? = null
+
     override val headerOrFooterLayout: Int
         get() = R.layout.layout_common_refresh_footer
 
@@ -39,12 +44,16 @@ class CommonRefreshFooter @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     override fun onInitialized(kernel: RefreshKernel, height: Int, maxDragHeight: Int) {
-        View.inflate(context, headerOrFooterLayout, this)
+        View.inflate(context, headerOrFooterLayout, this).run {
+            stateTips = this.findViewById(R.id.state_tips)
+            motionLayout = this.findViewById(R.id.motion_layout)
+            pullToRefresh = this.findViewById(R.id.pull_to_refresh)
+        }
     }
 
     override fun onFinish(refreshLayout: RefreshLayout, success: Boolean): Int {
         Log.d(TAG, "onFinish: 加载是否成功 == $success")
-        state_tips.text = if (success) "加载成功" else "加载失败"
+        stateTips?.text = if (success) "加载成功" else "加载失败"
         return 0
     }
 
@@ -63,8 +72,8 @@ class CommonRefreshFooter @JvmOverloads constructor(context: Context, attrs: Att
             }
 
             RefreshState.ReleaseToLoad -> {
-                motion_layout.setTransition(R.id.pull_up_to_load_animate)
-                motion_layout.transitionToState(R.id.pull_up_to_load)
+                motionLayout?.setTransition(R.id.pull_up_to_load_animate)
+                motionLayout?.transitionToState(R.id.pull_up_to_load)
             }
 
             RefreshState.LoadReleased -> {
@@ -72,15 +81,15 @@ class CommonRefreshFooter @JvmOverloads constructor(context: Context, attrs: Att
             }
 
             RefreshState.Loading -> {
-                pull_to_refresh.setImageResource(R.drawable.loading)
-                state_tips.text = "正在加载"
+                pullToRefresh?.setImageResource(R.drawable.loading)
+                stateTips?.text = "正在加载"
                 stopAnimation = false
 
                 val valueAnimator = ValueAnimator.ofFloat(0f, 360f)
                 valueAnimator.setDuration(500).interpolator = LinearInterpolator()
                 valueAnimator.repeatCount = ValueAnimator.INFINITE
                 valueAnimator.addUpdateListener {
-                    pull_to_refresh.rotation = it.animatedValue as Float
+                    pullToRefresh?.rotation = it.animatedValue as Float
                     if (stopAnimation) {
                         valueAnimator.cancel()
                     }
@@ -90,7 +99,7 @@ class CommonRefreshFooter @JvmOverloads constructor(context: Context, attrs: Att
 
             RefreshState.LoadFinish -> {
                 stopAnimation = true
-                pull_to_refresh.visibility = View.GONE
+                pullToRefresh?.visibility = View.GONE
             }
 
             else -> {
@@ -100,13 +109,13 @@ class CommonRefreshFooter @JvmOverloads constructor(context: Context, attrs: Att
 
     private fun initFooterLayout() {
         if (!noMoreData) {
-            pull_to_refresh.setImageResource(R.drawable.ic_upward_pull_24)
-            pull_to_refresh.visibility = VISIBLE
-            motion_layout.visibility = VISIBLE
-            motion_layout.setTransition(R.id.pull_up_to_load_animate)
-            motion_layout.transitionToState(R.id.start)
+            pullToRefresh?.setImageResource(R.drawable.ic_upward_pull_24)
+            pullToRefresh?.visibility = VISIBLE
+            motionLayout?.visibility = VISIBLE
+            motionLayout?.setTransition(R.id.pull_up_to_load_animate)
+            motionLayout?.transitionToState(R.id.start)
         } else {
-            motion_layout.transitionToState(R.id.no_more_data)
+            motionLayout?.transitionToState(R.id.no_more_data)
         }
     }
 

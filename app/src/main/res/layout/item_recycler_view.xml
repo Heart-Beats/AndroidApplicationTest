@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="15dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -16,5 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
+        app:strokeColor="@color/colorAccent"
+        app:shapeAppearanceOverlay="@style/circleImageShape"
+        app:strokeWidth="1dp"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,25 +11,6 @@ import android.util.Log
  */
 
 object CommUtils {
-    /**
-     *   仅包含字母和数字, 用户名合法规则
-     *   minLength：匹配字符最小长度
-     *   maxLength：匹配字符最大长度
-     */
-    fun isLetterAndDigit(str: String, minLength: Int = 6, maxLength: Int = 20): Boolean {
-        val regex = """^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9]{$minLength,$maxLength}$"""
-        return str.matches(regex.toRegex())
-    }
-
-    /**
-     *   至少包含大小写字母和数字三种，密码合法规则
-     *   minLength：匹配字符最小长度
-     *   maxLength：匹配字符最大长度
-     * */
-    fun isMatchPasswordRule(str: String, minLength: Int = 6, maxLength: Int = 20): Boolean {
-        val regex = """^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{$minLength,$maxLength}$"""
-        return str.matches(regex.toRegex())
-    }
 
     /**
      * get App versionName

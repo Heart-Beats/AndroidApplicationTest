@@ -1,7 +1,8 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!--使用MaterialComponents主题后，默认所有的Button都变为MaterialButton，默认背景色是主题色 -->
+    <!--主题后边加个Bridge，只对material下的组件生效，而对以前的Button不生效-->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -14,6 +15,11 @@
         <!--设置横屏时候的最小宽度-->
         <item name="android:windowMinWidthMajor">@dimen/custom_dialog_fragment_min_width_major</item>
         <item name="android:windowBackground">@drawable/shape_dialog_radius12_bg</item>
+    </style>
+
+    <style name="circleImageShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
 </resources>

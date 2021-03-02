@@ -4,7 +4,7 @@ import android.app.Application
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
-import com.jkj.huilaidian.merchant.widget.refresh.CommonRefreshHeader
+import com.example.zhanglei.myapplication.widgets.refresh.CommonRefreshHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**

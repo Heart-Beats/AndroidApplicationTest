@@ -14,22 +14,28 @@ import android.net.NetworkRequest
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
-import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.zhanglei.myapplication.*
 import com.example.zhanglei.myapplication.MyApplication.Companion.getInstance
+import com.example.zhanglei.myapplication.adapters.BaseAbstractAdapter
+import com.example.zhanglei.myapplication.databinding.FragmentMainBinding
+import com.example.zhanglei.myapplication.entities.MainMenu
+import com.example.zhanglei.myapplication.entities.mainMenuList
+import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
 import com.hl.downloader.DownloadListener
 import com.hl.downloader.DownloadManager.cancelDownload
 import com.hl.downloader.DownloadManager.pauseDownload
 import com.hl.downloader.DownloadManager.resumeDownLoad
 import com.hl.downloader.DownloadManager.startDownLoad
-import kotlinx.android.synthetic.main.fragment_main.*
 import java.lang.Math.PI
 import java.util.*
 import kotlin.math.cos
@@ -39,28 +45,20 @@ import kotlin.math.sin
 /**
  * @author 张磊
  */
-class MainFragment : BaseFragment(), View.OnClickListener {
-    private var myView: MyView? = null
-    private var startAnimation: Button? = null
-    private var pictureSelect: Button? = null
+class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
+
     private var myAnimatorSet: MyAnimatorSet? = null
-    private var playVideo: Button? = null
-    private var download: Button? = null
 
-    override val layoutResId: Int
-        get() = R.layout.fragment_main
+    private var myView: MyView? = viewBinding?.myView
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): FragmentMainBinding {
+        return FragmentMainBinding.inflate(inflater, container, false)
+    }
+
+    override fun FragmentMainBinding.onViewCreated(savedInstanceState: Bundle?) {
         if (toolbar != null) {
             toolbar?.title = "主页"
         }
-        myView = view.findViewById(R.id.my_view)
-        startAnimation = view.findViewById(R.id.start_animation)
-        pictureSelect = view.findViewById(R.id.picture_select)
-        playVideo = view.findViewById(R.id.play_video)
-        myAnimatorSet = MyAnimatorSet()
-        download = view.findViewById(R.id.download)
         val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val request = NetworkRequest.Builder()
                 .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
@@ -77,11 +75,8 @@ class MainFragment : BaseFragment(), View.OnClickListener {
                 pauseDownload()
             }
         })
-    }
 
-    override fun onStart() {
-        super.onStart()
-        myView?.setOnClickListener(object : ClickHelperListener() {
+        this.myView.setOnClickListener(object : ClickHelperListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             override fun onDoubleClick(v: View) {
                 myView?.fixedColor()
@@ -94,18 +89,31 @@ class MainFragment : BaseFragment(), View.OnClickListener {
                 myAnimatorSet?.resume()
             }
         })
-        startAnimation?.setOnClickListener(this)
-        pictureSelect?.setOnClickListener(this)
-        playVideo?.setOnClickListener(this)
-        download?.setOnClickListener(this)
 
-        goto_notify_fragment?.setOnClickListener(this)
-        goto_hook_fragment?.setOnClickListener(this)
-
-        download?.setOnLongClickListener {
-            cancelDownload()
-            true
+        this.menuRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        this.menuRecyclerView.adapter = object : BaseAbstractAdapter<MainMenu>(mainMenuList) {
+            override val itemLayout: Int
+                get() = R.layout.item_main_menu
+        }.apply {
+            this.onViewHolderInitListener = { viewHolder, _, data ->
+                val itemView = viewHolder.itemView
+                if (data is MainMenu.DownLoadAction) {
+                    itemView.setOnLongClickListener {
+                        cancelDownload()
+                        true
+                    }
+                }
+                itemView.setOnClickListener {
+                    onClick(data)
+                }
+            }
+            this.onViewHolderInitListener = { viewHolder, _, data ->
+                val button = viewHolder.getView<com.google.android.material.button.MaterialButton>(R.id.main_menu_button)
+                button?.icon = data?.icon?.run { ContextCompat.getDrawable(requireContext(), this) }
+                button?.text = data?.title
+            }
         }
+
     }
 
     private fun setScaleAnimation() {
@@ -228,16 +236,20 @@ class MainFragment : BaseFragment(), View.OnClickListener {
         private const val REQUEST_CODE = 1
     }
 
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.start_animation -> {
+    private fun onClick(data: MainMenu?) {
+        when (data) {
+            is MainMenu.AnimateAction -> {
                 setScaleAnimation()
                 setRotateAnimation()
                 myAnimatorSet?.start()
             }
-            R.id.picture_select -> requestPermission()
-            R.id.play_video -> findNavController().navigate(R.id.action_mainFragment_to_videoFragment, null, null)
-            R.id.download -> {
+            is MainMenu.PictureAction -> {
+                requestPermission()
+            }
+            is MainMenu.VideoAction -> {
+                findNavController().navigate(R.id.action_mainFragment_to_videoFragment, null, null)
+            }
+            is MainMenu.DownLoadAction -> {
                 val downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk"
                 // String downloadUrl = "https://images.pexels.com/photos/4993088/pexels-photo-4993088.jpeg?cs=srgb&dl=pexels-rachel-claire-4993088.jpg&fm=jpg";
                 startDownLoad(getInstance(), downloadUrl, object : DownloadListener() {
@@ -246,9 +258,13 @@ class MainFragment : BaseFragment(), View.OnClickListener {
                     }
                 }, 3)
             }
-            R.id.goto_notify_fragment -> findNavController().navigate(R.id.action_mainFragment_to_notifyFragment)
-            R.id.goto_hook_fragment -> findNavController().navigate(R.id.action_mainFragment_to_hookFragment)
-            else -> {
+            is MainMenu.NotificationAction -> {
+                findNavController().navigate(R.id.action_mainFragment_to_notifyFragment)
+            }
+            is MainMenu.HookAction -> {
+                findNavController().navigate(R.id.action_mainFragment_to_hookFragment)
+            }
+            is MainMenu.UniAppAction -> {
             }
         }
     }

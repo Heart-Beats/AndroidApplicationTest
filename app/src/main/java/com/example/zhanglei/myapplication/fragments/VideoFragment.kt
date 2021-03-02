@@ -3,24 +3,26 @@ package com.example.zhanglei.myapplication.fragments
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.elvishew.xlog.XLog
-import com.example.zhanglei.myapplication.R
+import com.example.zhanglei.myapplication.databinding.FragmentVideoBinding
+import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
 import com.example.zhanglei.myapplication.utils.initPlayer
 import com.example.zhanglei.myapplication.utils.reqPermissions
 import com.example.zhanglei.myapplication.widgets.MyStandardGSYVideoPlayer
-import kotlinx.android.synthetic.main.fragment_video.*
 
-class VideoFragment : BaseFragment() {
+class VideoFragment : ViewBindingBaseFragment<FragmentVideoBinding>() {
 
-	override val layoutResId: Int
-		get() = R.layout.fragment_video
+	private var video_player: MyStandardGSYVideoPlayer? = null
 
+	override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): FragmentVideoBinding {
+		return FragmentVideoBinding.inflate(inflater, container, false)
+	}
 
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
+	override fun FragmentVideoBinding.onViewCreated(savedInstanceState: Bundle?) {
 		toolbar?.title = "视频播放测试"
 
 		// 设置 Activity 根据传感器变化
@@ -29,8 +31,8 @@ class VideoFragment : BaseFragment() {
 		val url = "https://shanhao-app-1259195890.cos.ap-shanghai.myqcloud.com/app-resources/merchant/videos.voice-manual/sample.mp4"
 		// val url = "http://7xjmzj.com1.z0.glb.clouddn.com/20171026175005_JObCxCE2.mp4"
 
-		initPlayer(video_player, url)
-
+		this@VideoFragment.video_player = this.videoPlayer
+		initPlayer(videoPlayer, url)
 	}
 
 	private fun initPlayer(videoPlayer: MyStandardGSYVideoPlayer, url: String) {
@@ -55,12 +57,12 @@ class VideoFragment : BaseFragment() {
 
 	private fun back() {
 		//先返回正常状态
-		if (video_player.orientationUtils?.screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE ||
-				video_player.isIfCurrentIsFullscreen) {
-			video_player.onBackFullscreen()
+		if (video_player?.orientationUtils?.screenType == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE ||
+				video_player?.isIfCurrentIsFullscreen == true) {
+			video_player?.onBackFullscreen()
 		} else {
 			//释放所有
-			video_player.setVideoAllCallBack(null)
+			video_player?.setVideoAllCallBack(null)
 			findNavController().popBackStack()
 		}
 	}
