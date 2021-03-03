@@ -13,6 +13,7 @@ import androidx.viewbinding.ViewBinding
 abstract class ViewBindingBaseFragment<T : ViewBinding> : BaseFragment() {
 
     protected var viewBinding: T? = null
+        private set
 
     override val layoutResId: Int?
         get() = null

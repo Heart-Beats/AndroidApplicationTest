@@ -2,6 +2,7 @@ package com.example.zhanglei.myapplication
 
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.IdRes
@@ -19,11 +20,13 @@ import org.jetbrains.anko.firstChild
 
 class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
 
-    override val viewBinding: ActivityMainBinding
-        get() = ActivityMainBinding.inflate(layoutInflater)
 
     private fun getFragmentFragmentById(@IdRes id: Int): Fragment? {
         return supportFragmentManager.findFragmentById(id)
+    }
+
+    override fun createViewBinding(inflater: LayoutInflater): ActivityMainBinding {
+        return ActivityMainBinding.inflate(layoutInflater)
     }
 
     override fun ActivityMainBinding.onViewCreated(savedInstanceState: Bundle?) {
@@ -56,6 +59,10 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
         }
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        println(ev)
+        return super.dispatchTouchEvent(ev)
+    }
 
     private fun BottomNavigationView.initTouchHandle() {
 

@@ -1,6 +1,7 @@
 package com.example.zhanglei.myapplication.activities.base
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.viewbinding.ViewBinding
 
@@ -14,7 +15,10 @@ abstract class ViewBindingBaseActivity<T : ViewBinding> : BaseActivity() {
      * ViewBinding 的初始化必须在 FragmentActivity 的 onCreate(savedInstanceState) 之后，
      *    之前获取到的 LayoutInflater 填充布局可能会出错
      */
-    abstract val viewBinding: T
+    protected var viewBinding: T? = null
+        private set
+
+    abstract fun createViewBinding(inflater: LayoutInflater): T
 
     abstract fun T.onViewCreated(savedInstanceState: Bundle?)
 
@@ -22,10 +26,13 @@ abstract class ViewBindingBaseActivity<T : ViewBinding> : BaseActivity() {
         get() = null
 
     override fun getLayoutView(): View {
-        return viewBinding.root
+        createViewBinding(layoutInflater).run {
+            viewBinding = this
+            return this.root
+        }
     }
 
     override fun onViewCreated(savedInstanceState: Bundle?) {
-        viewBinding.onViewCreated(savedInstanceState)
+        viewBinding?.onViewCreated(savedInstanceState)
     }
 }
