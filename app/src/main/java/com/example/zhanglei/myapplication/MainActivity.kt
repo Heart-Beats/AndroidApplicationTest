@@ -59,11 +59,6 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
         }
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        println(ev)
-        return super.dispatchTouchEvent(ev)
-    }
-
     private fun BottomNavigationView.initTouchHandle() {
 
         //拦截 bottomNavigationMenuView 的点击与长按处理（消除长按的 toast 提示，且长按处理与点击处理一致）

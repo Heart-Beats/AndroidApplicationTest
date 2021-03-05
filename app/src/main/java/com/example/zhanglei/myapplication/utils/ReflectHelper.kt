@@ -32,4 +32,19 @@ class ReflectHelper<T>(private val clazz: Class<T>) {
         }
     }
 
+    fun callMethod(obj: T, methodName: String, vararg params: Any): Any? {
+        return try {
+            val method = clazz.getDeclaredMethod(methodName, *params.map { it::class.java }.toTypedArray())
+            method.isAccessible = true
+            val result = when {
+                params.isEmpty() -> method.invoke(obj) //无参数时不可直接调用 params, 因为 kotlin 中这也是个对象
+                else -> method.invoke(obj, params)
+            }
+            method.isAccessible = false
+            result
+        } catch (e: Exception) {
+            XLog.e(e)
+            null
+        }
+    }
 }

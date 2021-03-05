@@ -6,15 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".fragments.MainFragment">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.example.zhanglei.myapplication.MyView
         android:id="@+id/my_view"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +32,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
+        android:padding="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_view"
-        tools:listitem="@layout/item_main_menu"/>
+        tools:listitem="@layout/item_main_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

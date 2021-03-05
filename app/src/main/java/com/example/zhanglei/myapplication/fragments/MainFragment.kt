@@ -31,6 +31,7 @@ import com.example.zhanglei.myapplication.databinding.FragmentMainBinding
 import com.example.zhanglei.myapplication.entities.MainMenu
 import com.example.zhanglei.myapplication.entities.mainMenuList
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
+import com.google.android.material.button.MaterialButton
 import com.hl.downloader.DownloadListener
 import com.hl.downloader.DownloadManager.cancelDownload
 import com.hl.downloader.DownloadManager.pauseDownload
@@ -47,17 +48,28 @@ import kotlin.math.sin
  */
 class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
 
+    private companion object {
+        private const val TAG = "MainActivity"
+        private var permissionsList = arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.INTERNET,
+                Manifest.permission.READ_PHONE_STATE
+        )
+        private const val REQUEST_CODE = 1
+    }
+
     private var myAnimatorSet: MyAnimatorSet? = null
 
-    private var myView: MyView? = viewBinding?.myView
+    private var myView: MyView? = null
 
     override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): FragmentMainBinding {
         return FragmentMainBinding.inflate(inflater, container, false)
     }
 
     override fun FragmentMainBinding.onViewCreated(savedInstanceState: Bundle?) {
-        if (toolbar != null) {
-            toolbar?.title = "主页"
+        if (this@MainFragment.toolbar != null) {
+            this@MainFragment.toolbar?.title = "主页"
         }
         val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val request = NetworkRequest.Builder()
@@ -76,6 +88,8 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
             }
         })
 
+        this@MainFragment.myView = viewBinding?.myView
+        this@MainFragment.myAnimatorSet = MyAnimatorSet()
         this.myView.setOnClickListener(object : ClickHelperListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             override fun onDoubleClick(v: View) {
@@ -95,20 +109,23 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
             override val itemLayout: Int
                 get() = R.layout.item_main_menu
         }.apply {
+
             this.onViewHolderInitListener = { viewHolder, _, data ->
-                val itemView = viewHolder.itemView
-                if (data is MainMenu.DownLoadAction) {
-                    itemView.setOnLongClickListener {
-                        cancelDownload()
-                        true
+                viewHolder.getView<MaterialButton>(R.id.main_menu_button)?.run {
+                    setOnClickListener {
+                        onClick(data)
+                    }
+
+                    if (data is MainMenu.DownLoadAction) {
+                        setOnLongClickListener {
+                            cancelDownload()
+                            true
+                        }
                     }
                 }
-                itemView.setOnClickListener {
-                    onClick(data)
-                }
             }
-            this.onViewHolderInitListener = { viewHolder, _, data ->
-                val button = viewHolder.getView<com.google.android.material.button.MaterialButton>(R.id.main_menu_button)
+            this.onBindItemListener = { viewHolder, data ->
+                val button = viewHolder.getView<MaterialButton>(R.id.main_menu_button)
                 button?.icon = data?.icon?.run { ContextCompat.getDrawable(requireContext(), this) }
                 button?.text = data?.title
             }
@@ -128,7 +145,9 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
         animatorY.setFloatValues(0.1f)
         animatorY.duration = 5000
         animatorY.target = myView
+        Log.d(TAG, "setScaleAnimation: myView == $myView")
         myAnimatorSet?.setPlayWithAnimator(animatorX, animatorY)
+        myAnimatorSet?.start()
     }
 
     private fun setRotateAnimation() {
@@ -146,11 +165,6 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
         animator2.interpolator = LinearInterpolator()
         animator2.duration = 500
         animator2.target = myView
-        val animator3 = ObjectAnimator()
-        animator3.setPropertyName("translationX")
-        animator3.interpolator = LinearInterpolator()
-        animator3.duration = 500
-        animator3.target = myView
         val startPoint = Point(0f, 0f)
         val endPoint = Point(200f, 200f)
         val animator1 = ValueAnimator.ofObject(PointEvaluator(), startPoint, endPoint)
@@ -225,23 +239,11 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
         }
     }
 
-    companion object {
-        private const val TAG = "MainActivity"
-        private var permissionsList = arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.INTERNET,
-                Manifest.permission.READ_PHONE_STATE
-        )
-        private const val REQUEST_CODE = 1
-    }
-
     private fun onClick(data: MainMenu?) {
         when (data) {
             is MainMenu.AnimateAction -> {
                 setScaleAnimation()
                 setRotateAnimation()
-                myAnimatorSet?.start()
             }
             is MainMenu.PictureAction -> {
                 requestPermission()

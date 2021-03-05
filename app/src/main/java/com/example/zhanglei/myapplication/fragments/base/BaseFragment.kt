@@ -2,6 +2,7 @@ package com.example.zhanglei.myapplication.fragments.base
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,9 +12,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
+import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.utils.traverseFindFirstChildView
 
 /**
@@ -61,6 +64,7 @@ abstract class BaseFragment : Fragment() {
 
 		toolbar = inflateView?.traverseFindFirstChildView(Toolbar::class.java)?.apply {
 			this.setTitleTextColor(Color.WHITE)
+			this.background = ColorDrawable(ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark))
 		}
 		return inflateView
 	}

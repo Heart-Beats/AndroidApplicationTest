@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.zhanglei.myapplication.R
@@ -113,7 +114,7 @@ class SecondFragment : ViewBindingBaseFragment<FragmentSecondBinding>() {
 				}
 			}
 		}
-		recyclerView.layoutManager = LinearLayoutManager(requireContext())
+		recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
 		lifecycle.addObserver(object : LifecycleEventObserver {
 			override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
