@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @Author  张磊  on  2020/11/16 at 12:33
  * Email: 913305160@qq.com
  */
-abstract class BaseAbstractAdapter<T>(var data: List<T>) : RecyclerView.Adapter<BaseAbstractAdapter<T>.ViewHolder>() {
+abstract class BaseAbstractAdapter<T>(private var data: List<T>) : RecyclerView.Adapter<BaseAbstractAdapter<T>.ViewHolder>() {
 
     var headerView: View? = null
     var footerView: View? = null
@@ -19,7 +19,7 @@ abstract class BaseAbstractAdapter<T>(var data: List<T>) : RecyclerView.Adapter<
     var onViewHolderInitListener: (viewHolder: ViewHolder, position: Int, data: T?) -> Unit = { _, _, _ -> }
     var onBindItemListener: (viewHolder: ViewHolder, data: T?) -> Unit = { _, _ -> }
 
-    inner class ViewHolder(itemView: View, val viewType: Int) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, private val viewType: Int) : RecyclerView.ViewHolder(itemView) {
 
         /**
          * 该属性需要在数据改变时重新设置 ViewHolder 对应的数据

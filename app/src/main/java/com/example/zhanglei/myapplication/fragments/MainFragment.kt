@@ -31,12 +31,14 @@ import com.example.zhanglei.myapplication.databinding.FragmentMainBinding
 import com.example.zhanglei.myapplication.entities.MainMenu
 import com.example.zhanglei.myapplication.entities.mainMenuList
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
+import com.example.zhanglei.myapplication.utils.reqPermissions
 import com.google.android.material.button.MaterialButton
 import com.hl.downloader.DownloadListener
 import com.hl.downloader.DownloadManager.cancelDownload
 import com.hl.downloader.DownloadManager.pauseDownload
 import com.hl.downloader.DownloadManager.resumeDownLoad
 import com.hl.downloader.DownloadManager.startDownLoad
+import io.dcloud.feature.sdk.DCUniMPSDK
 import java.lang.Math.PI
 import java.util.*
 import kotlin.math.cos
@@ -93,17 +95,17 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
         this.myView.setOnClickListener(object : ClickHelperListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             override fun onDoubleClick(v: View) {
-                myView?.fixedColor()
+                myView.fixedColor()
                 myAnimatorSet?.pause()
             }
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             override fun onSingleClick(v: View) {
-                myView?.changeColor()
+                myView.changeColor()
                 myAnimatorSet?.resume()
             }
         })
-
+        BuildConfig.APPLICATION_ID
         this.menuRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         this.menuRecyclerView.adapter = object : BaseAbstractAdapter<MainMenu>(mainMenuList) {
             override val itemLayout: Int
@@ -267,6 +269,24 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                 findNavController().navigate(R.id.action_mainFragment_to_hookFragment)
             }
             is MainMenu.UniAppAction -> {
+                reqPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
+                        allGrantedAction = {
+                            val appid = "__UNI__0773E11"
+                            releaseAndStartApp(appid, "/mnt/sdcard/__UNI__0773E11.wgt")
+                        }, deniedAction = {
+                    Toast.makeText(requireContext(), "你拒绝了相关权限", Toast.LENGTH_SHORT).show()
+                })
+            }
+        }
+    }
+
+    private fun releaseAndStartApp(appid: String, wgtPath: String) {
+        uniAppSdk?.releaseWgtToRunPathFromePath(appid, wgtPath) { code, pArgs ->
+            println("code = [${code}], pArgs = [${pArgs}]")
+            if (code == 1 && DCUniMPSDK.getInstance().isExistsApp(appid)) {
+                DCUniMPSDK.getInstance().startApp(requireActivity(), appid)
+            } else {
+                println("isExistsApp = false")
             }
         }
     }

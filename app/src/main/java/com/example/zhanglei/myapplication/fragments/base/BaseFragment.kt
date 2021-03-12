@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import com.example.zhanglei.myapplication.R
+import com.example.zhanglei.myapplication.utils.getCurrentDestination
 import com.example.zhanglei.myapplication.utils.traverseFindFirstChildView
 
 /**
@@ -81,6 +82,10 @@ abstract class BaseFragment : Fragment() {
 		super.onActivityCreated(savedInstanceState)
 		Log.d(TAG, "onActivityCreated =====> $this")
 
+		if (isNavigatePage()) {
+			requireActivity().window.navigationBarColor = getNavigationBarColor()
+		}
+
 		requireActivity().onBackPressedDispatcher.addCallback(owner = viewLifecycleOwner, onBackPressed = onBackPressed())
 
 		//Activity 创建之后设置toolbar
@@ -118,6 +123,13 @@ abstract class BaseFragment : Fragment() {
 				}
 			}
 		}
+	}
+
+	/**
+	 * 该方法可重写更改导航条/导航栏颜色
+	 */
+	protected open fun getNavigationBarColor(): Int {
+		return Color.WHITE
 	}
 
 	override fun onStart() {
@@ -164,5 +176,11 @@ abstract class BaseFragment : Fragment() {
 			}
 		}
 	}
+
+	private fun isNavigatePage(): Boolean {
+		val currentDestination = getCurrentDestination()
+		return currentDestination is FragmentNavigator.Destination && this.javaClass.name == currentDestination.className
+	}
+
 
 }

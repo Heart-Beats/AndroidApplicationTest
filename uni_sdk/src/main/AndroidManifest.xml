@@ -1,4 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.hl.unisdk"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.hl.unisdk"
     >
     <!-- Barcode(二维码)  begin -->
     <uses-permission android:name="android.permission.CAMERA" />
@@ -18,12 +20,15 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
     <!-- Maps(地图) end -->
 
 
@@ -38,7 +43,6 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <!-- Share - 微信分享 -->
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
@@ -56,7 +60,8 @@
 
     <!-- Statistic(统计)  begin -->
     <!-- Statistic - 友盟统计 -->
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <!-- Statistic(统计)  end -->
@@ -76,8 +81,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -85,8 +88,6 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
-    <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -132,7 +133,7 @@
         <!-- QQ 分享 配置和授权登陆相同 -->
         <meta-data
             android:name="QQ_APPID"
-            android:value="1104455702" />
+            android:value="${QQ_APPID}" />
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -144,7 +145,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="1104455702" />
+                <data android:scheme="${QQ_APPID}" />
             </intent-filter>
         </activity>
         <activity
@@ -158,38 +159,23 @@
         <!-- 官方网站：http://open.weibo.com/ -->
         <meta-data
             android:name="SINA_REDIRECT_URI"
-            android:value="http://www.dcloud.io/" />
+            android:value="${SINA_REDIRECT_URI}" />
         <meta-data
             android:name="SINA_SECRET"
-            android:value="b8fa3ec4b7e47a152044d9e8265cf593" />
+            android:value="${SINA_SECRET}" />
         <meta-data
             android:name="SINA_APPKEY"
-            android:value="_3662743235" />
+            android:value="${SINA_APPKEY}" />
         <!-- 分享 -->
 
 
-        <!-- Share - 腾讯微博分享 -->
-        <!-- 官方网站：http://dev.t.qq.com/ -->
-        <meta-data
-            android:name="TENCENT_REDIRECT_URI"
-            android:value="%腾讯微博开放平台申请应用配置的回调地址%" />
-        <meta-data
-            android:name="TENCENT_SECRET"
-            android:value="%腾讯微博开放平台申请应用的Secret%" />
-        <meta-data
-            android:name="TENCENT_APPKEY"
-            android:value="_%腾讯微博开放平台申请应用的Appkey，注意前面要添加下划线%" />
-
-        <activity
-            android:name="io.dcloud.share.tencent.WebAuthorize"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <!-- 微信分享 配置begin -->
+        <!-- 微信分享/支付 配置begin -->
         <meta-data
             android:name="WX_SECRET"
-            android:value="fdc6251421d3d688a563b4f00dd540e7" />
+            android:value="${WX_SECRET}" />
         <meta-data
             android:name="WX_APPID"
-            android:value="wx0411fa6a39d61297" />
+            android:value="${WX_APPID}" />
 
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -201,7 +187,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:scheme="wx0411fa6a39d61297" />
+                <data android:scheme="${WX_APPID}" />
             </intent-filter>
         </activity>
         <!-- 微信分享 配置 end -->
@@ -212,21 +198,19 @@
             android:exported="true"
             android:launchMode="singleTop" />
 
-        <meta-data
-            android:name="WX_APPID"
-            android:value="wx0411fa6a39d61297" />
-
         <!-- 微信支付配置end -->
+
+
         <!-- 小米分享 -->
         <meta-data
             android:name="MIUI_APPID"
-            android:value="_%小米分享的APPID%" />
+            android:value="${MIUI_APPID}" />
         <meta-data
             android:name="MIUI_APPSECRET"
-            android:value="%小米分享的appSecret%" />
+            android:value="${MIUI_APPSECRET}" />
         <meta-data
             android:name="MIUI_REDIRECT_URI"
-            android:value="%小米分享的回调地址%" />
+            android:value="${MIUI_REDIRECT_URI}" />
 
         <activity android:name="com.xiaomi.account.openauth.AuthorizeActivity" />
         <!-- 小米分享 end -->
@@ -234,13 +218,13 @@
         <!--百度语音识别 start-->
         <meta-data
             android:name="com.baidu.speech.APP_ID"
-            android:value="11770490" />
+            android:value="${BAIDU_APP_ID}" />
         <meta-data
             android:name="com.baidu.speech.API_KEY"
-            android:value="cDFRHjbhBklzS1ZKFBnz9cHg" />
+            android:value="${BAIDU_API_KEY}" />
         <meta-data
             android:name="com.baidu.speech.SECRET_KEY"
-            android:value="vZK4rC7ueQTMrhavm3qVlnGicPTeUCEr" />
+            android:value="${BAIDU_SECRET_KEY}" />
 
         <service
             android:name="com.baidu.speech.VoiceRecognitionService"

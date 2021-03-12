@@ -41,7 +41,7 @@ android {
 dependencies {
 
     //导入SDK相关依赖jar、aar
-    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs', exclude:'media-release.aar')
     //必须添加的依赖
     api 'com.alibaba:fastjson:1.1.46.android'
     api 'com.facebook.fresco:fresco:1.13.0'

@@ -8,6 +8,7 @@ apply {
 	plugin("kotlin-android")
 	plugin("kotlin-kapt")
 	plugin("kotlin-parcelize")
+	plugin("androidx.navigation.safeargs.kotlin")
 	from("../app_common.gradle.kts")
 }
 
@@ -39,6 +40,21 @@ android {
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		// Required when setting minSdkVersion to 20 or lower（支持请求比minSdkVersion更高的API）
 		multiDexEnabled = true
+
+		this.setManifestPlaceholders(mapOf(
+				"QQ_APPID" to "101939940",
+				"SINA_REDIRECT_URI" to "",
+				"SINA_SECRET" to "",
+				"SINA_APPKEY" to "",
+				"WX_SECRET" to "",
+				"WX_APPID" to "",
+				"MIUI_APPID" to "",
+				"MIUI_APPSECRET" to "",
+				"MIUI_REDIRECT_URI" to "",
+				"BAIDU_APP_ID" to "",
+				"BAIDU_API_KEY" to "",
+				"BAIDU_SECRET_KEY" to ""
+		))
 	}
 	buildTypes {
 		getByName("release") {
@@ -69,13 +85,15 @@ android {
 	productFlavors {
 		create("MyAppT") {
 			dimension = "MyApp"
-			applicationId = "com.example.zhanglei.myapplication.test"
 			resValue("string", "app_name", "我的应用测试")
+			applicationIdSuffix = ".test"
+			resConfigs()
+			setManifestPlaceholders(mapOf("apk.applicationId" to (applicationId ?: "")))
 		}
 		create("MyAppP") {
 			dimension = "MyApp"
-			applicationId = "com.example.zhanglei.myapplication"
 			resValue("string", "app_name", "我的应用")
+			setManifestPlaceholders(mapOf("apk.applicationId" to (applicationId ?: "")))
 		}
 	}
 
@@ -106,9 +124,11 @@ android {
 // }
 
 dependencies {
-	api(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+	api(fileTree("dir" to "libs", "include" to listOf("*.jar")))
 	implementation("androidx.legacy:legacy-support-v4:1.0.0")
 	implementation("com.google.android.material:material:1.3.0-alpha04")
+	implementation(project(mapOf("path" to ":uni_sdk")))
+	implementation(project(mapOf("path" to ":method-proxy-library")))
 
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.1")
 	testImplementation("junit:junit:4.13.2")
@@ -154,8 +174,10 @@ dependencies {
 
 	//视频播放库
 	implementation("com.shuyu:gsyVideoPlayer-java:7.1.6")
-	//是否需要ExoPlayer模式
-	implementation("com.shuyu:GSYVideoPlayer-exo2:7.1.6")
+	// 是否需要ExoPlayer模式
+	implementation("com.shuyu:GSYVideoPlayer-exo2:7.1.6") {
+		this.isTransitive = false
+	}
 
 	//根据你的需求ijk模式的so
 	implementation("com.shuyu:gsyVideoPlayer-armv5:7.1.6")
@@ -170,5 +192,4 @@ dependencies {
 	implementation("com.contrarywind:Android-PickerView:4.1.9")
 
 	implementation("me.weishu:epic:0.11.0")
-	implementation(project(mapOf("path" to ":method-proxy-library")))
 }

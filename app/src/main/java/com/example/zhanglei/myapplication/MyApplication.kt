@@ -6,12 +6,17 @@ import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.widgets.refresh.CommonRefreshHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import io.dcloud.common.util.RuningAcitvityUtil
+import io.dcloud.feature.sdk.DCSDKInitConfig
+import io.dcloud.feature.sdk.DCUniMPSDK
+import io.dcloud.feature.sdk.MenuActionSheetItem
+
 
 /**
  * @Author  张磊  on  2020/09/01 at 12:39
  * Email: 913305160@qq.com
  */
-class MyApplication:Application() {
+class MyApplication : Application() {
 
 	companion object {
 		private lateinit var mApplication: Application
@@ -25,21 +30,37 @@ class MyApplication:Application() {
 		super.onCreate()
 		mApplication = this
 
-		val logConfig = LogConfiguration.Builder()
-				.logLevel(if (isEnvTDebug()) {
-					LogLevel.ALL
-				} else {
-					LogLevel.INFO
-				})
-				.st(1)
-				.addInterceptor {
-					//......
-					it
-				}
-				.build()
-		XLog.init(logConfig)
+		// 非小程序进程
+		if (!RuningAcitvityUtil.getAppName(baseContext).contains("io.dcloud.unimp")) {
+			//请在此处初始化其他三方SDK
+			// 非小程序进程初始化其他三方SDK
+			val logConfig = LogConfiguration.Builder()
+					.logLevel(if (isEnvTDebug()) {
+						LogLevel.ALL
+					} else {
+						LogLevel.INFO
+					})
+					.st(1)
+					.addInterceptor {
+						//......
+						it
+					}
+					.build()
+			XLog.init(logConfig)
+			initRefreshLayout()
+		}
 
-		initRefreshLayout()
+		initUniApp {
+			val item = MenuActionSheetItem("关于", "gy")
+			val sheetItems: MutableList<MenuActionSheetItem> = ArrayList()
+			sheetItems.add(item)
+
+			this.setCapsule(true)
+					.setMenuDefFontSize("16px")
+					.setMenuDefFontColor("#ff00ff")
+					.setMenuDefFontWeight("normal")
+					.setMenuActionSheetItems(sheetItems)
+		}
 	}
 
 	private fun isEnvTDebug(): Boolean {
@@ -80,4 +101,18 @@ class MyApplication:Application() {
 		//     SimpleLottieRefreshFooter(context)
 		// }
 	}
+
+	private fun initUniApp(uniSDKInitConfigBuilder: DCSDKInitConfig.Builder.() -> Unit) {
+		val config = DCSDKInitConfig.Builder().apply(uniSDKInitConfigBuilder).build()
+		DCUniMPSDK.getInstance().initialize(this, config) {
+			if (it) {
+				println("初始化 UniApp 成功")
+			} else {
+				println("初始化 UniApp 失败")
+			}
+		}
+	}
 }
+
+val uniAppSdk = if (DCUniMPSDK.getInstance().isInitialize) DCUniMPSDK.getInstance() else null
+
