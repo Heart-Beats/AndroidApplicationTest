@@ -114,5 +114,7 @@ class MyApplication : Application() {
 	}
 }
 
-val uniAppSdk = if (DCUniMPSDK.getInstance().isInitialize) DCUniMPSDK.getInstance() else null
+val uniAppSdk by lazy {
+	if (DCUniMPSDK.getInstance().isInitialize) DCUniMPSDK.getInstance() else null
+}
 

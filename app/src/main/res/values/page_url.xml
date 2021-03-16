@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="web_http_page" type="string">http://url={url}</item>
+    <item name="web_https_page" type="string">https://url={url}</item>
+
+    <item name="global_goto_uni_app_page" type="string">
+        native://www.huilaidian.com.cn/uniapp?appId={appId}&amp;downloadUrl={wgtDownloadUrlBase64}
+    </item>
+</resources>

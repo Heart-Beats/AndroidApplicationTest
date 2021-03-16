@@ -13,8 +13,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.zhanglei.myapplication.activities.base.ViewBindingBaseActivity
 import com.example.zhanglei.myapplication.databinding.ActivityMainBinding
-import com.example.zhanglei.myapplication.utils.MyNavHostFragment
-import com.example.zhanglei.myapplication.utils.NavAnimations
+import com.example.zhanglei.myapplication.utils.navigationutil.MyNavHostFragment
+import com.example.zhanglei.myapplication.utils.navigationutil.NavAnimations
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,11 +33,16 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
 
     override fun ActivityMainBinding.onViewCreated(savedInstanceState: Bundle?) {
         val myNavHostFragment = getFragmentFragmentById(R.id.nav_host_fragment) as MyNavHostFragment
-        myNavHostFragment.setCommonNavAnimations {
-            this.enterAnim = R.anim.slide_in_right
-            this.exitAnim = R.anim.slide_out_left
-            this.popEnterAnim = R.anim.slide_in_left
-            this.popExitAnim = R.anim.slide_out_right
+        myNavHostFragment.run {
+            this.setCommonNavAnimations {
+                this.enterAnim = R.anim.slide_in_right
+                this.exitAnim = R.anim.slide_out_left
+                this.popEnterAnim = R.anim.slide_in_left
+                this.popExitAnim = R.anim.slide_out_right
+            }
+            this.setSpecialDeepLinks(deepLinksRes = listOf(
+                    R.string.global_goto_uni_app_page
+            ))
         }
 
         val findNavController = myNavHostFragment.findNavController().apply {
