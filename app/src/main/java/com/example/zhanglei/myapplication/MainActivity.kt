@@ -13,17 +13,16 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.zhanglei.myapplication.activities.base.ViewBindingBaseActivity
 import com.example.zhanglei.myapplication.databinding.ActivityMainBinding
-import com.example.zhanglei.myapplication.utils.navigationutil.MyNavHostFragment
-import com.example.zhanglei.myapplication.utils.navigationutil.NavAnimations
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.hl.utils.navigation.MyNavHostFragment
 import org.jetbrains.anko.firstChild
 
 class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
 
 
-    private fun getFragmentFragmentById(@IdRes id: Int): Fragment? {
+    private fun getFragmentById(@IdRes id: Int): Fragment? {
         return supportFragmentManager.findFragmentById(id)
     }
 
@@ -32,7 +31,7 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
     }
 
     override fun ActivityMainBinding.onViewCreated(savedInstanceState: Bundle?) {
-        val myNavHostFragment = getFragmentFragmentById(R.id.nav_host_fragment) as MyNavHostFragment
+        val myNavHostFragment = getFragmentById(R.id.nav_host_fragment) as MyNavHostFragment
         myNavHostFragment.run {
             this.setCommonNavAnimations {
                 this.enterAnim = R.anim.slide_in_right
@@ -79,10 +78,10 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
     private fun onNavDestinationSelected(item: MenuItem, navController: NavController): Boolean {
         val builder = NavOptions.Builder()
                 .setLaunchSingleTop(true)
-                .setEnterAnim(NavAnimations.NO_ANIM)
-                .setExitAnim(NavAnimations.NO_ANIM)
-                .setPopEnterAnim(NavAnimations.NO_ANIM)
-                .setPopExitAnim(NavAnimations.NO_ANIM)
+                .setEnterAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
+                .setExitAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
+                .setPopEnterAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
+                .setPopExitAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
         if (item.order and Menu.CATEGORY_SECONDARY == 0) {
             builder.setPopUpTo(findStartDestination(navController.graph)?.id ?: -1, true)
         }

@@ -1,3 +1,4 @@
+include(":utils")
 include(":uni_sdk")
 include(":method-proxy-library")
 include(":app")

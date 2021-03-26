@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="custom_dialog_fragment" parent="android:Theme.Material.Light.Dialog.NoActionBar">
+        <!--设置竖屏时候的最小宽度-->
+        <item name="android:windowMinWidthMinor">72%</item>
+        <!--设置横屏时候的最小宽度-->
+        <item name="android:windowMinWidthMajor">65%</item>
+        <item name="android:windowBackground">@drawable/shape_dialog_radius12_bg</item>
+    </style>
+</resources>

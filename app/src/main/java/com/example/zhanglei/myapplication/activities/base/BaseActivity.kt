@@ -6,8 +6,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.zhanglei.myapplication.utils.StatusBarUtil
-import com.example.zhanglei.myapplication.utils.initInsetPadding
+import com.hl.utils.StatusBarUtil
+import com.hl.utils.initInsetPadding
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -29,9 +29,9 @@ abstract class BaseActivity : AppCompatActivity() {
             setContentView(this)
         }
         initInsetPadding(top = true)
-        StatusBarUtil.transparencyBar(window)
-        StatusBarUtil.statusBarLightMode(window)
-        StatusBarUtil.setStatusBarColor(this, Color.WHITE)
+        com.hl.utils.StatusBarUtil.transparencyBar(window)
+        com.hl.utils.StatusBarUtil.statusBarLightMode(window)
+        com.hl.utils.StatusBarUtil.setStatusBarColor(this, Color.WHITE)
         onViewCreated(savedInstanceState)
     }
 

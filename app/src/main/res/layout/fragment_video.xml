@@ -7,7 +7,7 @@
     tools:context=".fragments.VideoFragment">
 
 
-    <com.example.zhanglei.myapplication.widgets.MyStandardGSYVideoPlayer
+    <com.hl.utils.widgets.MyStandardGSYVideoPlayer
         android:id="@+id/video_player"
         android:layout_width="0dp"
         android:layout_height="200dp"

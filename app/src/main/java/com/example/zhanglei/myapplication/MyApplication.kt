@@ -1,10 +1,12 @@
 package com.example.zhanglei.myapplication
 
 import android.app.Application
+import android.net.NetworkCapabilities
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.widgets.refresh.CommonRefreshHeader
+import com.hl.utils.MyNetworkCallback
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import io.dcloud.common.util.RuningAcitvityUtil
 import io.dcloud.feature.sdk.DCSDKInitConfig
@@ -48,6 +50,12 @@ class MyApplication : Application() {
 					.build()
 			XLog.init(logConfig)
 			initRefreshLayout()
+
+			MyNetworkCallback.init(this) {
+				this.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+						.addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+						.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+			}
 		}
 
 		initUniApp {

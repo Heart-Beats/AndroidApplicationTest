@@ -7,7 +7,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.zhanglei.myapplication.utils.dp
+import com.hl.utils.dp
 
 /**
  * @Author  张磊  on  2020/07/20 at 14:44

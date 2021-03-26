@@ -10,7 +10,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieCompositionFactory
 import com.airbnb.lottie.LottieDrawable
 import com.example.zhanglei.myapplication.R
-import com.example.zhanglei.myapplication.utils.traverseFindFirstChildView
+import com.hl.utils.traverseFindFirstChildView
 import com.scwang.smart.refresh.layout.api.RefreshFooter
 import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshKernel

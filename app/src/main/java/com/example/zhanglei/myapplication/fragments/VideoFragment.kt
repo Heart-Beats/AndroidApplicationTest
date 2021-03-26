@@ -10,13 +10,13 @@ import androidx.navigation.fragment.findNavController
 import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.databinding.FragmentVideoBinding
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
-import com.example.zhanglei.myapplication.utils.initPlayer
-import com.example.zhanglei.myapplication.utils.reqPermissions
-import com.example.zhanglei.myapplication.widgets.MyStandardGSYVideoPlayer
+import com.hl.utils.initPlayer
+import com.hl.utils.reqPermissions
+import com.hl.utils.widgets.MyStandardGSYVideoPlayer
 
 class VideoFragment : ViewBindingBaseFragment<FragmentVideoBinding>() {
 
-	private var video_player: MyStandardGSYVideoPlayer? = null
+	private var video_player: com.hl.utils.widgets.MyStandardGSYVideoPlayer? = null
 
 	override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): FragmentVideoBinding {
 		return FragmentVideoBinding.inflate(inflater, container, false)
@@ -35,7 +35,7 @@ class VideoFragment : ViewBindingBaseFragment<FragmentVideoBinding>() {
 		initPlayer(videoPlayer, url)
 	}
 
-	private fun initPlayer(videoPlayer: MyStandardGSYVideoPlayer, url: String) {
+	private fun initPlayer(videoPlayer: com.hl.utils.widgets.MyStandardGSYVideoPlayer, url: String) {
 		reqPermissions(allGrantedAction = {
 			videoPlayer.initPlayer(this, url)
 		})

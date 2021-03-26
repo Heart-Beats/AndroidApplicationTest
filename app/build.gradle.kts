@@ -88,12 +88,10 @@ android {
 			resValue("string", "app_name", "我的应用测试")
 			applicationIdSuffix = ".test"
 			resConfigs()
-			setManifestPlaceholders(mapOf("apk.applicationId" to (applicationId ?: "")))
 		}
 		create("MyAppP") {
 			dimension = "MyApp"
 			resValue("string", "app_name", "我的应用")
-			setManifestPlaceholders(mapOf("apk.applicationId" to (applicationId ?: "")))
 		}
 	}
 
@@ -106,22 +104,22 @@ android {
 
 }
 
-// android.applicationVariants.all {
-// 	val buildType = this.buildType.name
-//
-// 	//获取当前时间的"YYYY-MM-dd"格式。
-// 	// val createTime = new Date().format("YYYY-MM-dd", java.util.TimeZone.getTimeZone("GMT+08:00"))
-//
-// 	this.outputs.all {
-// 		if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl)
-// 			if (buildType == "release" || buildType == "debug") {
-// 				//variant.getPackageApplicationProvider().get().outputDirectory = new File("/Volumes/Morley/User/张磊")
-// 				val fileName = "myapplication-${this.versionCode}_${buildType}.apk"
-// 				println("文件名：-----------------${fileName}")
-// 				this.outputFileName = fileName
-// 			}
-// 	}
-// }
+android.applicationVariants.all {
+	val buildType = this.buildType.name
+
+	//获取当前时间的"YYYY-MM-dd"格式。
+	// val createTime = new Date().format("YYYY-MM-dd", java.util.TimeZone.getTimeZone("GMT+08:00"))
+
+	this.outputs.all {
+		if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl)
+			if (buildType == "release" || buildType == "debug") {
+				//variant.getPackageApplicationProvider().get().outputDirectory = new File("/Volumes/Morley/User/张磊")
+				val fileName = "myapplication-${this.versionCode}_${buildType}.apk"
+				println("文件名：-----------------${fileName}")
+				this.outputFileName = fileName
+			}
+	}
+}
 
 dependencies {
 	api(fileTree("dir" to "libs", "include" to listOf("*.jar")))
@@ -129,16 +127,17 @@ dependencies {
 	implementation("com.google.android.material:material:1.3.0-alpha04")
 	implementation(project(mapOf("path" to ":uni_sdk")))
 	implementation(project(mapOf("path" to ":method-proxy-library")))
+	implementation(project(mapOf("path" to ":utils")))
 
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.1")
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.1.2")
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31")
+
+	implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra.get("kotlin_version")}")
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.31")
 	implementation("androidx.annotation:annotation:1.1.0")
-	implementation("org.mockito:mockito-all:2.0.2-beta")
 	implementation("androidx.core:core-ktx:1.3.2")
 	implementation("org.jetbrains.anko:anko-commons:0.10.8")
 
@@ -150,11 +149,6 @@ dependencies {
 	implementation("androidx.core:core:1.3.2")
 	implementation("androidx.appcompat:appcompat:1.2.0")
 	implementation("androidx.constraintlayout:constraintlayout:2.0.4")
-	implementation("androidx.recyclerview:recyclerview:1.1.0")
-	implementation("androidx.navigation:navigation-fragment-ktx:2.3.2")
-	implementation("androidx.navigation:navigation-ui-ktx:2.3.2")
-
-	implementation("com.google.code.gson:gson:2.8.6")
 
 	//lottie动画库
 	implementation("com.airbnb.android:lottie:3.6.1")
@@ -165,31 +159,9 @@ dependencies {
 	//图片选择库
 	implementation("com.zhihu.android:matisse:0.5.3-beta3")
 
-	implementation("com.github.bumptech.glide:glide:4.12.0")
-	//处理Glide注解，用于自定义Glide模块和自定义扩展类时必须引用
-	annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
-
-	//权限请求库
-	implementation("com.permissionx.guolindev:permissionx:1.4.0")
-
-	//视频播放库
-	implementation("com.shuyu:gsyVideoPlayer-java:7.1.6")
-	// 是否需要ExoPlayer模式
-	implementation("com.shuyu:GSYVideoPlayer-exo2:7.1.6") {
-		this.isTransitive = false
-	}
-
-	//根据你的需求ijk模式的so
-	implementation("com.shuyu:gsyVideoPlayer-armv5:7.1.6")
-	implementation("com.shuyu:gsyVideoPlayer-armv7a:7.1.6")
-	implementation("com.shuyu:gsyVideoPlayer-arm64:7.1.6")
-	implementation("com.shuyu:gsyVideoPlayer-x64:7.1.6")
-	implementation("com.shuyu:gsyVideoPlayer-x86:7.1.6")
-
 	implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
 
 	implementation("com.github.Heart-Beats:Downloader:v1.0.1")
-	implementation("com.contrarywind:Android-PickerView:4.1.9")
 
 	implementation("me.weishu:epic:0.11.0")
 }

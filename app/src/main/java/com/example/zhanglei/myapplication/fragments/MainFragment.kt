@@ -4,13 +4,8 @@ import android.Manifest
 import android.animation.ObjectAnimator
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -25,19 +20,18 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.zhanglei.myapplication.*
-import com.example.zhanglei.myapplication.MyApplication.Companion.getInstance
 import com.example.zhanglei.myapplication.adapters.BaseAbstractAdapter
 import com.example.zhanglei.myapplication.databinding.FragmentMainBinding
 import com.example.zhanglei.myapplication.entities.MainMenu
 import com.example.zhanglei.myapplication.entities.mainMenuList
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
-import com.example.zhanglei.myapplication.utils.reqPermissions
 import com.google.android.material.button.MaterialButton
 import com.hl.downloader.DownloadListener
+import com.hl.downloader.DownloadManager
 import com.hl.downloader.DownloadManager.cancelDownload
-import com.hl.downloader.DownloadManager.pauseDownload
-import com.hl.downloader.DownloadManager.resumeDownLoad
 import com.hl.downloader.DownloadManager.startDownLoad
+import com.hl.utils.MyNetworkCallback
+import com.hl.utils.reqPermissions
 import io.dcloud.feature.sdk.DCUniMPSDK
 import java.lang.Math.PI
 import java.util.*
@@ -73,20 +67,15 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
         if (this@MainFragment.toolbar != null) {
             this@MainFragment.toolbar?.title = "主页"
         }
-        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val request = NetworkRequest.Builder()
-                .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                .build()
-        connectivityManager.registerNetworkCallback(request, object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                println("wifi可用")
-                resumeDownLoad()
-            }
 
-            override fun onLost(network: Network) {
-                println("wifi断开连接")
-                pauseDownload()
+        MyNetworkCallback.addNetworkListener(object : com.hl.utils.NetworkListener() {
+            override fun onWifiChanged(isConnected: Boolean) {
+                println("wifi 改变， isConnected == $isConnected")
+                if (isConnected) {
+                    DownloadManager.resumeDownLoad()
+                } else {
+                    DownloadManager.pauseDownload()
+                }
             }
         })
 
@@ -105,7 +94,6 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                 myAnimatorSet?.resume()
             }
         })
-        BuildConfig.APPLICATION_ID
         this.menuRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         this.menuRecyclerView.adapter = object : BaseAbstractAdapter<MainMenu>(mainMenuList) {
             override val itemLayout: Int
@@ -256,7 +244,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
             is MainMenu.DownLoadAction -> {
                 val downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk"
                 // String downloadUrl = "https://images.pexels.com/photos/4993088/pexels-photo-4993088.jpeg?cs=srgb&dl=pexels-rachel-claire-4993088.jpg&fm=jpg";
-                startDownLoad(getInstance(), downloadUrl, object : DownloadListener() {
+                startDownLoad(MyApplication.getInstance(), downloadUrl, object : DownloadListener() {
                     override fun downloadIng(progress: String) {
                         println(progress)
                     }
@@ -283,7 +271,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
     private fun releaseAndStartApp(appid: String, wgtPath: String) {
         uniAppSdk?.releaseWgtToRunPathFromePath(appid, wgtPath) { code, pArgs ->
             println("code = [${code}], pArgs = [${pArgs}]")
-            if (code == 1 && DCUniMPSDK.getInstance().isExistsApp(appid)) {
+            if (code == 1 && uniAppSdk?.isExistsApp(appid) == true) {
                 DCUniMPSDK.getInstance().startApp(requireActivity(), appid)
             } else {
                 println("isExistsApp = false")

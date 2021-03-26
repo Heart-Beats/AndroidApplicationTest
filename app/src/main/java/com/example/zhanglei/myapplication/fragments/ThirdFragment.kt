@@ -8,8 +8,8 @@ import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.databinding.FragmentThirdBinding
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
-import com.example.zhanglei.myapplication.utils.DeviceInfoUtil
-import com.example.zhanglei.myapplication.utils.reqPermissions
+import com.hl.utils.DeviceInfoUtil
+import com.hl.utils.reqPermissions
 import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeaderFooter
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle
 
@@ -48,7 +48,7 @@ class ThirdFragment : ViewBindingBaseFragment<FragmentThirdBinding>() {
 
 		reqPermissions(permission.READ_PHONE_STATE, allGrantedAction = {
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-				XLog.d(DeviceInfoUtil.getDeviceAllInfo(requireContext()))
+				XLog.d(com.hl.utils.DeviceInfoUtil.getDeviceAllInfo(requireContext()))
 			}
 		})
 	}

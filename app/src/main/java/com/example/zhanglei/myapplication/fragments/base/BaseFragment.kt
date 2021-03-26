@@ -17,8 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import com.example.zhanglei.myapplication.R
-import com.example.zhanglei.myapplication.utils.getCurrentDestination
-import com.example.zhanglei.myapplication.utils.traverseFindFirstChildView
+import com.hl.utils.getCurrentDestination
+import com.hl.utils.traverseFindFirstChildView
 
 /**
  * @Author  张磊  on  2020/08/28 at 18:35

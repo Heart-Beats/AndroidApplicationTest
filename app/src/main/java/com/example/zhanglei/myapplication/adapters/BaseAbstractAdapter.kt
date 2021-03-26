@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class BaseAbstractAdapter<T>(private var data: List<T>) : RecyclerView.Adapter<BaseAbstractAdapter<T>.ViewHolder>() {
 
-    var headerView: View? = null
-    var footerView: View? = null
+    open var headerView: View? = null
+    open var footerView: View? = null
 
     abstract val itemLayout: Int
 
-    var onViewHolderInitListener: (viewHolder: ViewHolder, position: Int, data: T?) -> Unit = { _, _, _ -> }
-    var onBindItemListener: (viewHolder: ViewHolder, data: T?) -> Unit = { _, _ -> }
+    open var onViewHolderInitListener: (viewHolder: ViewHolder, position: Int, data: T?) -> Unit = { _, _, _ -> }
+    open var onBindItemListener: (viewHolder: ViewHolder, data: T?) -> Unit = { _, _ -> }
 
     inner class ViewHolder(itemView: View, private val viewType: Int) : RecyclerView.ViewHolder(itemView) {
 
