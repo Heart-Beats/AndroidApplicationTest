@@ -164,4 +164,10 @@ dependencies {
 	implementation("com.github.Heart-Beats:Downloader:v1.0.1")
 
 	implementation("me.weishu:epic:0.11.0")
+
+	val room_version = "2.2.6"
+	implementation("androidx.room:room-runtime:$room_version")
+	annotationProcessor( "androidx.room:room-compiler:$room_version")
+	// optional - Kotlin Extensions and Coroutines support for Room
+	implementation("androidx.room:room-ktx:$room_version")
 }
