@@ -16,11 +16,13 @@ android {
 	signingConfigs {
 		create("release") {
 			val keystoreFilePath = rootProject.projectDir.path + File.separator + "keystore.properties"
-			loadProperties(keystoreFilePath).also {
-				storeFile = File(it.getProperty("storeFile"))
-				storePassword = it.getProperty("storePassword")
-				keyAlias = it.getProperty("keyAlias")
-				keyPassword = it.getProperty("keyPassword")
+			if (File(keystoreFilePath).exists()) {
+				loadProperties(keystoreFilePath).also {
+					storeFile = File(it.getProperty("storeFile"))
+					storePassword = it.getProperty("storePassword")
+					keyAlias = it.getProperty("keyAlias")
+					keyPassword = it.getProperty("keyPassword")
+				}
 			}
 		}
 		getByName("debug") {
@@ -123,17 +125,17 @@ android.applicationVariants.all {
 
 dependencies {
 	api(fileTree("dir" to "libs", "include" to listOf("*.jar")))
-	implementation("androidx.legacy:legacy-support-v4:1.0.0")
-	implementation("com.google.android.material:material:1.3.0-alpha04")
-	implementation(project(mapOf("path" to ":uni_sdk")))
+	implementation(project(mapOf("path" to ":uni-sdk")))
 	implementation(project(mapOf("path" to ":method-proxy-library")))
 	implementation(project(mapOf("path" to ":utils")))
+	implementation(project(mapOf("path" to ":shadow-init")))
 
+	implementation("androidx.legacy:legacy-support-v4:1.0.0")
+	implementation("com.google.android.material:material:1.3.0-alpha04")
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.1")
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.1.2")
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
-
 
 	implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra.get("kotlin_version")}")
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.31")
@@ -141,10 +143,11 @@ dependencies {
 	implementation("androidx.core:core-ktx:1.3.2")
 	implementation("org.jetbrains.anko:anko-commons:0.10.8")
 
-	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
-	implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
-	implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
-	implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+	val lifecycle_version = "2.2.0"
+	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+	implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+	implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+	implementation("androidx.lifecycle:lifecycle-extensions:$lifecycle_version")
 
 	implementation("androidx.core:core:1.3.2")
 	implementation("androidx.appcompat:appcompat:1.2.0")
@@ -167,7 +170,7 @@ dependencies {
 
 	val room_version = "2.2.6"
 	implementation("androidx.room:room-runtime:$room_version")
-	annotationProcessor( "androidx.room:room-compiler:$room_version")
+	annotationProcessor("androidx.room:room-compiler:$room_version")
 	// optional - Kotlin Extensions and Coroutines support for Room
 	implementation("androidx.room:room-ktx:$room_version")
 }

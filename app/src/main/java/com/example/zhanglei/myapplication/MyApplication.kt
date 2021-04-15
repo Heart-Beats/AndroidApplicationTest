@@ -6,6 +6,7 @@ import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.widgets.refresh.CommonRefreshHeader
+import com.hl.shadow.Shadow
 import com.hl.utils.MyNetworkCallback
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import io.dcloud.common.util.RuningAcitvityUtil
@@ -69,6 +70,8 @@ class MyApplication : Application() {
 					.setMenuDefFontWeight("normal")
 					.setMenuActionSheetItems(sheetItems)
 		}
+
+		Shadow.initDynamicPluginManager(this)
 	}
 
 	private fun isEnvTDebug(): Boolean {

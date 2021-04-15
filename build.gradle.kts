@@ -16,10 +16,12 @@ buildscript {
 		maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
 
 		maven { url = uri("https://jitpack.io") }
+
+		maven { url = uri("E:\\repository") }
 	}
 	dependencies {
 		classpath("com.android.tools.build:gradle:4.1.3")
-		classpath(kotlin("gradle-plugin", rootProject.extra.get("kotlin_version") as String))
+		classpath(kotlin("gradle-plugin", kotlin_version))
 
 		val nav_version = "2.3.3"
 		classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
@@ -37,6 +39,9 @@ allprojects {
 		maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
 
 		maven { url = uri("https://jitpack.io") }
+
+		// 加入本地仓库地址
+		maven { url = uri("E:\\repository") }
 	}
 }
 

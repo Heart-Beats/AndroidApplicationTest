@@ -30,14 +30,19 @@ import com.hl.downloader.DownloadListener
 import com.hl.downloader.DownloadManager
 import com.hl.downloader.DownloadManager.cancelDownload
 import com.hl.downloader.DownloadManager.startDownLoad
+import com.hl.shadow.Shadow
 import com.hl.utils.MyNetworkCallback
 import com.hl.utils.reqPermissions
+import com.tencent.shadow.dynamic.host.EnterCallback
+import com.tencent.shadow.dynamic.host.PluginManager
 import io.dcloud.feature.sdk.DCUniMPSDK
+import org.jetbrains.anko.Android
 import java.lang.Math.PI
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
+
 
 /**
  * @author 张磊
@@ -265,6 +270,37 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                     Toast.makeText(requireContext(), "你拒绝了相关权限", Toast.LENGTH_SHORT).show()
                 })
             }
+            is MainMenu.PluginAction -> {
+
+                Android(requireContext()).apply {
+                    this.items(listOf("启动SunFlower插件", "启动自定义插件")) { dialog, index ->
+                        dialog.dismiss()
+
+                        val bundle = Bundle()
+                        if (index == 0) {
+                            //  插件 zip 的路径
+                            // bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, "/sdcard/test-plugin.zip")
+                            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, "/data/local/tmp/test-plugin.zip")
+
+                            //启动插件中的对应的 Activity
+                            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.google.samples.apps.sunflower.GardenActivity")
+
+                            // partKey 每个插件都有自己的 partKey 用来区分多个插件，需要与插件打包脚本中的 packagePlugin{ partKey xxx} 一致
+                            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "sample-plugin")
+                        } else if (index == 1) {
+                            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, "/sdcard/plugin-debug.zip")
+                            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.hl.plugin2.MainActivity")
+                            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "my-plugin")
+                        }
+
+                        bundle.putBundle(Constant.KEY_EXTRAS, Bundle().apply {
+                            this.putString("测试数据", "我是宿主传过来的数据")
+                        })
+
+                        startPlugin(bundle)
+                    }
+                }.show()
+            }
         }
     }
 
@@ -277,5 +313,23 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                 println("isExistsApp = false")
             }
         }
+    }
+
+    private fun startPlugin(bundle: Bundle) {
+        val pluginManager: PluginManager? = Shadow.getPluginManager()
+        /**
+         * context context
+         * formId  标识本次请求的来源位置，用于区分入口
+         * bundle  参数列表, 建议在参数列表加入自己的验证
+         * callback 用于从PluginManager实现中返回View
+         */
+        pluginManager?.enter(requireContext(), Constant.FROM_ID_START_ACTIVITY, bundle, object : EnterCallback {
+            override fun onShowLoadingView(view: View?) {}
+            override fun onCloseLoadingView() {}
+            override fun onEnterComplete() {
+                // 启动成功
+                Toast.makeText(requireContext(), "启动成功", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

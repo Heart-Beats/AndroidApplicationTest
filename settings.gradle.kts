@@ -1,5 +1,9 @@
-include(":utils")
-include(":uni_sdk")
-include(":method-proxy-library")
-include(":app")
 rootProject.buildFileName = "build.gradle.kts"
+
+include(":app")
+
+include(":utils", ":uni-sdk", ":method-proxy-library", ":shadow-init")
+project(":shadow-init").projectDir = file("shadow/shadow-init")
+
+include(":shadow-runtime")
+project(":shadow-runtime").projectDir = file("shadow/shadow-runtime")
