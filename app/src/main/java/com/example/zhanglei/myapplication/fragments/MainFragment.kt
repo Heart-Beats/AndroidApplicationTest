@@ -32,6 +32,7 @@ import com.hl.downloader.DownloadManager.cancelDownload
 import com.hl.downloader.DownloadManager.startDownLoad
 import com.hl.shadow.Shadow
 import com.hl.utils.MyNetworkCallback
+import com.hl.utils.onClick
 import com.hl.utils.reqPermissions
 import com.tencent.shadow.dynamic.host.EnterCallback
 import com.tencent.shadow.dynamic.host.PluginManager
@@ -107,7 +108,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
 
             this.onViewHolderInitListener = { viewHolder, _, data ->
                 viewHolder.getView<MaterialButton>(R.id.main_menu_button)?.run {
-                    setOnClickListener {
+                    this.onClick {
                         onClick(data)
                     }
 
@@ -237,6 +238,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
     private fun onClick(data: MainMenu?) {
         when (data) {
             is MainMenu.AnimateAction -> {
+                println("开始动画被点击啦")
                 setScaleAnimation()
                 setRotateAnimation()
             }
@@ -289,7 +291,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                             bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "sample-plugin")
                         } else if (index == 1) {
                             bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, "/sdcard/plugin-debug.zip")
-                            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.hl.plugin2.MainActivity")
+                            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "android.tsinglink.myplugin.MainActivity")
                             bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "my-plugin")
                         }
 
@@ -297,7 +299,13 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                             this.putString("测试数据", "我是宿主传过来的数据")
                         })
 
-                        startPlugin(bundle)
+                        val permissions = arrayOf(
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
+                        this@MainFragment.reqPermissions(*permissions,allGrantedAction = {
+                            startPlugin(bundle)
+                        })
                     }
                 }.show()
             }
@@ -316,7 +324,8 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
     }
 
     private fun startPlugin(bundle: Bundle) {
-        val pluginManager: PluginManager? = Shadow.getPluginManager()
+        val pluginManager: PluginManager? = Shadow.getPluginManager(needDynamic = false, context = requireContext())
+
         /**
          * context context
          * formId  标识本次请求的来源位置，用于区分入口

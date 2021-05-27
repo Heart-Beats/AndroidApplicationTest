@@ -2,13 +2,20 @@ package com.example.zhanglei.myapplication
 
 import android.app.Application
 import android.net.NetworkCapabilities
+import android.os.Build
+import android.os.Debug
+import android.webkit.WebView
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.widgets.refresh.CommonRefreshHeader
 import com.hl.shadow.Shadow
+import com.hl.shadow.logger.AndroidLoggerFactory
 import com.hl.utils.MyNetworkCallback
+import com.hl.utils.isProcess
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.tencent.shadow.core.common.LoggerFactory
+import com.tencent.shadow.dynamic.host.DynamicRuntime
 import io.dcloud.common.util.RuningAcitvityUtil
 import io.dcloud.feature.sdk.DCSDKInitConfig
 import io.dcloud.feature.sdk.DCUniMPSDK
@@ -33,45 +40,66 @@ class MyApplication : Application() {
 		super.onCreate()
 		mApplication = this
 
-		// 非小程序进程
-		if (!RuningAcitvityUtil.getAppName(baseContext).contains("io.dcloud.unimp")) {
-			//请在此处初始化其他三方SDK
+		// 小程序进程
+		if (RuningAcitvityUtil.getAppName(baseContext).contains("io.dcloud.unimp")) {
+			initUniApp {
+				val item = MenuActionSheetItem("关于", "gy")
+				val sheetItems: MutableList<MenuActionSheetItem> = ArrayList()
+				sheetItems.add(item)
+
+				this.setCapsule(true)
+					.setMenuDefFontSize("16px")
+					.setMenuDefFontColor("#ff00ff")
+					.setMenuDefFontWeight("normal")
+					.setMenuActionSheetItems(sheetItems)
+			}
+		} else {
 			// 非小程序进程初始化其他三方SDK
-			val logConfig = LogConfiguration.Builder()
-					.logLevel(if (isEnvTDebug()) {
-						LogLevel.ALL
-					} else {
-						LogLevel.INFO
-					})
+
+			if (mApplication.isProcess(":plugin")) {
+				println("当前为插件进程--------------------")
+
+				// if (BuildConfig.DEBUG) {
+				// 	// 多进程时调试使用 ，该函数会等待调试器attach（附着进程）。该函数在调试器attach后立刻返回，
+				// 	Debug.waitForDebugger()
+				// }
+
+				// 插件进程也有 log 打印需要初始化
+				LoggerFactory.setILoggerFactory(AndroidLoggerFactory.getInstance())
+
+				//在全动态架构中，Activity组件没有打包在宿主而是位于被动态加载的 runtime，
+				//为了防止插件crash后，系统自动恢复crash前的Activity组件，此时由于没有加载runtime而发生classNotFound异常，导致二次crash
+				//因此这里恢复加载上一次的runtime
+				DynamicRuntime.recoveryRuntime(mApplication)
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+					WebView.setDataDirectorySuffix("plugin")
+				}
+			} else {
+				val logConfig = LogConfiguration.Builder()
+					.logLevel(if (isEnvTDebug()) LogLevel.ALL else LogLevel.INFO)
 					.st(1)
 					.addInterceptor {
 						//......
 						it
 					}
 					.build()
-			XLog.init(logConfig)
-			initRefreshLayout()
+				XLog.init(logConfig)
+				initRefreshLayout()
 
-			MyNetworkCallback.init(this) {
-				this.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+				MyNetworkCallback.init(this) {
+					this.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
 						.addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
 						.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+				}
+
+
+				// val pluginManagerPath = "/data/local/tmp/my-PluginManager.apk" //PluginManager.apk文件路径
+				// val pluginManagerPath = "/data/local/tmp/sample-manager-debug.apk" //PluginManager.apk文件路径
+				val pluginManagerPath = "/sdcard/my-PluginManager.apk" //PluginManager.apk文件路径
+				Shadow.initDynamicPluginManager(this, pluginManagerPath)
 			}
 		}
-
-		initUniApp {
-			val item = MenuActionSheetItem("关于", "gy")
-			val sheetItems: MutableList<MenuActionSheetItem> = ArrayList()
-			sheetItems.add(item)
-
-			this.setCapsule(true)
-					.setMenuDefFontSize("16px")
-					.setMenuDefFontColor("#ff00ff")
-					.setMenuDefFontWeight("normal")
-					.setMenuActionSheetItems(sheetItems)
-		}
-
-		Shadow.initDynamicPluginManager(this)
 	}
 
 	private fun isEnvTDebug(): Boolean {

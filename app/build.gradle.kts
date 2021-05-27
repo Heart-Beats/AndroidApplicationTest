@@ -137,7 +137,7 @@ dependencies {
 	androidTestImplementation("androidx.test.ext:junit:1.1.2")
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
-	implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.extra.get("kotlin_version")}")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext["kotlinVersion"]}")
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.31")
 	implementation("androidx.annotation:annotation:1.1.0")
 	implementation("androidx.core:core-ktx:1.3.2")

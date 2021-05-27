@@ -1,13 +1,23 @@
+com/hl/shadow/logger/MyLogger.java
+ com.hl.shadow.logger.MyLogger
 com/hl/shadow/runtime/PluginDefaultProxyActivity.java
  com.hl.shadow.runtime.PluginDefaultProxyActivity
-com/hl/shadow/AndroidLoggerFactory.java
- com.hl.shadow.AndroidLoggerFactory
- com.hl.shadow.AndroidLoggerFactory$IVLogger
- com.hl.shadow.FormattingTuple
- com.hl.shadow.MessageFormatter
-com/hl/shadow/runtime/PluginSingleInstance1ProxyActivity.java
- com.hl.shadow.runtime.PluginSingleInstance1ProxyActivity
-com/hl/shadow/BuildConfig.java
- com.hl.shadow.BuildConfig
 com/hl/shadow/runtime/PluginSingleTask1ProxyActivity.java
  com.hl.shadow.runtime.PluginSingleTask1ProxyActivity
+com/hl/shadow/BuildConfig.java
+ com.hl.shadow.BuildConfig
+com/hl/shadow/runtime/PluginSingleInstance1ProxyActivity.java
+ com.hl.shadow.runtime.PluginSingleInstance1ProxyActivity
+com/tencent/shadow/dynamic/impl/WhiteList.java
+ com.tencent.shadow.dynamic.impl.WhiteList
+com/hl/shadow/logger/FormattingTuple.java
+ com.hl.shadow.logger.FormattingTuple
+com/hl/shadow/logger/AndroidLoggerFactory.java
+ com.hl.shadow.logger.AndroidLoggerFactory
+com/hl/shadow/logger/MessageFormatter.java
+ com.hl.shadow.logger.MessageFormatter
+com/tencent/shadow/dynamic/impl/ManagerFactoryImpl.java
+ com.tencent.shadow.dynamic.impl.ManagerFactoryImpl
+com/hl/shadow/pluginmanager/MyPluginManager.java
+ com.hl.shadow.pluginmanager.MyPluginManager
+ com.hl.shadow.pluginmanager.MyPluginManager$1

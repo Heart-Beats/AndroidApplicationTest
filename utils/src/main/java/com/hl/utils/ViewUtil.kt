@@ -1,5 +1,6 @@
 package com.hl.utils
 
+import android.os.SystemClock
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.get
@@ -45,5 +46,23 @@ fun View.fixedPosition() {
 	}
 	this.post {
 		this.addOnLayoutChangeListener(onLayoutChangeListener)
+	}
+}
+
+
+private var lastClickTime = SystemClock.elapsedRealtime()
+
+/**
+ * @param  clickDuration 点击间隔生效时间（单位：ms），此时间之内重复点击不生效
+ * @param  clickListener 点击事件回调函数
+ */
+fun View.onClick(clickDuration: Long = 500, clickListener: View.OnClickListener) {
+
+	this.setOnClickListener {
+		val currentClickTime = SystemClock.elapsedRealtime()
+		if (currentClickTime - lastClickTime > clickDuration) {
+			clickListener.onClick(it)
+			lastClickTime = currentClickTime
+		}
 	}
 }

@@ -3,24 +3,12 @@ manifest
 ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:1-100:12
 INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:1-100:12
 INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:1-100:12
-INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:1-100:12
-INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:1-100:12
-INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:1-100:12
-INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:1-100:12
 	package
 		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:4:5-28
 		INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml
 		INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml
-	android:versionName
-		INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml
-		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:1-100:12
-		INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml
 	xmlns:tools
 		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:3:5-51
-	android:versionCode
-		INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml
-		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:1-100:12
-		INJECTED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:2:11-69
 application
@@ -135,7 +123,7 @@ ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest
 		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:73:13-59
 	android:name
 		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:68:13-67
-activity#com.hl.my_runtime.PluginDefaultProxyActivity
+activity#android.tsinglink.my_runtime.PluginDefaultProxyActivity
 ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:78:9-87:15
 	android:screenOrientation
 		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:81:13-49
@@ -152,7 +140,7 @@ ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest
 	android:theme
 		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:84:13-59
 	android:name
-		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:79:13-72
+		ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:79:13-83
 provider#com.tencent.shadow.core.runtime.container.PluginContainerContentProvider
 ADDED from E:\AndroidApplicationTest\shadow\shadow-init\src\main\AndroidManifest.xml:90:9-93:41
 	android:process

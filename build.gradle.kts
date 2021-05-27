@@ -3,9 +3,7 @@
 buildscript {
 
 	// rootProject.extra 定义的扩展属性可被子工程引用
-	val kotlin_version by rootProject.extra("1.4.31")
-
-	rootProject.extra
+	val kotlinVersion by rootProject.extra("1.4.31")
 
 	repositories {
 		google()
@@ -17,14 +15,18 @@ buildscript {
 
 		maven { url = uri("https://jitpack.io") }
 
-		maven { url = uri("E:\\repository") }
+		"E:\\repository".also {
+			if (File(it).exists()) {
+				maven { url = uri(it) }
+			}
+		}
 	}
 	dependencies {
-		classpath("com.android.tools.build:gradle:4.1.3")
-		classpath(kotlin("gradle-plugin", kotlin_version))
+		classpath("com.android.tools.build:gradle:4.2.1")
+		classpath(kotlin("gradle-plugin", kotlinVersion))
 
-		val nav_version = "2.3.3"
-		classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+		val navVersion = "2.3.3"
+		classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion")
 	}
 }
 
@@ -41,7 +43,11 @@ allprojects {
 		maven { url = uri("https://jitpack.io") }
 
 		// 加入本地仓库地址
-		maven { url = uri("E:\\repository") }
+		"E:\\repository".also {
+			if (File(it).exists()) {
+				maven { url = uri(it) }
+			}
+		}
 	}
 }
 
