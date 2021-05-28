@@ -1,14 +1,13 @@
 package com.hl.shadow
 
-import android.app.Application
 import android.content.Context
-import android.widget.Toast
 import com.hl.shadow.logger.AndroidLoggerFactory
-import com.hl.shadow.manager.MyPluginManagerUpdater
+import com.hl.shadow.managerupdater.MyPluginManagerUpdater
 import com.tencent.shadow.core.common.LoggerFactory
 import com.tencent.shadow.dynamic.host.DynamicPluginManager
 import com.tencent.shadow.dynamic.host.ManagerFactory
 import com.tencent.shadow.dynamic.host.PluginManager
+import com.tencent.shadow.dynamic.host.PluginManagerImpl
 import java.io.File
 import java.util.concurrent.Future
 import kotlin.reflect.cast
@@ -22,7 +21,9 @@ object Shadow {
     /**
      * 这个PluginManager对象在Manager升级前后是不变的。它内部持有具体实现，升级时更换具体实现。
      */
-    private var sPluginManager: PluginManager? = null
+    private var dynamicPluginManager: PluginManager? = null
+
+    private var pluginManagerImpl: PluginManagerImpl? = null
 
     /**
      * 获取对应的 PluginManager， 动态 APK 或者静态类加载
@@ -32,7 +33,7 @@ object Shadow {
      */
     fun getPluginManager(needDynamic: Boolean = true, context: Context? = null): PluginManager? {
         return if (needDynamic) {
-            sPluginManager
+            dynamicPluginManager
         } else {
             if (context == null) {
                 throw Exception("非动态获取插件 Manager 需要传入 context")
@@ -44,13 +45,16 @@ object Shadow {
                 LoggerFactory.setILoggerFactory(AndroidLoggerFactory.getInstance())
             }
 
-            val className = "com.tencent.shadow.dynamic.impl.ManagerFactoryImpl"
-            val newInstance = Class.forName(className).newInstance()
-            ManagerFactory::class.cast(newInstance).buildManager(context)
+            if (pluginManagerImpl == null) {
+                val className = "com.tencent.shadow.dynamic.impl.ManagerFactoryImpl"
+                val newInstance = Class.forName(className).newInstance()
+                pluginManagerImpl = ManagerFactory::class.cast(newInstance).buildManager(context)
+            }
+            pluginManagerImpl
         }
     }
 
-    fun initDynamicPluginManager(application: Application, pluginManagerPath: String) {
+    fun initDynamicPluginManager(pluginManagerPath: String) {
         //Log接口Manager也需要使用，所以主进程也初始化。
         LoggerFactory.setILoggerFactory(AndroidLoggerFactory.getInstance())
         File(pluginManagerPath).run {
@@ -68,9 +72,12 @@ object Shadow {
                         throw RuntimeException("Sample程序不容错", e)
                     }
                 }
-                sPluginManager = DynamicPluginManager(myPluginManagerUpdater)
+                dynamicPluginManager = DynamicPluginManager(myPluginManagerUpdater)
             } else {
-                Toast.makeText(application, "PluginManager APK 未找到", Toast.LENGTH_SHORT).show()
+                val logger = LoggerFactory.getLogger(this.javaClass)
+                if (logger.isDebugEnabled) {
+                    logger.debug("PluginManager APK 未找到")
+                }
             }
         }
     }

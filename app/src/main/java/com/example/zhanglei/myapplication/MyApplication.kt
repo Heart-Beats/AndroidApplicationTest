@@ -97,7 +97,7 @@ class MyApplication : Application() {
 				// val pluginManagerPath = "/data/local/tmp/my-PluginManager.apk" //PluginManager.apk文件路径
 				// val pluginManagerPath = "/data/local/tmp/sample-manager-debug.apk" //PluginManager.apk文件路径
 				val pluginManagerPath = "/sdcard/my-PluginManager.apk" //PluginManager.apk文件路径
-				Shadow.initDynamicPluginManager(this, pluginManagerPath)
+				Shadow.initDynamicPluginManager(pluginManagerPath)
 			}
 		}
 	}

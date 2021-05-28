@@ -1,4 +1,4 @@
-package com.hl.shadow.manager
+package com.hl.shadow.managerupdater
 
 import com.tencent.shadow.dynamic.host.PluginManagerUpdater
 import java.io.File

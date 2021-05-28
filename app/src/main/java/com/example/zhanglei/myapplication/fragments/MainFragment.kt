@@ -275,24 +275,23 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
             is MainMenu.PluginAction -> {
 
                 Android(requireContext()).apply {
-                    this.items(listOf("启动SunFlower插件", "启动自定义插件")) { dialog, index ->
+                    this.items(listOf("启动 SunFlower 插件", "启动自定义测试插件")) { dialog, index ->
                         dialog.dismiss()
 
-                        val bundle = Bundle()
-                        if (index == 0) {
+                        val bundle = Bundle().apply {
                             //  插件 zip 的路径
-                            // bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, "/sdcard/test-plugin.zip")
-                            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, "/data/local/tmp/test-plugin.zip")
+                            putString(Constant.KEY_PLUGIN_ZIP_PATH, "/sdcard/plugin-debug.zip")
+                        }
 
+                        if (index == 0) {
                             //启动插件中的对应的 Activity
                             bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.google.samples.apps.sunflower.GardenActivity")
 
                             // partKey 每个插件都有自己的 partKey 用来区分多个插件，需要与插件打包脚本中的 packagePlugin{ partKey xxx} 一致
-                            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "sample-plugin")
+                            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "sunflower")
                         } else if (index == 1) {
-                            bundle.putString(Constant.KEY_PLUGIN_ZIP_PATH, "/sdcard/plugin-debug.zip")
                             bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "android.tsinglink.myplugin.MainActivity")
-                            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "my-plugin")
+                            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
                         }
 
                         bundle.putBundle(Constant.KEY_EXTRAS, Bundle().apply {

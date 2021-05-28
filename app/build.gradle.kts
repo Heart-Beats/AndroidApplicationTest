@@ -83,16 +83,17 @@ android {
 		this.viewBinding = true //启动viewBinding
 	}
 
-	flavorDimensions("MyApp")
+	flavorDimensions("Environment")
 	productFlavors {
-		create("MyAppT") {
-			dimension = "MyApp"
+
+		create("EnvT") { //测试环境
+			dimension = "Environment"
 			resValue("string", "app_name", "我的应用测试")
 			applicationIdSuffix = ".test"
 			resConfigs()
 		}
-		create("MyAppP") {
-			dimension = "MyApp"
+		create("EnvP") { //生产环境
+			dimension = "Environment"
 			resValue("string", "app_name", "我的应用")
 		}
 	}

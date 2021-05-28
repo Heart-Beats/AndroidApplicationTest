@@ -1,79 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.hl.shadow" >
+    package="com.hl.shadow">
 
     <application
         android:allowBackup="true"
         android:allowClearUserData="true"
         android:largeHeap="true"
-        android:supportsRtl="true" >
+        android:supportsRtl="true">
 
 
         <!--dynamic activity 注册
           注意 configChanges 需要全注册
           theme需要注册成透明
           -->
-
-        <activity
-            android:name="com.tencent.shadow.sample.runtime.PluginDefaultProxyActivity"
-            android:launchMode="standard"
-            android:screenOrientation="portrait"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
-            android:hardwareAccelerated="true"
-            android:theme="@style/PluginContainerActivity"
-            android:process=":plugin" />
-
-        <activity
-            android:name="com.tencent.shadow.sample.runtime.PluginSingleInstance1ProxyActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
-            android:hardwareAccelerated="true"
-            android:theme="@style/PluginContainerActivity"
-            android:process=":plugin" />
-
-        <activity
-            android:name="com.tencent.shadow.sample.runtime.PluginSingleTask1ProxyActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
-            android:hardwareAccelerated="true"
-            android:theme="@style/PluginContainerActivity"
-            android:process=":plugin" />
-
-        <activity
-            android:name=".runtime.PluginDefaultProxyActivity"
-            android:launchMode="standard"
-            android:screenOrientation="portrait"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
-            android:hardwareAccelerated="true"
-            android:theme="@style/PluginContainerActivity"
-            android:multiprocess="true"
-            android:process=":plugin"
-            />
-
-        <activity
-            android:name=".runtime.PluginSingleInstance1ProxyActivity"
-            android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
-            android:hardwareAccelerated="true"
-            android:theme="@style/PluginContainerActivity"
-            android:multiprocess="true"
-            android:process=":plugin"
-            />
-
-        <activity
-            android:name=".runtime.PluginSingleTask1ProxyActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
-            android:hardwareAccelerated="true"
-            android:theme="@style/PluginContainerActivity"
-            android:multiprocess="true"
-            android:process=":plugin"
-            />
 
         <activity
             android:name="android.tsinglink.my_runtime.PluginDefaultProxyActivity"
@@ -83,8 +22,27 @@
             android:hardwareAccelerated="true"
             android:theme="@style/PluginContainerActivity"
             android:multiprocess="true"
+            android:process=":plugin" />
+
+        <activity
+            android:name="android.tsinglink.my_runtime.PluginSingleInstance1ProxyActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:multiprocess="true"
             android:process=":plugin"
-            />
+            android:screenOrientation="portrait"
+            android:theme="@style/PluginContainerActivity" />
+
+        <activity
+            android:name="android.tsinglink.my_runtime.PluginSingleTask1ProxyActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
+            android:multiprocess="true"
+            android:process=":plugin"
+            android:screenOrientation="portrait"
+            android:theme="@style/PluginContainerActivity" />
         <!--dynamic activity注册 end -->
 
         <provider
