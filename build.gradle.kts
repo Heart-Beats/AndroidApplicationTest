@@ -6,8 +6,10 @@ buildscript {
 	val kotlinVersion by rootProject.extra("1.4.31")
 
 	repositories {
+		mavenCentral()
+		mavenLocal()
 		google()
-		// jcenter()
+		jcenter()
 		maven { url = uri("https://maven.aliyun.com/repository/central") }
 		maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
 		maven { url = uri("https://maven.aliyun.com/repository/google") }
@@ -32,7 +34,8 @@ buildscript {
 
 allprojects {
 	repositories {
-		mavenCentral()
+		mavenCentral() // maven 中心远程仓库
+		mavenLocal()  // maven 本地仓库
 		google()
 		jcenter()
 		maven { url = uri("https://maven.aliyun.com/repository/central") }

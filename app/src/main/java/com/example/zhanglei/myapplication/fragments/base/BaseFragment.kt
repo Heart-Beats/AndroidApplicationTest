@@ -129,7 +129,7 @@ abstract class BaseFragment : Fragment() {
 	 * 该方法可重写更改导航条/导航栏颜色
 	 */
 	protected open fun getNavigationBarColor(): Int {
-		return Color.WHITE
+		return Color.TRANSPARENT
 	}
 
 	override fun onStart() {

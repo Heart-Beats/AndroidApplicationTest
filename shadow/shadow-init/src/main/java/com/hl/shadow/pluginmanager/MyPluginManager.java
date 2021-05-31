@@ -41,8 +41,17 @@ import java.util.concurrent.TimeoutException;
  */
 public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
 
-    private final ExecutorService installPluginExecutorService = new ThreadPoolExecutor(1, 1, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(5), r -> new Thread(r, "安装插件线程"));
-    private final ExecutorService mFixedPool = new ThreadPoolExecutor(4, 4, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(5), r -> new Thread(r, "解压插件线程"));
+    private static final String TAG = "MyPluginManager";
+
+    private final ExecutorService installPluginExecutorService = new ThreadPoolExecutor(1, 1, 2, TimeUnit.SECONDS,
+            new ArrayBlockingQueue<>(Short.MAX_VALUE), r -> new Thread(r, "安装插件线程"), (r, executor) -> {
+        Log.e(TAG, String.format("%s 已满载，拒绝执行任务 %s", executor, r));
+    });
+
+    private final ExecutorService mFixedPool = new ThreadPoolExecutor(4, 4, 2, TimeUnit.SECONDS,
+            new ArrayBlockingQueue<>(Short.MAX_VALUE), r -> new Thread(r, "解压插件线程"), (r, executor) -> {
+        Log.e(TAG, String.format("%s 已满载，拒绝执行任务 %s", executor, r));
+    });
 
     public MyPluginManager(Context context) {
         super(context);
@@ -109,7 +118,7 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
 
                     startPluginActivity(context, installedPlugin, partKey, pluginIntent);
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    Log.e(TAG, "enter: startPluginActivity 失败", e);
                 }
                 if (callback != null) {
                     Handler uiHandler = new Handler(Looper.getMainLooper());
@@ -152,7 +161,7 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
                         throw new RuntimeException("bind service失败 className==" + className);
                     }
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    Log.e(TAG, "enter: bindPluginService 失败", e);
                 }
             });
         } else {
