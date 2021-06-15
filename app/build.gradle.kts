@@ -70,7 +70,6 @@ android {
 			signingConfig = signingConfigs.getByName("debug")
 		}
 	}
-	buildToolsVersion = "29.0.3"
 
 	compileOptions {
 		//支持新的API(java.util.streams、java.util.function等)
@@ -139,18 +138,18 @@ dependencies {
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
 	implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext["kotlinVersion"]}")
-	implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.31")
-	implementation("androidx.annotation:annotation:1.1.0")
-	implementation("androidx.core:core-ktx:1.3.2")
+	implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
+	implementation("androidx.annotation:annotation:1.2.0")
+	implementation("androidx.core:core-ktx:1.5.0")
 	implementation("org.jetbrains.anko:anko-commons:0.10.8")
 
-	val lifecycle_version = "2.2.0"
-	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-	implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
-	implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
-	implementation("androidx.lifecycle:lifecycle-extensions:$lifecycle_version")
+	val lifecycleVersion = "2.2.0"
+	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+	implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+	implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+	implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
 
-	implementation("androidx.core:core:1.3.2")
+	implementation("androidx.core:core:1.5.0")
 	implementation("androidx.appcompat:appcompat:1.2.0")
 	implementation("androidx.constraintlayout:constraintlayout:2.0.4")
 
@@ -169,9 +168,20 @@ dependencies {
 
 	implementation("me.weishu:epic:0.11.0")
 
-	val room_version = "2.2.6"
-	implementation("androidx.room:room-runtime:$room_version")
-	annotationProcessor("androidx.room:room-compiler:$room_version")
+	val roomVersion = "2.2.6"
+	implementation("androidx.room:room-runtime:$roomVersion")
+	annotationProcessor("androidx.room:room-compiler:$roomVersion")
 	// optional - Kotlin Extensions and Coroutines support for Room
-	implementation("androidx.room:room-ktx:$room_version")
+	implementation("androidx.room:room-ktx:$roomVersion")
+
+	val cameraxVersion = "1.0.0"
+	// The following line is optional, as the core library is included indirectly by camera-camera2
+	implementation("androidx.camera:camera-core:${cameraxVersion}")
+	implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+	// If you want to additionally use the CameraX Lifecycle library
+	implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+	// If you want to additionally use the CameraX View class
+	implementation("androidx.camera:camera-view:1.0.0-alpha24")
+	// If you want to additionally use the CameraX Extensions library
+	implementation("androidx.camera:camera-extensions:1.0.0-alpha24")
 }

@@ -246,7 +246,10 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                 requestPermission()
             }
             is MainMenu.VideoAction -> {
-                findNavController().navigate(R.id.action_mainFragment_to_videoFragment, null, null)
+                findNavController().navigate(R.id.action_mainFragment_to_videoFragment )
+            }
+            is MainMenu.CameraAction -> {
+                findNavController().navigate(R.id.action_mainFragment_to_openCameraFragment)
             }
             is MainMenu.DownLoadAction -> {
                 val downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk"
@@ -275,7 +278,8 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
             is MainMenu.PluginAction -> {
 
                 Android(requireContext()).apply {
-                    this.items(listOf("启动 SunFlower 插件", "启动自定义测试插件")) { dialog, index ->
+                    val items = listOf("启动 SunFlower 插件", "启动自定义测试插件", "启动 service")
+                    this.items(items) { dialog, index ->
                         dialog.dismiss()
 
                         val bundle = Bundle().apply {
@@ -283,15 +287,34 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                             putString(Constant.KEY_PLUGIN_ZIP_PATH, "/sdcard/plugin-debug.zip")
                         }
 
-                        if (index == 0) {
-                            //启动插件中的对应的 Activity
-                            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "com.google.samples.apps.sunflower.GardenActivity")
+                        when (index) {
+                            0 -> {
+                                //启动插件中的对应的 Activity
+                                bundle.putString(
+                                    Constant.KEY_ACTIVITY_CLASSNAME,
+                                    "com.google.samples.apps.sunflower.GardenActivity"
+                                )
 
-                            // partKey 每个插件都有自己的 partKey 用来区分多个插件，需要与插件打包脚本中的 packagePlugin{ partKey xxx} 一致
-                            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "sunflower")
-                        } else if (index == 1) {
-                            bundle.putString(Constant.KEY_ACTIVITY_CLASSNAME, "android.tsinglink.myplugin.MainActivity")
-                            bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
+                                // partKey 每个插件都有自己的 partKey 用来区分多个插件，需要与插件打包脚本中的 packagePlugin{ partKey xxx} 一致
+                                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "sunflower")
+                                bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_START_ACTIVITY)
+                            }
+                            1 -> {
+                                bundle.putString(
+                                    Constant.KEY_ACTIVITY_CLASSNAME,
+                                    "android.tsinglink.myplugin.MainActivity"
+                                )
+                                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
+                                bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_START_ACTIVITY)
+                            }
+                            2 -> {
+                                bundle.putString(
+                                    Constant.KEY_ACTIVITY_CLASSNAME,
+                                    "com.tsinglink.android.update.CheckUpdateIntentService"
+                                )
+                                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
+                                bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_CALL_SERVICE)
+                            }
                         }
 
                         bundle.putBundle(Constant.KEY_EXTRAS, Bundle().apply {
@@ -331,7 +354,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
          * bundle  参数列表, 建议在参数列表加入自己的验证
          * callback 用于从PluginManager实现中返回View
          */
-        pluginManager?.enter(requireContext(), Constant.FROM_ID_START_ACTIVITY, bundle, object : EnterCallback {
+        pluginManager?.enter(requireContext(), bundle.getLong(Constant.KEY_FROM_ID), bundle, object : EnterCallback {
             override fun onShowLoadingView(view: View?) {}
             override fun onCloseLoadingView() {}
             override fun onEnterComplete() {

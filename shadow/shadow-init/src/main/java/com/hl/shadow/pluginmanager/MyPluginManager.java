@@ -95,13 +95,14 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
         final String pluginZipPath = bundle.getString(Constant.KEY_PLUGIN_ZIP_PATH);
         final String partKey = bundle.getString(Constant.KEY_PLUGIN_PART_KEY);
         final String className = bundle.getString(Constant.KEY_ACTIVITY_CLASSNAME);
+        final Bundle extras = bundle.getBundle(Constant.KEY_EXTRAS);
+
         if (className == null) {
             throw new NullPointerException("className == null");
         }
 
         // 打开 Activity 示例
         if (fromId == Constant.FROM_ID_START_ACTIVITY) {
-            final Bundle extras = bundle.getBundle(Constant.KEY_EXTRAS);
             if (callback != null) {
                 // 开始加载插件了，实现加载布局
                 callback.onShowLoadingView(null);
@@ -132,9 +133,6 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
 
         } else if (fromId == Constant.FROM_ID_CALL_SERVICE) {
             // 打开Server示例
-            Intent pluginIntent = new Intent();
-            pluginIntent.setClassName(context.getPackageName(), className);
-
             installPluginExecutorService.execute(() -> {
                 try {
                     InstalledPlugin installedPlugin
@@ -142,17 +140,19 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
 
                     loadPlugin(installedPlugin.UUID, partKey);
 
-                    Intent pluginIntent1 = new Intent();
-                    pluginIntent1.setClassName(context.getPackageName(), className);
+                    Intent pluginIntent = new Intent();
+                    pluginIntent.setClassName(context.getPackageName(), className);
 
-                    boolean callSuccess = mPluginLoader.bindPluginService(pluginIntent1, new PluginServiceConnection() {
+                    boolean callSuccess = mPluginLoader.bindPluginService(pluginIntent, new PluginServiceConnection() {
                         @Override
                         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                             // 在这里实现AIDL进行通信操作
+                            Log.d(TAG, "onServiceConnected: componentName ==" + componentName);
                         }
 
                         @Override
                         public void onServiceDisconnected(ComponentName componentName) {
+                            Log.d(TAG, "onServiceDisconnected: componentName ==" + componentName);
                             throw new RuntimeException("onServiceDisconnected");
                         }
                     }, Service.BIND_AUTO_CREATE);

@@ -76,17 +76,20 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
     }
 
     private fun onNavDestinationSelected(item: MenuItem, navController: NavController): Boolean {
-        val builder = NavOptions.Builder()
-                .setLaunchSingleTop(true)
-                .setEnterAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
-                .setExitAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
-                .setPopEnterAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
-                .setPopExitAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
-        if (item.order and Menu.CATEGORY_SECONDARY == 0) {
-            builder.setPopUpTo(findStartDestination(navController.graph)?.id ?: -1, true)
-        }
+        val navOptions = NavOptions.Builder()
+            .setLaunchSingleTop(true)
+            .setEnterAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
+            .setExitAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
+            .setPopEnterAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
+            .setPopExitAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM).apply {
+                if (item.order and Menu.CATEGORY_SECONDARY == 0) {
+                    setPopUpTo(findStartDestination(navController.graph)?.id ?: -1, true)
+                }
+            }
+            .build()
+
         return try {
-            navController.navigate(item.itemId, null, builder.build())
+            navController.navigate(item.itemId, null, navOptions)
             true
         } catch (e: Exception) {
             false

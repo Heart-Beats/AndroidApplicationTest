@@ -3,13 +3,19 @@
 buildscript {
 
 	// rootProject.extra 定义的扩展属性可被子工程引用
-	val kotlinVersion by rootProject.extra("1.4.31")
+	val kotlinVersion by rootProject.extra("1.5.10")
+	val shadow_version by rootProject.extra("local-a56889f9-SNAPSHOT")
+
+	val group_suffix by rootProject.extra{
+		val needCustom = false
+		//定义共享属性
+		if(needCustom) 	".test" else ""
+	}
 
 	repositories {
 		mavenCentral()
 		mavenLocal()
 		google()
-		jcenter()
 		maven { url = uri("https://maven.aliyun.com/repository/central") }
 		maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
 		maven { url = uri("https://maven.aliyun.com/repository/google") }
@@ -37,7 +43,6 @@ allprojects {
 		mavenCentral() // maven 中心远程仓库
 		mavenLocal()  // maven 本地仓库
 		google()
-		jcenter()
 		maven { url = uri("https://maven.aliyun.com/repository/central") }
 		maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
 		maven { url = uri("https://maven.aliyun.com/repository/google") }

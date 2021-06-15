@@ -5,6 +5,8 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.button.MaterialButton
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
         android:id="@+id/main_menu_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

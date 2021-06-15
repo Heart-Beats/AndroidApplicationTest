@@ -6,22 +6,6 @@ package com.example.zhanglei.myapplication
  */
 object Constant {
     /**
-     * PluginManager 实现的别名, 用于区分不同PluginManager实现的数据存储路径
-     */
-    const val PLUGIN_MANAGER_NAME = "sample-manager"
-
-    /**
-     * demo插件so的abi
-     */
-    const val ABI = ""
-
-    /**
-     * 宿主中注册的PluginProcessService实现的类名
-     */
-    const val PLUGIN_PROCESS_SERVICE_NAME =
-        "com.hl.shadow.MainPluginProcessService"
-
-    /**
      * 插件 apk/zip 路径
      */
     const val KEY_PLUGIN_ZIP_PATH = "pluginZipPath"
@@ -39,7 +23,12 @@ object Constant {
     /**
      * 需要传入到启动插件里的参数
      */
-    const val KEY_EXTRAS = "KEY_EXTRAS";
+    const val KEY_EXTRAS = "KEY_EXTRAS"
+
+    /**
+     * 需要直接启动插件的容器类型： Activity 或者 Service
+     */
+    const val KEY_FROM_ID = "KEY_FROM_ID"
 
     /**
      * 打开 Activity 传入的 formId

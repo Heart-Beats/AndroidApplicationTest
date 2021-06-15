@@ -25,16 +25,19 @@
         <action
             android:id="@+id/action_mainFragment_to_videoFragment"
             app:destination="@id/videoFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_mainFragment_to_notifyFragment"
             app:destination="@id/notifyFragment" />
         <action
             android:id="@+id/action_mainFragment_to_hookFragment"
             app:destination="@id/hookFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_openCameraFragment"
+            app:destination="@id/openCameraFragment" />
     </fragment>
 
 
@@ -72,4 +75,9 @@
         android:name="com.example.zhanglei.myapplication.fragments.HookFragment"
         android:label="fragment_hook"
         tools:layout="@layout/fragment_hook" />
+    <fragment
+        android:id="@+id/openCameraFragment"
+        android:name="com.example.zhanglei.myapplication.fragments.OpenCameraFragment"
+        android:label="fragment_open_camera"
+        tools:layout="@layout/fragment_open_camera" />
 </navigation>
