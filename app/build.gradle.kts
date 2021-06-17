@@ -36,7 +36,7 @@ android {
 	defaultConfig {
 		applicationId = "com.example.zhanglei.myapplication"
 		minSdkVersion(22)
-		targetSdkVersion(30)
+		targetSdkVersion(29)
 		versionCode = 1
 		versionName = "1.0"
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -99,7 +99,6 @@ android {
 
 	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
 		kotlinOptions {
-			this.useIR = true
 			this.jvmTarget = "1.8"
 		}
 	}

@@ -278,7 +278,13 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
             is MainMenu.PluginAction -> {
 
                 Android(requireContext()).apply {
-                    val items = listOf("启动 SunFlower 插件", "启动自定义测试插件", "启动 service")
+                    val items = listOf(
+                        "启动 SunFlower 插件",
+                        "启动自定义测试插件",
+                        "启动依赖库的Service",
+                        "启动自定义Service",
+                        "启动自定义IntentService",
+                    )
                     this.items(items) { dialog, index ->
                         dialog.dismiss()
 
@@ -291,7 +297,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                             0 -> {
                                 //启动插件中的对应的 Activity
                                 bundle.putString(
-                                    Constant.KEY_ACTIVITY_CLASSNAME,
+                                    Constant.KEY_CLASSNAME,
                                     "com.google.samples.apps.sunflower.GardenActivity"
                                 )
 
@@ -300,32 +306,60 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                                 bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_START_ACTIVITY)
                             }
                             1 -> {
-                                bundle.putString(
-                                    Constant.KEY_ACTIVITY_CLASSNAME,
-                                    "android.tsinglink.myplugin.MainActivity"
-                                )
+                                bundle.putString(Constant.KEY_CLASSNAME, "android.tsinglink.myplugin.MainActivity")
                                 bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
                                 bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_START_ACTIVITY)
                             }
                             2 -> {
                                 bundle.putString(
-                                    Constant.KEY_ACTIVITY_CLASSNAME,
+                                    Constant.KEY_CLASSNAME,
                                     "com.tsinglink.android.update.CheckUpdateIntentService"
                                 )
                                 bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
                                 bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_CALL_SERVICE)
+                                bundle.putString(
+                                    Constant.KEY_INTENT_ACTION,
+                                    "com.tsinglink.android.update.ACTION_START_DOWNLOAD"
+                                )
+                                bundle.putBundle(Constant.KEY_EXTRAS, Bundle().apply {
+                                    this.putString(
+                                        "com.tsinglink.android.update.extra.DOWNLOAD_URL", "http://down.qq" +
+                                                ".com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk"
+                                    )
+                                })
+                            }
+                            3 -> {
+                                bundle.putString(Constant.KEY_CLASSNAME, "android.tsinglink.myplugin.TestService")
+                                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
+                                bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_CALL_SERVICE)
+                            }
+                            4 -> {
+                                bundle.putString(Constant.KEY_CLASSNAME, "android.tsinglink.myplugin.TestIntentService")
+                                bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
+                                bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_CALL_SERVICE)
+
+                                bundle.putString(
+                                    Constant.KEY_INTENT_ACTION,
+                                    "android.tsinglink.myplugin.action.FOO"
+                                )
+                                bundle.putBundle(Constant.KEY_EXTRAS, Bundle().apply {
+                                    this.putString("android.tsinglink.myplugin.extra.PARAM1", "我是参数1")
+                                    this.putString("android.tsinglink.myplugin.extra.PARAM2", "我是参数2")
+                                })
                             }
                         }
 
-                        bundle.putBundle(Constant.KEY_EXTRAS, Bundle().apply {
-                            this.putString("测试数据", "我是宿主传过来的数据")
-                        })
+                        if (bundle.getBundle(Constant.KEY_EXTRAS) == null) {
+                            bundle.putBundle(Constant.KEY_EXTRAS, Bundle().apply {
+                                this.putString("测试数据", "我是宿主传过来的数据")
+                            })
+                        }
 
                         val permissions = arrayOf(
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
                         )
-                        this@MainFragment.reqPermissions(*permissions,allGrantedAction = {
+                        this@MainFragment.reqPermissions(*permissions, allGrantedAction = {
                             startPlugin(bundle)
                         })
                     }

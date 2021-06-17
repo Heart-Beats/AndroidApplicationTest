@@ -4,7 +4,7 @@ buildscript {
 
 	// rootProject.extra 定义的扩展属性可被子工程引用
 	val kotlinVersion by rootProject.extra("1.5.10")
-	val shadow_version by rootProject.extra("local-a56889f9-SNAPSHOT")
+	val shadow_version by rootProject.extra("local-0b373991-SNAPSHOT")
 
 	val group_suffix by rootProject.extra{
 		val needCustom = false

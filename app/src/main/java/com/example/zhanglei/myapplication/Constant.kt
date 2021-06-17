@@ -13,12 +13,12 @@ object Constant {
     /**
      * partKey 用来区分入口， 用来实现多个插件不同的加载
      */
-    const val KEY_PLUGIN_PART_KEY = "KEY_PLUGIN_PART_KEY";
+    const val KEY_PLUGIN_PART_KEY = "KEY_PLUGIN_PART_KEY"
 
     /**
-     * 启动的插件 Activity 路径
+     * 启动的插件 Activity 或 Service 路径
      */
-    const val KEY_ACTIVITY_CLASSNAME = "KEY_ACTIVITY_CLASSNAME"
+    const val KEY_CLASSNAME = "KEY_CLASSNAME"
 
     /**
      * 需要传入到启动插件里的参数
@@ -39,4 +39,9 @@ object Constant {
      * 打开 Service 传入的 formId
      */
     const val FROM_ID_CALL_SERVICE = 1002L
+
+    /**
+     *  启动 Intent 的 action
+     */
+    const val KEY_INTENT_ACTION = "KEY_INTENT_ACTION"
 }

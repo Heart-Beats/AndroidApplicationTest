@@ -44,14 +44,10 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
     private static final String TAG = "MyPluginManager";
 
     private final ExecutorService installPluginExecutorService = new ThreadPoolExecutor(1, 1, 2, TimeUnit.SECONDS,
-            new ArrayBlockingQueue<>(Short.MAX_VALUE), r -> new Thread(r, "安装插件线程"), (r, executor) -> {
-        Log.e(TAG, String.format("%s 已满载，拒绝执行任务 %s", executor, r));
-    });
+            new ArrayBlockingQueue<>(Short.MAX_VALUE), r -> new Thread(r, "安装插件线程"), (r, executor) -> Log.e(TAG, String.format("%s 已满载，拒绝执行任务 %s", executor, r)));
 
     private final ExecutorService mFixedPool = new ThreadPoolExecutor(4, 4, 2, TimeUnit.SECONDS,
-            new ArrayBlockingQueue<>(Short.MAX_VALUE), r -> new Thread(r, "解压插件线程"), (r, executor) -> {
-        Log.e(TAG, String.format("%s 已满载，拒绝执行任务 %s", executor, r));
-    });
+            new ArrayBlockingQueue<>(Short.MAX_VALUE), r -> new Thread(r, "解压插件线程"), (r, executor) -> Log.e(TAG, String.format("%s 已满载，拒绝执行任务 %s", executor, r)));
 
     public MyPluginManager(Context context) {
         super(context);
@@ -94,7 +90,8 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
         // 插件 zip 包地址，可以直接写在这里，也用Bundle可以传进来
         final String pluginZipPath = bundle.getString(Constant.KEY_PLUGIN_ZIP_PATH);
         final String partKey = bundle.getString(Constant.KEY_PLUGIN_PART_KEY);
-        final String className = bundle.getString(Constant.KEY_ACTIVITY_CLASSNAME);
+        final String className = bundle.getString(Constant.KEY_CLASSNAME);
+        final String intentAction = bundle.getString(Constant.KEY_INTENT_ACTION);
         final Bundle extras = bundle.getBundle(Constant.KEY_EXTRAS);
 
         if (className == null) {
@@ -111,7 +108,7 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
                 try {
                     InstalledPlugin installedPlugin
                             = installPlugin(pluginZipPath, null, true);//这个调用是阻塞的
-                    Intent pluginIntent = new Intent();
+                    Intent pluginIntent = new Intent(intentAction);
                     pluginIntent.setClassName(context.getPackageName(), className);
                     if (extras != null) {
                         pluginIntent.replaceExtras(extras);
@@ -140,25 +137,31 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
 
                     loadPlugin(installedPlugin.UUID, partKey);
 
-                    Intent pluginIntent = new Intent();
+                    Intent pluginIntent = new Intent(intentAction);
                     pluginIntent.setClassName(context.getPackageName(), className);
+                    if (extras != null) {
+                        pluginIntent.replaceExtras(extras);
+                    }
 
                     boolean callSuccess = mPluginLoader.bindPluginService(pluginIntent, new PluginServiceConnection() {
                         @Override
                         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                             // 在这里实现AIDL进行通信操作
-                            Log.d(TAG, "onServiceConnected: componentName ==" + componentName);
+                            Log.d(TAG, "onServiceConnected（service 已连接）: componentName ==" + componentName);
                         }
 
                         @Override
                         public void onServiceDisconnected(ComponentName componentName) {
-                            Log.d(TAG, "onServiceDisconnected: componentName ==" + componentName);
+                            Log.d(TAG, "onServiceDisconnected（service 断开连接）: componentName ==" + componentName);
                             throw new RuntimeException("onServiceDisconnected");
                         }
                     }, Service.BIND_AUTO_CREATE);
 
                     if (!callSuccess) {
                         throw new RuntimeException("bind service失败 className==" + className);
+                    } else {
+                        Log.d(TAG, "enter: bindPluginService 成功");
+                        mPluginLoader.startPluginService(pluginIntent);
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "enter: bindPluginService 失败", e);
@@ -230,9 +233,6 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
      */
     public void startPluginActivity(Context context, InstalledPlugin installedPlugin, String partKey, Intent pluginIntent) throws RemoteException, TimeoutException, FailedException {
         Intent intent = convertActivityIntent(installedPlugin, partKey, pluginIntent);
-        // if (!(context instanceof Activity)) {
-        //     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        // }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mPluginLoader.startActivityInPluginProcess(intent);
     }
