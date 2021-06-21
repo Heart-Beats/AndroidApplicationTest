@@ -2,7 +2,7 @@ package com.example.zhanglei.myapplication;
 
 import android.view.View;
 
-public abstract class ClickHelperListener implements View.OnClickListener {
+public abstract class ClickHelperListener implements View.OnClickListener{
 
     private static final long DOUBLE_TIME = 500;
     private static long lastClickTime = 0;

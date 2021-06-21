@@ -76,14 +76,22 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
         return Constant.PLUGIN_PROCESS_SERVICE_NAME;
     }
 
-    /**
-     * @param context  context
-     * @param fromId   标识本次请求的来源位置，用于区分入口
-     * @param bundle   参数列表
-     * @param callback 用于从PluginManager实现中返回View
-     */
+
     @Override
     public void enter(final Context context, long fromId, Bundle bundle, final EnterCallback callback) {
+        enter(context, fromId, bundle, callback, null);
+    }
+
+
+    /**
+     * @param context                   context
+     * @param fromId                    标识本次请求的来源位置，用于区分入口
+     * @param bundle                    参数列表
+     * @param callback                  用于从PluginManager实现中返回View
+     * @param onPluginServiceConnection 启动插件中的 Service 时相应的回调
+     */
+    public void enter(final Context context, long fromId, Bundle bundle, final EnterCallback callback,
+                      OnPluginServiceConnection onPluginServiceConnection) {
         Log.d("MyPluginManager", "enter: 开始进入插件 -------------- \n" +
                 " formId == " + fromId + "，传入bundle == " + bundle);
 
@@ -104,71 +112,80 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
                 // 开始加载插件了，实现加载布局
                 callback.onShowLoadingView(null);
             }
-            installPluginExecutorService.execute(() -> {
-                try {
-                    InstalledPlugin installedPlugin
-                            = installPlugin(pluginZipPath, null, true);//这个调用是阻塞的
-                    Intent pluginIntent = new Intent(intentAction);
-                    pluginIntent.setClassName(context.getPackageName(), className);
-                    if (extras != null) {
-                        pluginIntent.replaceExtras(extras);
-                    }
-
-                    startPluginActivity(context, installedPlugin, partKey, pluginIntent);
-                } catch (Exception e) {
-                    Log.e(TAG, "enter: startPluginActivity 失败", e);
-                }
-                if (callback != null) {
-                    Handler uiHandler = new Handler(Looper.getMainLooper());
-                    uiHandler.post(() -> {
-                        // 这里插件就启动完成了
-                        callback.onCloseLoadingView();
-                        callback.onEnterComplete();
-                    });
-                }
-            });
+            installPluginExecutorService.execute(() ->
+                    launchPluginActivity(context, callback, pluginZipPath, partKey, className, intentAction, extras));
 
         } else if (fromId == Constant.FROM_ID_CALL_SERVICE) {
             // 打开Server示例
-            installPluginExecutorService.execute(() -> {
-                try {
-                    InstalledPlugin installedPlugin
-                            = installPlugin(pluginZipPath, null, true);//这个调用是阻塞的
-
-                    loadPlugin(installedPlugin.UUID, partKey);
-
-                    Intent pluginIntent = new Intent(intentAction);
-                    pluginIntent.setClassName(context.getPackageName(), className);
-                    if (extras != null) {
-                        pluginIntent.replaceExtras(extras);
-                    }
-
-                    boolean callSuccess = mPluginLoader.bindPluginService(pluginIntent, new PluginServiceConnection() {
-                        @Override
-                        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                            // 在这里实现AIDL进行通信操作
-                            Log.d(TAG, "onServiceConnected（service 已连接）: componentName ==" + componentName);
-                        }
-
-                        @Override
-                        public void onServiceDisconnected(ComponentName componentName) {
-                            Log.d(TAG, "onServiceDisconnected（service 断开连接）: componentName ==" + componentName);
-                            throw new RuntimeException("onServiceDisconnected");
-                        }
-                    }, Service.BIND_AUTO_CREATE);
-
-                    if (!callSuccess) {
-                        throw new RuntimeException("bind service失败 className==" + className);
-                    } else {
-                        Log.d(TAG, "enter: bindPluginService 成功");
-                        mPluginLoader.startPluginService(pluginIntent);
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "enter: bindPluginService 失败", e);
-                }
-            });
+            installPluginExecutorService.execute(() ->
+                    launchPluginService(context, pluginZipPath, partKey, className, intentAction, extras, onPluginServiceConnection));
         } else {
             throw new IllegalArgumentException("不认识的fromId==" + fromId);
+        }
+    }
+
+    private void launchPluginActivity(Context context, EnterCallback callback, String pluginZipPath, String partKey, String className, String intentAction, Bundle extras) {
+        try {
+            //这个调用是阻塞的
+            InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
+
+            Intent pluginIntent = new Intent(intentAction);
+            pluginIntent.setClassName(context.getPackageName(), className);
+            if (extras != null) {
+                pluginIntent.replaceExtras(extras);
+            }
+
+            startPluginActivity(context, installedPlugin, partKey, pluginIntent);
+        } catch (Exception e) {
+            Log.e(TAG, "enter: startPluginActivity 失败", e);
+        }
+        if (callback != null) {
+            Handler uiHandler = new Handler(Looper.getMainLooper());
+            uiHandler.post(() -> {
+                // 这里插件就启动完成了
+                callback.onCloseLoadingView();
+                callback.onEnterComplete();
+            });
+        }
+    }
+
+    private void launchPluginService(Context context, String pluginZipPath, String partKey, String className,
+                                     String intentAction, Bundle extras, OnPluginServiceConnection onPluginServiceConnection) {
+        try {
+            //这个调用是阻塞的
+            InstalledPlugin installedPlugin = installPlugin(pluginZipPath, null, true);
+
+            loadPlugin(installedPlugin.UUID, partKey);
+
+            Intent pluginIntent = new Intent(intentAction);
+            pluginIntent.setClassName(context.getPackageName(), className);
+            if (extras != null) {
+                pluginIntent.replaceExtras(extras);
+            }
+
+            boolean callSuccess = mPluginLoader.bindPluginService(pluginIntent, new PluginServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                    // 在这里实现AIDL进行通信操作
+                    Log.d(TAG, "onServiceConnected（service 已连接）: componentName ==" + componentName);
+                    onPluginServiceConnection.onServiceConnected(componentName, iBinder);
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName componentName) {
+                    Log.d(TAG, "onServiceConnection（service 断开连接）: componentName ==" + componentName);
+                    onPluginServiceConnection.onServiceDisconnected(componentName);
+                    throw new RuntimeException("onServiceConnection");
+                }
+            }, Service.BIND_AUTO_CREATE);
+            if (!callSuccess) {
+                throw new RuntimeException("bind service失败 className==" + className);
+            } else {
+                Log.d(TAG, "enter: bindPluginService 成功");
+                mPluginLoader.startPluginService(pluginIntent);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "enter: bindPluginService 失败", e);
         }
     }
 

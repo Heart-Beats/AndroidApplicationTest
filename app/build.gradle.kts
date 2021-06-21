@@ -131,6 +131,7 @@ dependencies {
 
 	implementation("androidx.legacy:legacy-support-v4:1.0.0")
 	implementation("com.google.android.material:material:1.3.0-alpha04")
+	implementation(project(mapOf("path" to ":plugin-lib")))
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.1")
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.1.2")

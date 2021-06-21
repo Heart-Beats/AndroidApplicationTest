@@ -4,10 +4,10 @@ import android.Manifest
 import android.animation.ObjectAnimator
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Bundle
+import android.os.*
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,11 +31,12 @@ import com.hl.downloader.DownloadManager
 import com.hl.downloader.DownloadManager.cancelDownload
 import com.hl.downloader.DownloadManager.startDownLoad
 import com.hl.shadow.Shadow
+import com.hl.shadow.pluginmanager.MyPluginManager
+import com.hl.shadow.pluginmanager.OnPluginServiceConnection
 import com.hl.utils.MyNetworkCallback
 import com.hl.utils.onClick
 import com.hl.utils.reqPermissions
 import com.tencent.shadow.dynamic.host.EnterCallback
-import com.tencent.shadow.dynamic.host.PluginManager
 import io.dcloud.feature.sdk.DCUniMPSDK
 import org.jetbrains.anko.Android
 import java.lang.Math.PI
@@ -306,7 +307,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                                 bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_START_ACTIVITY)
                             }
                             1 -> {
-                                bundle.putString(Constant.KEY_CLASSNAME, "android.tsinglink.myplugin.MainActivity")
+                                bundle.putString(Constant.KEY_CLASSNAME, "com.hl.myplugin.MainActivity")
                                 bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
                                 bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_START_ACTIVITY)
                             }
@@ -329,22 +330,25 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                                 })
                             }
                             3 -> {
-                                bundle.putString(Constant.KEY_CLASSNAME, "android.tsinglink.myplugin.TestService")
+                                bundle.putString(Constant.KEY_CLASSNAME, "com.hl.myplugin.TestService")
                                 bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
                                 bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_CALL_SERVICE)
                             }
                             4 -> {
-                                bundle.putString(Constant.KEY_CLASSNAME, "android.tsinglink.myplugin.TestIntentService")
+
+                                val receiver: ResultReceiver = TestResultReceiver(Handler())
+
+                                bundle.putString(Constant.KEY_CLASSNAME, "com.hl.myplugin.TestIntentService")
                                 bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
                                 bundle.putLong(Constant.KEY_FROM_ID, Constant.FROM_ID_CALL_SERVICE)
 
                                 bundle.putString(
                                     Constant.KEY_INTENT_ACTION,
-                                    "android.tsinglink.myplugin.action.FOO"
+                                    "com.hl.myplugin.action.FOO"
                                 )
                                 bundle.putBundle(Constant.KEY_EXTRAS, Bundle().apply {
-                                    this.putString("android.tsinglink.myplugin.extra.PARAM1", "我是参数1")
-                                    this.putString("android.tsinglink.myplugin.extra.PARAM2", "我是参数2")
+                                    this.putString("com.hl.myplugin.extra.PARAM1", "我是参数1")
+                                    this.putParcelable("com.hl.myplugin.extra.PARAM2", receiver)
                                 })
                             }
                         }
@@ -380,7 +384,8 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
     }
 
     private fun startPlugin(bundle: Bundle) {
-        val pluginManager: PluginManager? = Shadow.getPluginManager(needDynamic = false, context = requireContext())
+        val pluginManager =
+            Shadow.getPluginManager(needDynamic = false, context = requireContext()) as? MyPluginManager
 
         /**
          * context context
@@ -395,6 +400,15 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                 // 启动成功
                 Toast.makeText(requireContext(), "启动成功", Toast.LENGTH_SHORT).show()
             }
+        }, object : OnPluginServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) {
+                TODO("Not yet implemented")
+            }
+
         })
     }
 }
