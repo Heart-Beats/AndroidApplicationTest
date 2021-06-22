@@ -56,7 +56,7 @@ dependencies {
     api "com.tencent.shadow.dynamic${group_suffix}:host:$shadow_version"
     implementation "com.tencent.shadow.core${group_suffix}:activity-container:$shadow_version"
 
-    implementation "com.tencent.shadow.dynamic${group_suffix}:manager:$shadow_version"
+    api "com.tencent.shadow.dynamic${group_suffix}:manager:$shadow_version"
     compileOnly "com.tencent.shadow.core${group_suffix}:common:$shadow_version"
     //    compileOnly "com.tencent.shadow.dynamic${rootProject.ext.group_suffix}:host:$shadow_version"
 

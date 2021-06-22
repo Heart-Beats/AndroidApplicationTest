@@ -30,6 +30,9 @@ import com.hl.downloader.DownloadListener
 import com.hl.downloader.DownloadManager
 import com.hl.downloader.DownloadManager.cancelDownload
 import com.hl.downloader.DownloadManager.startDownLoad
+import com.hl.pluginlib.Person
+import com.hl.pluginlib.PluginAidlInterface
+import com.hl.pluginlib.PluginAidlListener
 import com.hl.shadow.Shadow
 import com.hl.shadow.pluginmanager.MyPluginManager
 import com.hl.shadow.pluginmanager.OnPluginServiceConnection
@@ -157,11 +160,6 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
         animator.duration = 2000
         animator.target = myView
         myAnimatorSet?.setAfterAnimator(animator)
-        val animator2 = ObjectAnimator()
-        animator2.setPropertyName("translationX")
-        animator2.interpolator = LinearInterpolator()
-        animator2.duration = 500
-        animator2.target = myView
         val startPoint = Point(0f, 0f)
         val endPoint = Point(200f, 200f)
         val animator1 = ValueAnimator.ofObject(PointEvaluator(), startPoint, endPoint)
@@ -402,11 +400,34 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
             }
         }, object : OnPluginServiceConnection {
             override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                TODO("Not yet implemented")
+
+                /**
+                 * asInterface: 用于将服务端的 Binder对象转换成客户端所需的 AIDL 接口类型的对象，这种转换过程是区分进程的
+                 *      【如果客户端和服务端位于同一进程，那么此方法返回的就是服务端的 Stub 对象本身，
+                 *          否则返回的是系统封装后的 Stub.proxy 对象】
+                 */
+                val pluginAidlInterface = PluginAidlInterface.Stub.asInterface(service)
+
+                pluginAidlInterface.setPluginListener(object : PluginAidlListener.Stub() {
+                    override fun onOpenActivity(result: Boolean, openActivityName: String?) {
+                        println(
+                            "onOpenActivity --------> result = [${result}], openActivityName = " +
+                                    "[${openActivityName}]"
+                        )
+                    }
+
+                    override fun onTransPerson(person: Person?) {
+                        requireActivity().runOnUiThread {
+                            Toast.makeText(requireContext(), "收到客户端发送的数据$person", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                })
+
+                pluginAidlInterface.openActivity("com.hl.myplugin.MainActivity", null)
             }
 
             override fun onServiceDisconnected(name: ComponentName?) {
-                TODO("Not yet implemented")
+                println("onServiceDisconnected ----> name = [${name}]")
             }
 
         })
