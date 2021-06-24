@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.hl.pluginmanager.Constant;
 import com.tencent.shadow.core.manager.installplugin.InstalledPlugin;
 import com.tencent.shadow.core.manager.installplugin.InstalledType;
 import com.tencent.shadow.core.manager.installplugin.PluginConfig;
@@ -165,7 +166,7 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
                 public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                     // 在这里实现AIDL进行通信操作
                     Log.d(TAG, "onServiceConnected（service 已连接）: componentName ==" + componentName);
-                    if (serviceConnection!=null) {
+                    if (serviceConnection != null) {
                         serviceConnection.onServiceConnected(componentName, iBinder);
                     }
                 }
@@ -173,7 +174,7 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
                 @Override
                 public void onServiceDisconnected(ComponentName componentName) {
                     Log.d(TAG, "onServiceConnection（service 断开连接）: componentName ==" + componentName);
-                    if (serviceConnection!=null) {
+                    if (serviceConnection != null) {
                         serviceConnection.onServiceDisconnected(componentName);
                     }
                     throw new RuntimeException("onServiceConnection");

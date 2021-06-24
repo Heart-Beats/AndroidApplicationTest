@@ -3,14 +3,13 @@ package com.hl.shadow
 import android.content.Context
 import com.hl.shadow.logger.AndroidLoggerFactory
 import com.hl.shadow.managerupdater.MyPluginManagerUpdater
+import com.hl.shadow.pluginmanager.MyPluginManager
 import com.tencent.shadow.core.common.LoggerFactory
 import com.tencent.shadow.dynamic.host.DynamicPluginManager
-import com.tencent.shadow.dynamic.host.ManagerFactory
 import com.tencent.shadow.dynamic.host.PluginManager
 import com.tencent.shadow.dynamic.host.PluginManagerImpl
 import java.io.File
 import java.util.concurrent.Future
-import kotlin.reflect.cast
 
 /**
  * @Author  张磊  on  2021/04/09 at 16:34
@@ -46,9 +45,10 @@ object Shadow {
             }
 
             if (pluginManagerImpl == null) {
-                val className = "com.tencent.shadow.dynamic.impl.ManagerFactoryImpl"
-                val newInstance = Class.forName(className).newInstance()
-                pluginManagerImpl = ManagerFactory::class.cast(newInstance).buildManager(context)
+                // val className = "com.tencent.shadow.dynamic.impl.ManagerFactoryImpl"
+                // val newInstance = Class.forName(className).newInstance()
+                // pluginManagerImpl = ManagerFactory::class.cast(newInstance).buildManager(context)
+                pluginManagerImpl = MyPluginManager(context)
             }
             pluginManagerImpl
         }

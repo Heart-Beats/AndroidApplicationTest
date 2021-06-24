@@ -1,6 +1,6 @@
-package com.hl.pluginlib;
+package com.hl.pluginaidl;
 
-import com.hl.pluginlib.PluginAidlListener;  // AIDL 中涉及到的自定义类型都需要手动导包
+import com.hl.pluginaidl.PluginAidlListener;  // AIDL 中涉及到的自定义类型都需要手动导包
 
 interface PluginAidlInterface {
 

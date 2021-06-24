@@ -23,7 +23,7 @@ abstract class ViewBindingBaseFragment<T : ViewBinding> : BaseFragment() {
     abstract fun T.onViewCreated(savedInstanceState: Bundle?)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewBinding = createViewBinding(inflater, container, savedInstanceState)?.also {
+        viewBinding = createViewBinding(inflater, container, savedInstanceState).also {
             layoutView = it.root
         }
         return super.onCreateView(inflater, container, savedInstanceState)

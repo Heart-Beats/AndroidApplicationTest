@@ -4,7 +4,6 @@ import android.Manifest
 import android.animation.ObjectAnimator
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
-import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.*
@@ -30,12 +29,7 @@ import com.hl.downloader.DownloadListener
 import com.hl.downloader.DownloadManager
 import com.hl.downloader.DownloadManager.cancelDownload
 import com.hl.downloader.DownloadManager.startDownLoad
-import com.hl.pluginlib.Person
-import com.hl.pluginlib.PluginAidlInterface
-import com.hl.pluginlib.PluginAidlListener
 import com.hl.shadow.Shadow
-import com.hl.shadow.pluginmanager.MyPluginManager
-import com.hl.shadow.pluginmanager.OnPluginServiceConnection
 import com.hl.utils.MyNetworkCallback
 import com.hl.utils.onClick
 import com.hl.utils.reqPermissions
@@ -334,7 +328,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                             }
                             4 -> {
 
-                                val receiver: ResultReceiver = TestResultReceiver(Handler())
+                                val receiver: ResultReceiver = TestResultReceiver(Handler(Looper.getMainLooper()))
 
                                 bundle.putString(Constant.KEY_CLASSNAME, "com.hl.myplugin.TestIntentService")
                                 bundle.putString(Constant.KEY_PLUGIN_PART_KEY, "test")
@@ -382,8 +376,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
     }
 
     private fun startPlugin(bundle: Bundle) {
-        val pluginManager =
-            Shadow.getPluginManager(needDynamic = false, context = requireContext()) as? MyPluginManager
+        val pluginManager = Shadow.getPluginManager(needDynamic = true, context = requireContext())
 
         /**
          * context context
@@ -398,38 +391,6 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                 // 启动成功
                 Toast.makeText(requireContext(), "启动成功", Toast.LENGTH_SHORT).show()
             }
-        }, object : OnPluginServiceConnection {
-            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-
-                /**
-                 * asInterface: 用于将服务端的 Binder对象转换成客户端所需的 AIDL 接口类型的对象，这种转换过程是区分进程的
-                 *      【如果客户端和服务端位于同一进程，那么此方法返回的就是服务端的 Stub 对象本身，
-                 *          否则返回的是系统封装后的 Stub.proxy 对象】
-                 */
-                val pluginAidlInterface = PluginAidlInterface.Stub.asInterface(service)
-
-                pluginAidlInterface.setPluginListener(object : PluginAidlListener.Stub() {
-                    override fun onOpenActivity(result: Boolean, openActivityName: String?) {
-                        println(
-                            "onOpenActivity --------> result = [${result}], openActivityName = " +
-                                    "[${openActivityName}]"
-                        )
-                    }
-
-                    override fun onTransPerson(person: Person?) {
-                        requireActivity().runOnUiThread {
-                            Toast.makeText(requireContext(), "收到客户端发送的数据$person", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                })
-
-                pluginAidlInterface.openActivity("com.hl.myplugin.MainActivity", null)
-            }
-
-            override fun onServiceDisconnected(name: ComponentName?) {
-                println("onServiceDisconnected ----> name = [${name}]")
-            }
-
         })
     }
 }

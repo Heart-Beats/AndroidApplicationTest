@@ -94,7 +94,7 @@ class MyApplication : Application() {
 				}
 
 
-				val pluginManagerPath = "/sdcard/my-PluginManager.apk" //PluginManager.apk文件路径
+				val pluginManagerPath = "/sdcard/My-PluginManager_debug.apk" //PluginManager.apk文件路径
 				Shadow.initDynamicPluginManager(pluginManagerPath)
 			}
 		}

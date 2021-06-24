@@ -14,7 +14,7 @@ class FirstFragment : ViewBindingBaseFragment<FragmentFirstBinding>() {
     }
 
     override fun FragmentFirstBinding.onViewCreated(savedInstanceState: Bundle?) {
-        toolbar?.title = "第一页"
+        toolbar.title = "第一页"
         button.setOnClickListener {
             if (motionLayout.currentState == motionLayout.startState) {
                 motionLayout.transitionToEnd()

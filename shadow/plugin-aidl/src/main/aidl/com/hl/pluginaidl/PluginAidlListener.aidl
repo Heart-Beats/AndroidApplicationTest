@@ -1,6 +1,6 @@
-package com.hl.pluginlib;
+package com.hl.pluginaidl;
 
-import com.hl.pluginlib.Person;
+import com.hl.pluginaidl.Person;
 
 parcelable Person;  // 声明 Person 类型，只有这样 AIDL 才可找到它并知道它已实现 parcelable 接口
 

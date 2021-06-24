@@ -10,6 +10,7 @@ apply {
 	plugin("kotlin-parcelize")
 	plugin("androidx.navigation.safeargs.kotlin")
 	from("../app_common.gradle.kts")
+	from("../shadow/shadow_common.gradle")
 }
 
 android {
@@ -131,7 +132,7 @@ dependencies {
 
 	implementation("androidx.legacy:legacy-support-v4:1.0.0")
 	implementation("com.google.android.material:material:1.3.0-alpha04")
-	implementation(project(mapOf("path" to ":plugin-lib")))
+	implementation(project(mapOf("path" to ":plugin-aidl")))
 	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.1")
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.1.2")
@@ -184,4 +185,11 @@ dependencies {
 	implementation("androidx.camera:camera-view:1.0.0-alpha24")
 	// If you want to additionally use the CameraX Extensions library
 	implementation("androidx.camera:camera-extensions:1.0.0-alpha24")
+
+	/*
+	*  val versionCode: String by project                // 读取 project 的 gradle.properties 文件定义的 versionCode 变量
+	*  val kotlinVersion: String by rootProject.extra   //  读取 rootProject 对应的 build.gradle 文件中定义的 kotlinVersion 变量
+	*  val newKotlinVersion: String by extra("1.3.61")  //  在 project 中定义一个新的 newKotlinVersion 变量
+	* */
+	implementation("com.tencent.shadow.dynamic${project.extra["group_suffix"]}:host:${project.extra["shadow_version"]}")
 }

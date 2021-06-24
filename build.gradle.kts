@@ -1,14 +1,6 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-
 	// rootProject.extra 定义的扩展属性可被子工程引用
 	val kotlinVersion by rootProject.extra("1.5.10")
-
-	// val group_suffix by rootProject.extra{
-	// 	val needCustom = false
-	// 	//定义共享属性
-	// 	if(needCustom) 	".test" else ""
-	// }
 
 	repositories {
 		mavenCentral()

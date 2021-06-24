@@ -8,3 +8,4 @@
 .externalNativeBuild
 /keystore.properties
 /shadow/shadow-init/build/
+/shadow/build/

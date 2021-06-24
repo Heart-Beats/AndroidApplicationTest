@@ -1,4 +1,4 @@
-package com.hl.shadow.pluginmanager
+package com.hl.pluginmanager
 
 /**
  * @Author  张磊  on  2021/04/08 at 17:40

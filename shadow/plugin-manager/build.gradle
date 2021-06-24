@@ -1,21 +1,21 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.application'
     id 'kotlin-android'
 }
-
 apply from: '../shadow_common.gradle'
 
 android {
     compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
+        applicationId "com.hl.shadow.pluginmanager"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles 'consumer-rules.pro'
     }
 
     buildTypes {
@@ -24,7 +24,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -32,13 +31,32 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def buildType = variant.buildType.name
+
+            //获取当前时间的"YYYY-MM-dd"格式。
+            // def createTime = new Date().format("YYYY-MM-dd", java.util.TimeZone.getTimeZone("GMT+08:00"))
+            if (buildType == "release" || buildType == "debug") {
+                //variant.getPackageApplicationProvider().get().outputDirectory = new File("/Volumes/Morley/User/张磊")
+                def fileName = "My-PluginManager_${buildType}.apk"
+                println("文件名：-----------------${fileName}")
+                outputFileName = fileName
+
+                def outputFile = new File(getProjectDir().parent ,"build${File.separator}${fileName}" )
+                println("Manager 打包输出至 ---------> ${outputFile.absolutePath}")
+                variant.getPackageApplication().outputDirectory = outputFile
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation "com.tencent.shadow.dynamic${group_suffix}:host:$shadow_version"
+
     implementation "com.tencent.shadow.core${group_suffix}:activity-container:$shadow_version"
 
     implementation "com.tencent.shadow.dynamic${group_suffix}:manager:$shadow_version"

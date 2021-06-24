@@ -34,7 +34,7 @@ android {
 
     sourceSets{
         main{
-            java.srcDirs += ['src/main/aidl'] //
+            java.srcDirs += ['src/main/aidl'] //设置 AIDL 中的 java 文件可被识别
         }
     }
 }

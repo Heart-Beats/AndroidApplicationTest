@@ -1,4 +1,4 @@
-package com.hl.pluginlib
+package com.hl.pluginaidl
 
 import android.os.Parcel
 import android.os.Parcelable
