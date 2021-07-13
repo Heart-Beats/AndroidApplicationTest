@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/payment-alipay-release.aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/aca913d227838648c1993ed74f1ed496/jetified-payment-alipay-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5e199da410681f0ca80cd2561efb749d/transformed/jetified-payment-alipay-release/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5e199da410681f0ca80cd2561efb749d/transformed/jetified-payment-alipay-release/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5e199da410681f0ca80cd2561efb749d/transformed/jetified-payment-alipay-release/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

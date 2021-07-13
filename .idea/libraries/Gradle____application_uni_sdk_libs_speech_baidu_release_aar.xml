@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/speech_baidu-release.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f67fe9bc7d93c7274a65a0e8583d7668/transformed/jetified-speech_baidu-release/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f67fe9bc7d93c7274a65a0e8583d7668/transformed/jetified-speech_baidu-release/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f67fe9bc7d93c7274a65a0e8583d7668/transformed/jetified-speech_baidu-release/jars/libs/bdasr_V3_20191210_81acdf5.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f67fe9bc7d93c7274a65a0e8583d7668/transformed/jetified-speech_baidu-release/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

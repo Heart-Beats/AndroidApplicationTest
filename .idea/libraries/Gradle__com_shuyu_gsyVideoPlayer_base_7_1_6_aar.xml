@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: com.shuyu:gsyVideoPlayer-base:7.1.6@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/68ce3acfc72aede777a24f3eb33edf1c/jetified-gsyVideoPlayer-base-7.1.6/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f2da7056cb63ae77df4f48b1525fbfe3/transformed/jetified-gsyVideoPlayer-base-7.1.6/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f2da7056cb63ae77df4f48b1525fbfe3/transformed/jetified-gsyVideoPlayer-base-7.1.6/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f2da7056cb63ae77df4f48b1525fbfe3/transformed/jetified-gsyVideoPlayer-base-7.1.6/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.shuyu/gsyVideoPlayer-base/7.1.6/d3ff8eb7b894c286f3004ce1c23cb2c97d86952e/gsyVideoPlayer-base-7.1.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.shuyu/gsyVideoPlayer-base/7.1.6/25b56e755c4b70cb9d7fcac1c7d0116eae19c41e/gsyVideoPlayer-base-7.1.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

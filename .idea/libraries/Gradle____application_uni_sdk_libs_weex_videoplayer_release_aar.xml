@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/weex_videoplayer-release.aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7705972009c0ad9b922f24d8b169ec54/transformed/jetified-weex_videoplayer-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7705972009c0ad9b922f24d8b169ec54/transformed/jetified-weex_videoplayer-release/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7705972009c0ad9b922f24d8b169ec54/transformed/jetified-weex_videoplayer-release/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

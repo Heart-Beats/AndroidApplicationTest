@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: me.weishu.exposed:exposed-xposedapi:0.4.5@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2d07a86068149eda716cdf775c26c3ff/jetified-exposed-xposedapi-0.4.5/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f61db410b8f03e050131f7408eea37ba/transformed/jetified-exposed-xposedapi-0.4.5/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f61db410b8f03e050131f7408eea37ba/transformed/jetified-exposed-xposedapi-0.4.5/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f61db410b8f03e050131f7408eea37ba/transformed/jetified-exposed-xposedapi-0.4.5/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.weishu.exposed/exposed-xposedapi/0.4.5/b93731cdf660e4e27e042c94dc63d9c5f613ebc3/exposed-xposedapi-0.4.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/me.weishu.exposed/exposed-xposedapi/0.4.5/308beded54474f0b50165fc4cd7e4977fea68fd8/exposed-xposedapi-0.4.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

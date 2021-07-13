@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/openDefault-4.4.1.aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b3849edd06c959118d92f16f19ba702f/transformed/jetified-openDefault-4.4.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/b3849edd06c959118d92f16f19ba702f/transformed/jetified-openDefault-4.4.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b3849edd06c959118d92f16f19ba702f/transformed/jetified-openDefault-4.4.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/b3849edd06c959118d92f16f19ba702f/transformed/jetified-openDefault-4.4.1/jars/libs/ssosdk.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

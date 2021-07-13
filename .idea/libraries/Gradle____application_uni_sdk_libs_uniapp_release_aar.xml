@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/uniapp-release.aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/722ac0869cd3628d43f1307387d3d655/transformed/jetified-uniapp-release/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/722ac0869cd3628d43f1307387d3d655/transformed/jetified-uniapp-release/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/722ac0869cd3628d43f1307387d3d655/transformed/jetified-uniapp-release/jars/libs/bindingx_weex_plugin-1.0.9.6.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/722ac0869cd3628d43f1307387d3d655/transformed/jetified-uniapp-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/722ac0869cd3628d43f1307387d3d655/transformed/jetified-uniapp-release/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/722ac0869cd3628d43f1307387d3d655/transformed/jetified-uniapp-release/jars/libs/bindingx-core-1.0.9.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

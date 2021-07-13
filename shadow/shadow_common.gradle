@@ -1,7 +1,6 @@
 def needCustom = false
 
 ext {
-    kotlin_version = '1.5.10'
     shadow_version = 'local-0b373991-SNAPSHOT'
     shadow_repository = 'E:\\repository'
 

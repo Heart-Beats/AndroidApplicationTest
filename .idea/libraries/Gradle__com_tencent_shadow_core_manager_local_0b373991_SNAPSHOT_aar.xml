@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="Gradle: com.tencent.shadow.core:manager:local-0b373991-SNAPSHOT@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cc89be07b6a8642a54b87f28c5a17e06/jetified-manager-local-0b373991-20210617.080057-1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a31560a3970ba8b304269aecbde46966/jetified-manager-local-0b373991-20210617.080057-1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2a5958a410523a8cbc63b1df739e31aa/jetified-manager-local-0b373991-20210617.080057-1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3c3100e134added07fb597fadd2823f9/jetified-manager-local-0b373991-20210617.080057-1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6e826da64f0f0c1634ab9b7b57bbf93f/jetified-manager-local-0b373991-20210617.080057-1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7644b30edc57f1460927a332e6855995/manager-local-0b373991-20210617.080057-1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fd1873246a8eb00dfa37cdffcf1448e4/transformed/manager-local-0b373991-20210617.080057-1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/fd1873246a8eb00dfa37cdffcf1448e4/transformed/manager-local-0b373991-20210617.080057-1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/fd1873246a8eb00dfa37cdffcf1448e4/transformed/manager-local-0b373991-20210617.080057-1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.m2/repository/com/tencent/shadow/core/manager/local-0b373991-SNAPSHOT/manager-local-0b373991-20210617.080057-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

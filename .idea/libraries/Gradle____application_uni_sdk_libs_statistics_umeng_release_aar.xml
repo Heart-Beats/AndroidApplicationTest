@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/statistics-umeng-release.aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2415076179ddbc12facb8f7216e2c91e/jetified-statistics-umeng-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f62f8de09cd3fcaa75001cdccad2454f/transformed/jetified-statistics-umeng-release/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f62f8de09cd3fcaa75001cdccad2454f/transformed/jetified-statistics-umeng-release/jars/libs/umeng-analytics-v6.0.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f62f8de09cd3fcaa75001cdccad2454f/transformed/jetified-statistics-umeng-release/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f62f8de09cd3fcaa75001cdccad2454f/transformed/jetified-statistics-umeng-release/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

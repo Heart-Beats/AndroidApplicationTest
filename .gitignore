@@ -1,11 +1,1 @@
-*.iml
-.gradle
-/local.properties
-/.idea
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-/keystore.properties
-/shadow/shadow-init/build/
-/shadow/build/
+shadow/build

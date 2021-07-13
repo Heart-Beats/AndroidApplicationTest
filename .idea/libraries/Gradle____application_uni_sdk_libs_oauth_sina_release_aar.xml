@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/oauth-sina-release.aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/648ccca68b63c7755e21599ec179b96d/jetified-oauth-sina-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/55384cb5ea34b5904c2f1a1764de7664/transformed/jetified-oauth-sina-release/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/55384cb5ea34b5904c2f1a1764de7664/transformed/jetified-oauth-sina-release/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/55384cb5ea34b5904c2f1a1764de7664/transformed/jetified-oauth-sina-release/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

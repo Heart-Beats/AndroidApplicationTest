@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/AndroidApplicationTest.iml" filepath="$PROJECT_DIR$/.idea/AndroidApplicationTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/application/application.iml" filepath="$PROJECT_DIR$/.idea/modules/application/application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/application/app/application.app.iml" filepath="$PROJECT_DIR$/.idea/modules/application/app/application.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/application/method-proxy-library/application.method-proxy-library.iml" filepath="$PROJECT_DIR$/.idea/modules/application/method-proxy-library/application.method-proxy-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/application/uni-sdk/application.uni-sdk.iml" filepath="$PROJECT_DIR$/.idea/modules/application/uni-sdk/application.uni-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/application/utils/application.utils.iml" filepath="$PROJECT_DIR$/.idea/modules/application/utils/application.utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shadow/shadow.iml" filepath="$PROJECT_DIR$/.idea/modules/shadow/shadow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shadow/plugin-aidl/shadow.plugin-aidl.iml" filepath="$PROJECT_DIR$/.idea/modules/shadow/plugin-aidl/shadow.plugin-aidl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shadow/plugin-manager/shadow.plugin-manager.iml" filepath="$PROJECT_DIR$/.idea/modules/shadow/plugin-manager/shadow.plugin-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shadow/shadow-init/shadow.shadow-init.iml" filepath="$PROJECT_DIR$/.idea/modules/shadow/shadow-init/shadow.shadow-init.iml" />
+    </modules>
+  </component>
+</project>

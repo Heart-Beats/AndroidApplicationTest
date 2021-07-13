@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/alipayutdid.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/application/uni-sdk/libs/alipayutdid.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

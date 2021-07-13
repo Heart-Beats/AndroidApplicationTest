@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/amap-libs-release.aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/59ccef09072fec86da8dd95c366616fe/amap-libs-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8ca829973fdce4d20a13eb629d98d79b/jetified-amap-libs-release/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9e2f9dd5fb4341c1cd946a762c9ed176/transformed/jetified-amap-libs-release/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9e2f9dd5fb4341c1cd946a762c9ed176/transformed/jetified-amap-libs-release/jars/libs/AMap_Location_V5.2.0_20200915.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9e2f9dd5fb4341c1cd946a762c9ed176/transformed/jetified-amap-libs-release/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9e2f9dd5fb4341c1cd946a762c9ed176/transformed/jetified-amap-libs-release/jars/libs/Android_Map3D_SDK_V7.6.0_20200819.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9e2f9dd5fb4341c1cd946a762c9ed176/transformed/jetified-amap-libs-release/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9e2f9dd5fb4341c1cd946a762c9ed176/transformed/jetified-amap-libs-release/jars/libs/AMap_Search_V7.1.0_20191030.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

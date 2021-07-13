@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="1.6">
+      <module name="application.app" target="11" />
+      <module name="application.method-proxy-library" target="11" />
+      <module name="application.uni-sdk" target="11" />
+      <module name="application.utils" target="11" />
+      <module name="shadow.plugin-aidl" target="11" />
+      <module name="shadow.plugin-manager" target="11" />
+      <module name="shadow.shadow-init" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

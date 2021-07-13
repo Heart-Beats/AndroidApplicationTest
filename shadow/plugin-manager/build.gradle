@@ -1,8 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 apply from: '../shadow_common.gradle'
+
+group("com.hl.shadow")
 
 android {
     compileSdkVersion 30
@@ -39,14 +42,13 @@ android {
             //获取当前时间的"YYYY-MM-dd"格式。
             // def createTime = new Date().format("YYYY-MM-dd", java.util.TimeZone.getTimeZone("GMT+08:00"))
             if (buildType == "release" || buildType == "debug") {
-                //variant.getPackageApplicationProvider().get().outputDirectory = new File("/Volumes/Morley/User/张磊")
                 def fileName = "My-PluginManager_${buildType}.apk"
                 println("文件名：-----------------${fileName}")
                 outputFileName = fileName
 
                 def outputFile = new File(getProjectDir().parent ,"build${File.separator}${fileName}" )
                 println("Manager 打包输出至 ---------> ${outputFile.absolutePath}")
-                variant.getPackageApplication().outputDirectory = outputFile
+                variant.getPackageApplicationProvider().get().outputDirectory = outputFile
             }
         }
     }

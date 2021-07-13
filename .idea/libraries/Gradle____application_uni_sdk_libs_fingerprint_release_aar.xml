@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/fingerprint-release.aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7f4cf5aade88dcb8c8100115681e1859/fingerprint-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d0fffea1a171917ee8a67088b27806b/jetified-fingerprint-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3524469763abe6771c86df6782f86506/transformed/jetified-fingerprint-release/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/3524469763abe6771c86df6782f86506/transformed/jetified-fingerprint-release/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3524469763abe6771c86df6782f86506/transformed/jetified-fingerprint-release/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

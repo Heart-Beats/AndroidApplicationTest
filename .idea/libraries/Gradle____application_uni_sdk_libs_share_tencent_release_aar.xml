@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: ./application/uni-sdk/libs/share-tencent-release.aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/674496d2c1bf4570af085b691269805f/jetified-share-tencent-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9b2061e8d15535fd9621cbf008139d74/transformed/jetified-share-tencent-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/9b2061e8d15535fd9621cbf008139d74/transformed/jetified-share-tencent-release/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9b2061e8d15535fd9621cbf008139d74/transformed/jetified-share-tencent-release/jars/libs/tx_weibo_sdk.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9b2061e8d15535fd9621cbf008139d74/transformed/jetified-share-tencent-release/jars/libs/tx_weibo_sdk_component.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9b2061e8d15535fd9621cbf008139d74/transformed/jetified-share-tencent-release/jars/libs/tx_weibo_sdk-httpclient-3.0.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/9b2061e8d15535fd9621cbf008139d74/transformed/jetified-share-tencent-release/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
