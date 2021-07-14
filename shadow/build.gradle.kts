@@ -1,6 +1,6 @@
 buildscript {
 	// rootProject.extra 定义的扩展属性可被子工程引用
-	val kotlin_version by extra("1.5.20")
+	val kotlin_version by extra("1.5.21")
 	repositories {
 		mavenCentral()
 		mavenLocal()
@@ -19,6 +19,10 @@ buildscript {
 }
 
 allprojects {
+
+	//给所有的子模块添加组
+	group = "com.hl.shadow"
+
 	repositories {
 		mavenCentral() // maven 中心远程仓库
 		mavenLocal()  // maven 本地仓库

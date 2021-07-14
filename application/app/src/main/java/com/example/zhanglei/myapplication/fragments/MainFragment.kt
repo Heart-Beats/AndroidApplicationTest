@@ -33,10 +33,12 @@ import com.hl.downloader.DownloadManager.startDownLoad
 import com.hl.shadow.Shadow
 import com.hl.utils.MyNetworkCallback
 import com.hl.utils.onClick
+import com.hl.utils.putFileOfAssetsToPath
 import com.hl.utils.reqPermissions
 import com.tencent.shadow.dynamic.host.EnterCallback
 import io.dcloud.feature.sdk.DCUniMPSDK
 import org.jetbrains.anko.Android
+import java.io.File
 import java.lang.Math.PI
 import java.util.*
 import kotlin.math.cos
@@ -284,7 +286,12 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
 
                         val bundle = Bundle().apply {
                             //  插件 zip 的路径
-                            putString(Constant.KEY_PLUGIN_ZIP_PATH, "/sdcard/plugin-debug.zip")
+                            val pluginSavePath =
+                                File(requireContext().getExternalFilesDir(null), "plugin/plugin-debug.zip").absolutePath
+                            val pluginZipPath =
+                                requireContext().putFileOfAssetsToPath("plugin/plugin-debug.zip", pluginSavePath)
+
+                            putString(Constant.KEY_PLUGIN_ZIP_PATH, pluginZipPath)
                         }
 
                         when (index) {

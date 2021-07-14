@@ -12,6 +12,7 @@ import com.hl.shadow.Shadow
 import com.hl.shadow.logger.AndroidLoggerFactory
 import com.hl.utils.MyNetworkCallback
 import com.hl.utils.isProcess
+import com.hl.utils.putFileOfAssetsToPath
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.tencent.shadow.core.common.LoggerFactory
 import com.tencent.shadow.dynamic.host.DynamicRuntime
@@ -20,6 +21,7 @@ import io.dcloud.common.util.RuningAcitvityUtil
 import io.dcloud.feature.sdk.DCSDKInitConfig
 import io.dcloud.feature.sdk.DCUniMPSDK
 import io.dcloud.feature.sdk.MenuActionSheetItem
+import java.io.File
 
 
 /**
@@ -95,8 +97,14 @@ class MyApplication : Application() {
 				}
 
 
-				val pluginManagerPath = "/sdcard/My-PluginManager_debug.apk" //PluginManager.apk文件路径
-				Shadow.initDynamicPluginManager(pluginManagerPath)
+				//PluginManager.apk文件路径
+				this.assets.list("plugin")?.first { it.contains("My-PluginManager") }?.also { pluginManagerName ->
+					val pluginManagerSavePath =
+						File(this.getExternalFilesDir(null), "plugin/$pluginManagerName").absolutePath
+					val pluginManagerZipPath =
+						this.putFileOfAssetsToPath("plugin/$pluginManagerName", pluginManagerSavePath)
+					Shadow.initDynamicPluginManager(pluginManagerZipPath)
+				}
 			}
 		}
 	}

@@ -10,10 +10,4 @@
 // }
 
 includeBuild("./application")
-
-dependencyResolutionManagement {
-	repositories {
-		mavenCentral()
-	}
-}
 includeBuild("./shadow")

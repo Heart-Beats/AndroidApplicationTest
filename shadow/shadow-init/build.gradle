@@ -6,8 +6,6 @@ plugins {
 
 apply from: '../shadow_common.gradle'
 
-group("com.hl.shadow")
-
 android {
     compileSdkVersion 30
 

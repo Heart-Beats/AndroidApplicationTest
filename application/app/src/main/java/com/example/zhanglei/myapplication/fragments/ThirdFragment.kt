@@ -8,12 +8,22 @@ import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.databinding.FragmentThirdBinding
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
+import com.example.zhanglei.myapplication.hilt.Bind
+import com.example.zhanglei.myapplication.hilt.TestEntryPoint
 import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeaderFooter
 import com.hl.utils.DeviceInfoUtil
 import com.hl.utils.reqPermissions
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ThirdFragment : ViewBindingBaseFragment<FragmentThirdBinding>() {
+
+	@Bind
+	@Inject
+	lateinit var testEntryPoint: TestEntryPoint
 
 	override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): FragmentThirdBinding {
 		return FragmentThirdBinding.inflate(inflater, container, false)
@@ -51,6 +61,11 @@ class ThirdFragment : ViewBindingBaseFragment<FragmentThirdBinding>() {
 				XLog.d(DeviceInfoUtil.getDeviceAllInfo(requireContext()))
 			}
 		})
+
+		val entryPoint = EntryPointAccessors.fromApplication(requireContext(), TestEntryPoint::class.java)
+		println("entryPointName == ${entryPoint.getEntryPoint()}")
+
+		println("entryPointName == ${testEntryPoint.getEntryPoint()}")
 	}
 
 }

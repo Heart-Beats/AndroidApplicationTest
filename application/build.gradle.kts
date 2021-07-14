@@ -1,6 +1,6 @@
 buildscript {
 	// rootProject.extra 定义的扩展属性可被子工程引用
-	val kotlinVersion by extra("1.5.20")
+	val kotlinVersion by extra("1.5.21")
 	val hiltVersion by extra("2.37")
 	repositories {
 		mavenCentral()

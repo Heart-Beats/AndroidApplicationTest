@@ -5,8 +5,6 @@ plugins {
 }
 apply from: '../shadow_common.gradle'
 
-group("com.hl.shadow")
-
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -41,14 +39,28 @@ android {
 
             //获取当前时间的"YYYY-MM-dd"格式。
             // def createTime = new Date().format("YYYY-MM-dd", java.util.TimeZone.getTimeZone("GMT+08:00"))
-            if (buildType == "release" || buildType == "debug") {
-                def fileName = "My-PluginManager_${buildType}.apk"
-                println("文件名：-----------------${fileName}")
-                outputFileName = fileName
 
-                def outputFile = new File(getProjectDir().parent ,"build${File.separator}${fileName}" )
-                println("Manager 打包输出至 ---------> ${outputFile.absolutePath}")
-                variant.getPackageApplicationProvider().get().outputDirectory = outputFile
+            def fileName = "My-PluginManager_${buildType}.apk"
+            outputFileName = fileName
+
+            def outputDirectory = new File(parent.buildDir, buildType)
+            println("Manager 打包输出至 ---------> ${outputDirectory.absolutePath}${File.separator}${outputFileName}")
+            variant.getPackageApplicationProvider().get().outputDirectory = outputDirectory
+
+            def allTask = tasks.findAll {
+                it.name.startsWith('assemble') && (it.name.endsWith("Debug") || it.name.endsWith("Release"))
+            }
+
+            // 给相关打包程序添加复制任务
+            allTask.each {
+                it.doLast {
+                    println "正在将${fileName}拷贝至 App 资源目录下"
+                    // 复制至 app 资源目录下
+                    copy {
+                        from "${outputDirectory.absolutePath}${File.separator}${outputFileName}"
+                        into "../../application/app/src/main/assets/plugin"
+                    }
+                }
             }
         }
     }

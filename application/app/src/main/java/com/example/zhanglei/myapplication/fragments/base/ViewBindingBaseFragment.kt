@@ -10,7 +10,7 @@ import androidx.viewbinding.ViewBinding
  * @Author  张磊  on  2021/03/02 at 12:44
  * Email: 913305160@qq.com
  */
-abstract class ViewBindingBaseFragment<T : ViewBinding> : BaseFragment() {
+abstract class ViewBindingBaseFragment<T :ViewBinding> : BaseFragment() {
 
     protected var viewBinding: T? = null
         private set
@@ -20,6 +20,7 @@ abstract class ViewBindingBaseFragment<T : ViewBinding> : BaseFragment() {
 
 
     abstract fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): T
+
     abstract fun T.onViewCreated(savedInstanceState: Bundle?)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
