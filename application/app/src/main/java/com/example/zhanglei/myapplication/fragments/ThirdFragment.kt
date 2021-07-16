@@ -8,8 +8,7 @@ import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.databinding.FragmentThirdBinding
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
-import com.example.zhanglei.myapplication.hilt.Bind
-import com.example.zhanglei.myapplication.hilt.TestEntryPoint
+import com.example.zhanglei.myapplication.hilt.*
 import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeaderFooter
 import com.hl.utils.DeviceInfoUtil
 import com.hl.utils.reqPermissions
@@ -25,7 +24,21 @@ class ThirdFragment : ViewBindingBaseFragment<FragmentThirdBinding>() {
 	@Inject
 	lateinit var testEntryPoint: TestEntryPoint
 
-	override fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): FragmentThirdBinding {
+	@Inject
+	lateinit var IMultiBindings: IMultiBindings
+
+	@Inject
+	lateinit var set: List<AIMultiBindingsImpl>
+
+	@Inject
+	lateinit var map : Map<Int, String>
+
+
+	override fun createViewBinding(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): FragmentThirdBinding {
 		return FragmentThirdBinding.inflate(inflater, container, false)
 	}
 
@@ -66,6 +79,12 @@ class ThirdFragment : ViewBindingBaseFragment<FragmentThirdBinding>() {
 		println("entryPointName == ${entryPoint.getEntryPoint()}")
 
 		println("entryPointName == ${testEntryPoint.getEntryPoint()}")
+
+		println("IMultiBindingsName == ${IMultiBindings.printBindName()}")
+
+		println("set == $set")
+
+		println("map =$map")
 	}
 
 }
