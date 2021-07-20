@@ -37,6 +37,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
+    implementation project(path: ':shadow-lib')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
 
     implementation "com.tencent.shadow.dynamic${group_suffix}:host:$shadow_version"

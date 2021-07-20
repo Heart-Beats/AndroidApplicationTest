@@ -140,6 +140,7 @@ dependencies {
 
 	implementation("com.hl.shadow:shadow-init")
 	implementation("com.hl.shadow:plugin-aidl")
+	implementation("com.hl.shadow:shadow-lib")
 
 	implementation("androidx.legacy:legacy-support-v4:1.0.0")
 	implementation("com.google.android.material:material:1.3.0-alpha04")

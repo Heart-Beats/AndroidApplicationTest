@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.hl.shadow.lib.Constants;
 import com.tencent.shadow.core.manager.installplugin.InstalledPlugin;
 import com.tencent.shadow.core.manager.installplugin.InstalledType;
 import com.tencent.shadow.core.manager.installplugin.PluginConfig;
@@ -58,7 +59,7 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
      */
     @Override
     protected String getName() {
-        return Constant.PLUGIN_MANAGER_NAME;
+        return Constants.PLUGIN_MANAGER_NAME;
     }
 
     /**
@@ -66,14 +67,14 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
      */
     @Override
     public String getAbi() {
-        return Constant.ABI;
+        return Constants.ABI;
     }
 
     /**
      * @return 宿主中注册的PluginProcessService实现的类名
      */
     protected String getPluginProcessServiceName() {
-        return Constant.PLUGIN_PROCESS_SERVICE_NAME;
+        return Constants.PLUGIN_PROCESS_SERVICE_NAME;
     }
 
 
@@ -89,18 +90,18 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
                 " formId == " + fromId + "，传入bundle == " + bundle);
 
         // 插件 zip 包地址，可以直接写在这里，也用Bundle可以传进来
-        final String pluginZipPath = bundle.getString(Constant.KEY_PLUGIN_ZIP_PATH);
-        final String partKey = bundle.getString(Constant.KEY_PLUGIN_PART_KEY);
-        final String className = bundle.getString(Constant.KEY_CLASSNAME);
-        final String intentAction = bundle.getString(Constant.KEY_INTENT_ACTION);
-        final Bundle extras = bundle.getBundle(Constant.KEY_EXTRAS);
+        final String pluginZipPath = bundle.getString(Constants.KEY_PLUGIN_ZIP_PATH);
+        final String partKey = bundle.getString(Constants.KEY_PLUGIN_PART_KEY);
+        final String className = bundle.getString(Constants.KEY_CLASSNAME);
+        final String intentAction = bundle.getString(Constants.KEY_INTENT_ACTION);
+        final Bundle extras = bundle.getBundle(Constants.KEY_EXTRAS);
 
         if (className == null) {
             throw new NullPointerException("className == null");
         }
 
         // 打开 Activity 示例
-        if (fromId == Constant.FROM_ID_START_ACTIVITY) {
+        if (fromId == Constants.FROM_ID_START_ACTIVITY) {
             if (callback != null) {
                 // 开始加载插件了，实现加载布局
                 callback.onShowLoadingView(null);
@@ -108,7 +109,7 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
             installPluginExecutorService.execute(() ->
                     launchPluginActivity(context, callback, pluginZipPath, partKey, className, intentAction, extras));
 
-        } else if (fromId == Constant.FROM_ID_CALL_SERVICE) {
+        } else if (fromId == Constants.FROM_ID_CALL_SERVICE) {
             // 打开Server示例
             installPluginExecutorService.execute(() ->
                     launchPluginService(context, pluginZipPath, partKey, className, intentAction, extras));
@@ -156,25 +157,31 @@ public class MyPluginManager extends PluginManagerThatUseDynamicLoader {
                 pluginIntent.replaceExtras(extras);
             }
 
-            // 在宿主中定义的接口，用来回调 PluginServiceConnection 相关的方法
-            Object instance = Class.forName("com.hl.shadow.dynamic.impl.ServiceConnectionIml").newInstance();
-            ServiceConnection serviceConnection = (ServiceConnection) instance;
+            ServiceConnection serviceConnection = null;
+            try {
+                // 在宿主中定义的接口，用来回调 PluginServiceConnection 相关的方法
+                Object instance = Class.forName("com.hl.shadow.dynamic.impl.ServiceConnectionIml").newInstance();
+                serviceConnection = (ServiceConnection) instance;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            final ServiceConnection finalServiceConnection = serviceConnection;
 
             boolean callSuccess = mPluginLoader.bindPluginService(pluginIntent, new PluginServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                     // 在这里实现AIDL进行通信操作
                     Log.d(TAG, "onServiceConnected（service 已连接）: componentName ==" + componentName);
-                    if (serviceConnection!=null) {
-                        serviceConnection.onServiceConnected(componentName, iBinder);
+                    if (finalServiceConnection !=null) {
+                        finalServiceConnection.onServiceConnected(componentName, iBinder);
                     }
                 }
 
                 @Override
                 public void onServiceDisconnected(ComponentName componentName) {
                     Log.d(TAG, "onServiceConnection（service 断开连接）: componentName ==" + componentName);
-                    if (serviceConnection!=null) {
-                        serviceConnection.onServiceDisconnected(componentName);
+                    if (finalServiceConnection !=null) {
+                        finalServiceConnection.onServiceDisconnected(componentName);
                     }
                     throw new RuntimeException("onServiceConnection");
                 }

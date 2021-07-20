@@ -76,7 +76,7 @@ class MyApplication : Application() {
 				DynamicRuntime.recoveryRuntime(mApplication)
 
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-					WebView.setDataDirectorySuffix("plugin")
+					WebView.setDataDirectorySuffix("plugins")
 				}
 			} else {
 				val logConfig = LogConfiguration.Builder()
@@ -98,11 +98,11 @@ class MyApplication : Application() {
 
 
 				//PluginManager.apk文件路径
-				this.assets.list("plugin")?.first { it.contains("My-PluginManager") }?.also { pluginManagerName ->
+				this.assets.list("plugins")?.first { it.contains("My-PluginManager") }?.also { pluginManagerName ->
 					val pluginManagerSavePath =
-						File(this.getExternalFilesDir(null), "plugin/$pluginManagerName").absolutePath
+						File(this.getExternalFilesDir(null), "plugins/$pluginManagerName").absolutePath
 					val pluginManagerZipPath =
-						this.putFileOfAssetsToPath("plugin/$pluginManagerName", pluginManagerSavePath)
+						this.putFileOfAssetsToPath("plugins/$pluginManagerName", pluginManagerSavePath)
 					Shadow.initDynamicPluginManager(pluginManagerZipPath)
 				}
 			}
