@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_mainFragment_to_openCameraFragment"
             app:destination="@id/openCameraFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_JNIFragment"
+            app:destination="@id/JNIFragment" />
     </fragment>
 
 
@@ -80,4 +83,9 @@
         android:name="com.example.zhanglei.myapplication.fragments.OpenCameraFragment"
         android:label="fragment_open_camera"
         tools:layout="@layout/fragment_open_camera" />
+    <fragment
+        android:id="@+id/JNIFragment"
+        android:name="com.example.zhanglei.myapplication.fragments.JNIFragment"
+        android:label="JNIFragment"
+        tools:layout="@layout/fragment_jni"/>
 </navigation>

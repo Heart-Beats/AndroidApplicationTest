@@ -39,7 +39,7 @@ dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation project(path: ':shadow-lib')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
 
     implementation "com.tencent.shadow.dynamic${group_suffix}:host:$shadow_version"
     implementation "com.tencent.shadow.core${group_suffix}:activity-container:$shadow_version"

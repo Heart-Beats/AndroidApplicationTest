@@ -33,8 +33,8 @@ import com.hl.downloader.DownloadManager.startDownLoad
 import com.hl.shadow.Shadow
 import com.hl.shadow.lib.Constants
 import com.hl.utils.MyNetworkCallback
+import com.hl.utils.copyAssets2Path
 import com.hl.utils.onClick
-import com.hl.utils.putFileOfAssetsToPath
 import com.hl.utils.reqPermissions
 import com.tencent.shadow.dynamic.host.EnterCallback
 import io.dcloud.feature.sdk.DCUniMPSDK
@@ -265,115 +265,122 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
             }
             is MainMenu.UniAppAction -> {
                 reqPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
-                        allGrantedAction = {
-                            val appid = "__UNI__0773E11"
-                            releaseAndStartApp(appid, "/mnt/sdcard/__UNI__0773E11.wgt")
-                        }, deniedAction = {
-                    Toast.makeText(requireContext(), "你拒绝了相关权限", Toast.LENGTH_SHORT).show()
-                })
+                    allGrantedAction = {
+                        val appid = "__UNI__0773E11"
+                        releaseAndStartApp(appid, "/mnt/sdcard/__UNI__0773E11.wgt")
+                    }, deniedAction = {
+                        Toast.makeText(requireContext(), "你拒绝了相关权限", Toast.LENGTH_SHORT).show()
+                    })
             }
             is MainMenu.PluginAction -> {
+                showSelectShadowPluginDialog()
+            }
 
-                Android(requireContext()).apply {
-                    val items = listOf(
-                        "启动 SunFlower 插件",
-                        "启动自定义测试插件",
-                        "启动依赖库的Service",
-                        "启动自定义Service",
-                        "启动自定义IntentService",
-                    )
-                    this.items(items) { dialog, index ->
-                        dialog.dismiss()
-
-                        val bundle = Bundle().apply {
-                            //  插件 zip 的路径
-                            val pluginSavePath =
-                                File(
-                                    requireContext().getExternalFilesDir(null),
-                                    "plugins/plugin-debug.zip"
-                                ).absolutePath
-                            val pluginZipPath =
-                                requireContext().putFileOfAssetsToPath("plugins/plugin-debug.zip", pluginSavePath)
-
-                            putString(Constants.KEY_PLUGIN_ZIP_PATH, pluginZipPath)
-                        }
-
-                        when (index) {
-                            0 -> {
-                                //启动插件中的对应的 Activity
-                                bundle.putString(
-                                    Constants.KEY_CLASSNAME,
-                                    "com.google.samples.apps.sunflower.GardenActivity"
-                                )
-
-                                // partKey 每个插件都有自己的 partKey 用来区分多个插件，需要与插件打包脚本中的 packagePlugin{ partKey xxx} 一致
-                                bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "sunflower")
-                                bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_START_ACTIVITY)
-                            }
-                            1 -> {
-                                bundle.putString(Constants.KEY_CLASSNAME, "com.hl.myplugin.MainActivity")
-                                bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
-                                bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_START_ACTIVITY)
-                            }
-                            2 -> {
-                                bundle.putString(
-                                    Constants.KEY_CLASSNAME,
-                                    "com.tsinglink.android.update.CheckUpdateIntentService"
-                                )
-                                bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
-                                bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_CALL_SERVICE)
-                                bundle.putString(
-                                    Constants.KEY_INTENT_ACTION,
-                                    "com.tsinglink.android.update.ACTION_START_DOWNLOAD"
-                                )
-                                bundle.putBundle(Constants.KEY_EXTRAS, Bundle().apply {
-                                    this.putString(
-                                        "com.tsinglink.android.update.extra.DOWNLOAD_URL", "http://down.qq" +
-                                                ".com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk"
-                                    )
-                                })
-                            }
-                            3 -> {
-                                bundle.putString(Constants.KEY_CLASSNAME, "com.hl.myplugin.TestService")
-                                bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
-                                bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_CALL_SERVICE)
-                            }
-                            4 -> {
-
-                                val receiver: ResultReceiver = TestResultReceiver(Handler(Looper.getMainLooper()))
-
-                                bundle.putString(Constants.KEY_CLASSNAME, "com.hl.myplugin.TestIntentService")
-                                bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
-                                bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_CALL_SERVICE)
-
-                                bundle.putString(
-                                    Constants.KEY_INTENT_ACTION,
-                                    "com.hl.myplugin.action.FOO"
-                                )
-                                bundle.putBundle(Constants.KEY_EXTRAS, Bundle().apply {
-                                    this.putString("com.hl.myplugin.extra.PARAM1", "我是参数1")
-                                    this.putParcelable("com.hl.myplugin.extra.PARAM2", receiver)
-                                })
-                            }
-                        }
-
-                        if (bundle.getBundle(Constants.KEY_EXTRAS) == null) {
-                            bundle.putBundle(Constants.KEY_EXTRAS, Bundle().apply {
-                                this.putString("测试数据", "我是宿主传过来的数据")
-                            })
-                        }
-
-                        val permissions = arrayOf(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                        this@MainFragment.reqPermissions(*permissions, allGrantedAction = {
-                            startShadowPlugin(requireContext(), bundle)
-                        })
-                    }
-                }.show()
+            is MainMenu.JNIAction -> {
+                findNavController().navigate(R.id.action_mainFragment_to_JNIFragment)
             }
         }
+    }
+
+    private fun showSelectShadowPluginDialog() {
+        Android(requireContext()).apply {
+            val items = listOf(
+                "启动 SunFlower 插件",
+                "启动自定义测试插件",
+                "启动依赖库的Service",
+                "启动自定义Service",
+                "启动自定义IntentService",
+            )
+            this.items(items) { dialog, index ->
+                dialog.dismiss()
+
+                val bundle = Bundle().apply {
+                    //  插件 zip 的路径
+                    val pluginSavePath =
+                        File(
+                            requireContext().getExternalFilesDir(null),
+                            "plugins/plugin-debug.zip"
+                        ).absolutePath
+                    val pluginZipPath =
+                        requireContext().copyAssets2Path("plugins/plugin-debug.zip", pluginSavePath)
+
+                    putString(Constants.KEY_PLUGIN_ZIP_PATH, pluginZipPath)
+                }
+
+                when (index) {
+                    0 -> {
+                        //启动插件中的对应的 Activity
+                        bundle.putString(
+                            Constants.KEY_CLASSNAME,
+                            "com.google.samples.apps.sunflower.GardenActivity"
+                        )
+
+                        // partKey 每个插件都有自己的 partKey 用来区分多个插件，需要与插件打包脚本中的 packagePlugin{ partKey xxx} 一致
+                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "sunflower")
+                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_START_ACTIVITY)
+                    }
+                    1 -> {
+                        bundle.putString(Constants.KEY_CLASSNAME, "com.hl.myplugin.MainActivity")
+                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
+                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_START_ACTIVITY)
+                    }
+                    2 -> {
+                        bundle.putString(
+                            Constants.KEY_CLASSNAME,
+                            "com.tsinglink.android.update.CheckUpdateIntentService"
+                        )
+                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
+                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_CALL_SERVICE)
+                        bundle.putString(
+                            Constants.KEY_INTENT_ACTION,
+                            "com.tsinglink.android.update.ACTION_START_DOWNLOAD"
+                        )
+                        bundle.putBundle(Constants.KEY_EXTRAS, Bundle().apply {
+                            this.putString(
+                                "com.tsinglink.android.update.extra.DOWNLOAD_URL", "http://down.qq" +
+                                        ".com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk"
+                            )
+                        })
+                    }
+                    3 -> {
+                        bundle.putString(Constants.KEY_CLASSNAME, "com.hl.myplugin.TestService")
+                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
+                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_CALL_SERVICE)
+                    }
+                    4 -> {
+
+                        val receiver: ResultReceiver = TestResultReceiver(Handler(Looper.getMainLooper()))
+
+                        bundle.putString(Constants.KEY_CLASSNAME, "com.hl.myplugin.TestIntentService")
+                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
+                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_CALL_SERVICE)
+
+                        bundle.putString(
+                            Constants.KEY_INTENT_ACTION,
+                            "com.hl.myplugin.action.FOO"
+                        )
+                        bundle.putBundle(Constants.KEY_EXTRAS, Bundle().apply {
+                            this.putString("com.hl.myplugin.extra.PARAM1", "我是参数1")
+                            this.putParcelable("com.hl.myplugin.extra.PARAM2", receiver)
+                        })
+                    }
+                }
+
+                if (bundle.getBundle(Constants.KEY_EXTRAS) == null) {
+                    bundle.putBundle(Constants.KEY_EXTRAS, Bundle().apply {
+                        this.putString("测试数据", "我是宿主传过来的数据")
+                    })
+                }
+
+                val permissions = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                this@MainFragment.reqPermissions(*permissions, allGrantedAction = {
+                    startShadowPlugin(requireContext(), bundle)
+                })
+            }
+        }.show()
     }
 
     private fun releaseAndStartApp(appid: String, wgtPath: String) {

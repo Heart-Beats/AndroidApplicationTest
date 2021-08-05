@@ -11,8 +11,8 @@ import com.example.zhanglei.myapplication.widgets.refresh.CommonRefreshHeader
 import com.hl.shadow.Shadow
 import com.hl.shadow.logger.AndroidLoggerFactory
 import com.hl.utils.MyNetworkCallback
+import com.hl.utils.copyAssets2Path
 import com.hl.utils.isProcess
-import com.hl.utils.putFileOfAssetsToPath
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.tencent.shadow.core.common.LoggerFactory
 import com.tencent.shadow.dynamic.host.DynamicRuntime
@@ -102,7 +102,7 @@ class MyApplication : Application() {
 					val pluginManagerSavePath =
 						File(this.getExternalFilesDir(null), "plugins/$pluginManagerName").absolutePath
 					val pluginManagerZipPath =
-						this.putFileOfAssetsToPath("plugins/$pluginManagerName", pluginManagerSavePath)
+						this.copyAssets2Path("plugins/$pluginManagerName", pluginManagerSavePath)
 					Shadow.initDynamicPluginManager(pluginManagerZipPath)
 				}
 			}

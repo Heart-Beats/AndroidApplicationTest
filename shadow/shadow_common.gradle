@@ -1,7 +1,7 @@
 def needCustom = false
 
 ext {
-    shadow_version = 'local-0b373991-SNAPSHOT'
+    shadow_version = 'local-89a753c5-SNAPSHOT'
     shadow_repository = 'E:\\repository'
 
     //定义共享属性
@@ -32,5 +32,13 @@ repositories{
 
     if (file(shadow_repository).exists()) {
         maven { url = uri(shadow_repository) }
+    }
+
+    maven {
+        url "https://repo.rdc.aliyun.com/repository/39749-release-oGtrdD"
+        credentials {
+            username maven_user
+            password maven_pwd
+        }
     }
 }

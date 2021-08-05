@@ -19,6 +19,7 @@ sealed class MainMenu(@DrawableRes val icon: Int? = null, val title: String) : M
     class HookAction : MainMenu(title = "测试Hook方法")
     class UniAppAction : MainMenu(title = "测试UniApp")
     class PluginAction : MainMenu(title = "测试Shadow插件化")
+    class JNIAction : MainMenu(title = "测试JNI方法")
 }
 
 val mainMenuList = listOf(
@@ -31,4 +32,5 @@ val mainMenuList = listOf(
     MainMenu.HookAction(),
     MainMenu.UniAppAction(),
     MainMenu.PluginAction(),
+    MainMenu.JNIAction(),
 )

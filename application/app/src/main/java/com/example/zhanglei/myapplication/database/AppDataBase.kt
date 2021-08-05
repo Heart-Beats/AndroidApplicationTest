@@ -1,5 +1,6 @@
 package com.jkj.huilaidian.merchant.database
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -19,8 +20,15 @@ abstract class AppDataBase : RoomDatabase() {
     companion object {
         val instance by lazy {
             Room.databaseBuilder(MyApplication.getInstance(), AppDataBase::class.java, "hld_app.db")
-                    .allowMainThreadQueries()
-                    .build()
+                .allowMainThreadQueries()
+                .build()
+        }
+
+        fun createDatabase(context: Context, dataBaseName: String, roomDatabaseBuilder: Builder<AppDataBase>.() -> Unit): AppDataBase {
+            return Room.databaseBuilder(context, AppDataBase::class.java, dataBaseName)
+                .allowMainThreadQueries()
+                .apply { roomDatabaseBuilder() }
+                .build()
         }
     }
 }
