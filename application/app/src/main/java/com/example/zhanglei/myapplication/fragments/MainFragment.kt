@@ -395,7 +395,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
     }
 
     private fun startShadowPlugin(context: Context, bundle: Bundle) {
-        val pluginManager = Shadow.getPluginManager(needDynamic = true, context = context)
+        val pluginManager = Shadow.getPluginManager(needDynamic = false, context = context)
 
         /**
          * context context

@@ -11,10 +11,9 @@ import java.io.FileOutputStream
  * Email: 913305160@qq.com
  */
 
-fun Context.copyAssets2Path(assetsFilePath: String, savePath: String, isCovered: Boolean): String {
+fun Context.copyAssets2Path(assetsFilePath: String, savePath: String, isCovered: Boolean = true): String {
 	val saveFile = File(savePath)
 	if (saveFile.exists() && !isCovered) {
-		// 文件存在且不允许覆盖
 		return saveFile.absolutePath
 	} else {
 		with(saveFile.parentFile) {
@@ -22,9 +21,7 @@ fun Context.copyAssets2Path(assetsFilePath: String, savePath: String, isCovered:
 				this.mkdirs()
 			}
 		}
-		if (!saveFile.createNewFile()) {
-			println("$saveFile 已存在，覆盖原文件")
-		}
+		saveFile.createNewFile()
 	}
 
 	val assetsInputStream = BufferedInputStream(this.assets.open(assetsFilePath))

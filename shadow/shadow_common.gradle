@@ -1,7 +1,7 @@
 def needCustom = false
 
 ext {
-    shadow_version = 'local-89a753c5-SNAPSHOT'
+    shadow_version = 'local-aa8b4416-SNAPSHOT'
     shadow_repository = 'E:\\repository'
 
     //定义共享属性
