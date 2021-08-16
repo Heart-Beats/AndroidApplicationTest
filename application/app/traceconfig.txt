@@ -1,0 +1,11 @@
+#配置需插桩的包,如果为空，则默认所有文件都进行插桩
+-tracepackage com.tencent.shadow
+
+#在需插桩的包下设置无需插桩的包
+#-keeppackage cn/cxzheng/asmtraceman/test
+
+#在需插桩的包下设置无需插桩的类
+#-keepclass cn/cxzheng/asmtraceman/MainActivity
+
+#插桩代码所在类,这里固定配置为：cn/cxzheng/tracemanui/TraceMan
+-beatclass cn/cxzheng/tracemanui/TraceMan

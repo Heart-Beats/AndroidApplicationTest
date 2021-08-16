@@ -18,9 +18,13 @@ buildscript {
 		classpath("com.android.tools.build:gradle:7.0.0")
 		classpath(kotlin("gradle-plugin", kotlinVersion))
 
-		val navVersion = "2.3.3"
+		val navVersion = "2.4.0-alpha06"
 		classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion")
+
 		classpath("com.google.dagger:hilt-android-gradle-plugin:$hiltVersion")
+
+		// 统计方法耗时插件
+		classpath("gradle.plugin.cn.cxzheng.methodTracePlugin:tracemanplugin:1.0.4")
 	}
 }
 

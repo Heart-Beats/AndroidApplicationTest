@@ -3,7 +3,6 @@ package com.hl.api.logger
 import com.hl.api.logger.JsonUtil.decodeUnicode
 import com.hl.api.logger.JsonUtil.formatJson
 import okhttp3.logging.HttpLoggingInterceptor
-import timber.log.Timber
 
 /**
  * @author 张磊  on  2021/08/11 at 15:07
@@ -28,7 +27,7 @@ internal class HttpLogger : HttpLoggingInterceptor.Logger {
 		mMessage.append("$message\n")
 		// 响应结束，打印整条日志
 		if (message.startsWith("<-- END HTTP")) {
-			Timber.d(mMessage.toString())
+			println(mMessage.toString())
 		}
 	}
 }

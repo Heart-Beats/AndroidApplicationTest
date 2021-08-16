@@ -31,18 +31,19 @@ android {
 			keyPassword = "123456"
 		}
 	}
-	compileSdkVersion(30)
+	compileSdk = 30
 	defaultConfig {
 		applicationId = "com.example.zhanglei.myapplication"
-		minSdkVersion(22)
-		targetSdkVersion(29)
+		minSdk = 22
+		targetSdk = 29
 		versionCode = 1
 		versionName = "1.0"
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-		// Required when setting minSdkVersion to 20 or lower（支持请求比minSdkVersion更高的API）
 		multiDexEnabled = true
 
-		setManifestPlaceholders(mapOf(
+		// manifestPlaceholders["QQ_APPID"] = "101939940"
+		addManifestPlaceholders(
+			mapOf(
 				"QQ_APPID" to "101939940",
 				"SINA_REDIRECT_URI" to "",
 				"SINA_SECRET" to "",
@@ -57,16 +58,22 @@ android {
 				"BAIDU_SECRET_KEY" to ""
 		))
 	}
+
 	buildTypes {
 		getByName("release") {
+			signingConfig = signingConfigs.getByName("release")
 			isMinifyEnabled = true
 			isDebuggable = true
 			isShrinkResources = true
 			proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-			signingConfig = signingConfigs.getByName("release")
+
+			resValue("string", "app_name", "我的应用")
 		}
 		getByName("debug") {
 			signingConfig = signingConfigs.getByName("debug")
+			resValue("string", "app_name", "我的应用测试")
+			applicationIdSuffix = ".test"
+			// resourceConfigurations.add("")
 		}
 	}
 
@@ -79,21 +86,6 @@ android {
 
 	buildFeatures {
 		this.viewBinding = true //启动viewBinding
-	}
-
-	flavorDimensions("Environment")
-	productFlavors {
-
-		create("EnvT") { //测试环境
-			dimension = "Environment"
-			resValue("string", "app_name", "我的应用测试")
-			applicationIdSuffix = ".test"
-			resConfigs()
-		}
-		create("EnvP") { //生产环境
-			dimension = "Environment"
-			resValue("string", "app_name", "我的应用")
-		}
 	}
 
 	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
@@ -142,15 +134,18 @@ dependencies {
 	implementation("com.hl.shadow:shadow-lib")
 
 	implementation("androidx.legacy:legacy-support-v4:1.0.0")
-	implementation("com.google.android.material:material:1.3.0-alpha04")
+	implementation("com.google.android.material:material:1.4.0-alpha02")
 	implementation(project(mapOf("path" to ":nativelib")))
-	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.1")
+
+	// Module 有 Flavor ，依赖时必须添加 configuration 参数
+	implementation(project(path = ":api", configuration = "default"))
+	coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 	testImplementation("junit:junit:4.13.2")
 	androidTestImplementation("androidx.test.ext:junit:1.1.2")
 	androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
 	implementation("org.jetbrains.kotlin:kotlin-stdlib:${rootProject.ext["kotlinVersion"]}")
-	implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.20")
+	implementation("org.jetbrains.kotlin:kotlin-reflect:${rootProject.ext["kotlinVersion"]}")
 	implementation("androidx.annotation:annotation:1.2.0")
 	implementation("androidx.core:core-ktx:1.5.0")
 	implementation("org.jetbrains.anko:anko-commons:0.10.8")
@@ -206,4 +201,20 @@ dependencies {
 
 	implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")
 	kapt("com.google.dagger:hilt-android-compiler:${rootProject.extra["hiltVersion"]}")
+
+	val methodTraceManVersion = "1.0.7"
+	// release包下依赖的是noop包，里面不会做任何操作，也不会增加包大小
+	debugImplementation("com.github.zhengcx:MethodTraceMan:$methodTraceManVersion")
+	releaseImplementation("com.github.zhengcx:MethodTraceMan:$methodTraceManVersion")
 }
+
+/*  traceMan 方法耗时统计请求 ASM6， 暂时无法使用需要库更新
+apply {
+	plugin("cn.cxzheng.asmtraceman")
+}
+
+traceMan {
+	open = true //这里如果设置为false,则会关闭插桩
+	logTraceInfo = false //这里设置为true时可以在log日志里看到所有被插桩的类和方法
+	traceConfigFile = "${project.projectDir}/traceconfig.txt"
+}*/
