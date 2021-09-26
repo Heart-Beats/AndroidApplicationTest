@@ -5,12 +5,10 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
-import android.view.Surface
 import android.view.View
 import android.widget.Toast
 import androidx.camera.camera2.internal.Camera2CameraInfoImpl
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
@@ -18,6 +16,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.fragments.base.BaseFragment
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -25,6 +26,10 @@ import java.util.concurrent.Executors
  * @author  张磊  on  2021/06/07 at 10:48
  * Email: 913305160@qq.com
  */
+enum class CameraType(val cameraId: String) {
+	CAMERA_BACK("0"), CAMERA_FRONT("1")
+}
+
 class CameraXFragment : BaseFragment() {
 
 	private companion object {
@@ -33,17 +38,21 @@ class CameraXFragment : BaseFragment() {
 		private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
 	}
 
-	var cameraId: String = "0"
+	var cameraType = CameraType.CAMERA_BACK
 		set(value) {
-			cameraIdLiveData.value = value
+			cameraIdLiveData.value = value.cameraId
 			field = value
 		}
 
 	private val cameraIdLiveData by lazy {
-		MutableLiveData(cameraId)
+		MutableLiveData(cameraType.cameraId)
 	}
 
 	private val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
+
+	private var imageCapture: ImageCapture? = null
+
+	private var analyzeListener: ((image: ImageProxy) -> Unit)? = null
 
 
 	override val layoutResId: Int
@@ -81,6 +90,23 @@ class CameraXFragment : BaseFragment() {
 					it.setSurfaceProvider(viewFinder.surfaceProvider)
 				}
 
+			//初始化 imageCapture 实例
+			imageCapture = ImageCapture.Builder()
+				.build()
+
+			// 初始化图像分析实例
+			val imageAnalyzer = ImageAnalysis.Builder()
+				.build().also {
+					it.setAnalyzer(cameraExecutor, { image ->
+						Thread.sleep(10)
+
+						analyzeListener?.invoke(image)
+
+						// 必须关闭资源，否则不会收到后续回调
+						image.close()
+					})
+				}
+
 			try {
 				cameraIdLiveData.observe(viewLifecycleOwner) { cameraId ->
 					val cameraSelector = CameraSelector.Builder()
@@ -96,7 +122,7 @@ class CameraXFragment : BaseFragment() {
 					// 重新绑定之前解绑所有用例
 					cameraProvider.unbindAll()
 					// 绑定用例到相机，绑定时可传入多个 UseCase
-					cameraProvider.bindToLifecycle(this, cameraSelector, preview)
+					cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalyzer)
 				}
 			} catch (exc: Exception) {
 				Log.e(TAG, "startCamera: 用例绑定失败")
@@ -122,5 +148,35 @@ class CameraXFragment : BaseFragment() {
 				}.commit()
 			}
 		}
+	}
+
+	fun setAnalyzerListener(imageAnalyzer: (imageProxy: ImageProxy) -> Unit) {
+		analyzeListener = imageAnalyzer
+	}
+
+	fun takePhoto(imageSavedCallback: ImageCapture.OnImageSavedCallback) {
+		// 获取图像捕获实例
+		val imageCapture = imageCapture ?: return
+
+		// 获取保存照片的格式化路径
+		val photoFile = File(
+			getOutputDirectory(),
+			SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis()) + ".jpg"
+		)
+
+		// 创建一个 OutputFileOptions对象。可以在此对象中指定有关输出结果的方式
+		val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+
+		// 设置图像捕捉监听器，该功能在拍照后触发
+		imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(requireContext()), imageSavedCallback)
+	}
+
+	private fun getOutputDirectory(): File {
+		val mediaDir = requireContext().getExternalMediaDirs().firstOrNull()?.let {
+			File(it, requireContext().packageName.split(".").lastOrNull() ?: "").apply {
+				mkdirs()
+			}
+		}
+		return if (mediaDir != null && mediaDir.exists()) mediaDir else requireContext().filesDir
 	}
 }

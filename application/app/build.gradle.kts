@@ -5,6 +5,7 @@ plugins {
 	id("kotlin-parcelize")
 	id("androidx.navigation.safeargs.kotlin")
 	id("dagger.hilt.android.plugin")
+	// id("TimeTracer")
 }
 
 apply {
@@ -218,3 +219,16 @@ traceMan {
 	logTraceInfo = false //这里设置为true时可以在log日志里看到所有被插桩的类和方法
 	traceConfigFile = "${project.projectDir}/traceconfig.txt"
 }*/
+
+// TimeTracer {
+// 	// 指定要处理的完整类名，正则表达式匹配，可以过滤特定的包，
+// 	// 不指定则默认处理所有类（TimeTracer自身的实现除外）
+// 	// processClassesRegex 'com\\.paincker\\.timetracer\\.demo.*'
+//
+// 	this.processClassesRegex = "com\\.tencent\\.shadow\\.*"
+//
+// 	// 指定插入到方法开头和结束处的代码，
+// 	// 支持简单变量，包括<class-name>，<simple-class-name>，<method-name>
+// 	codeBeforeMethod = "com.paincker.timetracer.tracer.TimeTracer.methodStart(\"<simple-class-name>.<method-name>\");";
+// 	codeAfterMethod = "com.paincker.timetracer.tracer.TimeTracer.methodEnd(\"<simple-class-name>.<method-name>\");";
+// }

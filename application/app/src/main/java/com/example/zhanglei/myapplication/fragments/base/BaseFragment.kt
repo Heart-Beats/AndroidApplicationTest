@@ -167,15 +167,14 @@ abstract class BaseFragment : Fragment() {
 		Log.d(TAG, "onDetach =====> $this")
 	}
 
-	protected open fun onBackPressed(): OnBackPressedCallback.() -> Unit {
-		return {
-			try {
-				findNavController().popBackStack()
-			} catch (e: Exception) {
-				activity?.onBackPressed()
-			}
+	protected open fun onBackPressed(): OnBackPressedCallback.() -> Unit = {
+		try {
+			findNavController().popBackStack()
+		} catch (e: Exception) {
+			activity?.onBackPressed()
 		}
 	}
+
 
 	private fun isNavigatePage(): Boolean {
 		val currentDestination = getCurrentDestination()

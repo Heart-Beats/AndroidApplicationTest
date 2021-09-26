@@ -1,3 +1,6 @@
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 // 作为 Android 库的依赖， kotlin 编译必须使用 kotlin-android 插件
 plugins {
     id 'com.android.library'
@@ -40,3 +43,24 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation('com.squareup.okhttp3:logging-interceptor:4.2.1')
 }
+
+def getCurrentFlavor() {
+    Gradle gradle = getGradle()
+    String tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
+    Pattern pattern
+    println("tskReqStr: " + tskReqStr)
+    if (tskReqStr.contains("assemble")) {
+        pattern = Pattern.compile("assemble(\\w+)(Release|Debug)")
+    } else {
+        pattern = Pattern.compile("generate(\\w+)(Release|Debug)")
+    }
+    Matcher matcher = pattern.matcher(tskReqStr)
+    if (matcher.find())
+        return matcher.group(1)
+    else {
+        println "NO MATCH FOUND"
+        return ""
+    }
+}
+
+println "当前的 flavor == ${getCurrentFlavor()}"

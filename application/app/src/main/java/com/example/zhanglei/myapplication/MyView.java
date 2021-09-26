@@ -7,21 +7,19 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.annotation.RequiresApi;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.RequiresApi;
+
 public class MyView extends View {
-    private String mExampleString;
     private int mExampleColor = Color.RED;
     private float mExampleDimension = 0;
     private Drawable mExampleDrawable;
 
     private TextPaint mTextPaint;
-    private float mTextWidth;
-    private float mTextHeight;
     private boolean flag;
 
     public MyView(Context context) {
@@ -44,13 +42,9 @@ public class MyView extends View {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.MyView, defStyle, 0);
 
-        mExampleString = a.getString(
-                R.styleable.MyView_exampleString);
         mExampleColor = a.getColor(
-                R.styleable.MyView_exampleColor,
-                mExampleColor);
-        // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
-        // values that should fall on pixel boundaries.
+                R.styleable.MyView_exampleColor, mExampleColor);
+
         mExampleDimension = a.getDimension(
                 R.styleable.MyView_exampleDimension,
                 mExampleDimension);
@@ -68,42 +62,33 @@ public class MyView extends View {
         mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextAlign(Paint.Align.LEFT);
 
-        // Update TextPaint and text measurements from attributes
-        // invalidateTextPaintAndMeasurements();
         updateRGB();
-
     }
 
     private void updateRGB() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                flag = true;
-                while (true) {
-                    if (flag) {
-                        // for (int i = 0; i<=50;i+=10) {
-/*                        MyView.this.r= rgbLoopChange(MyView.this.r,5);
-                        MyView.this.g=rgbLoopChange(MyView.this.g,20);
-                        MyView.this.b=rgbLoopChange(MyView.this.b,10);*/
+        new Thread(() -> {
+            flag = true;
+            while (true) {
+                if (flag) {
 
-                        MyView.this.r = getRandomRgbValue();
-                        MyView.this.g = getRandomRgbValue();
-                        MyView.this.b = getRandomRgbValue();
+                    MyView.this.r = getRandomRgbValue();
+                    MyView.this.g = getRandomRgbValue();
+                    MyView.this.b = getRandomRgbValue();
 
-                        try {
-                            Thread.sleep(900);
-                            invalidate();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        // }
+                    try {
+                        Thread.sleep(900);
+                        invalidate();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
+                    // }
                 }
             }
         }).start();
     }
 
     private boolean increase = true;
+
     private int rgbLoopChange(int rgb,int changeValue) {
         Log.d("哈喽", "rgbLoopChange: "+rgb);
         if (rgb<=0) {
@@ -138,16 +123,6 @@ public class MyView extends View {
 
     }
 
-    private void invalidateTextPaintAndMeasurements() {
-        mTextPaint.setTextSize(mExampleDimension);
-        mTextPaint.setColor(mExampleColor);
-        mTextWidth = mTextPaint.measureText(mExampleString);
-
-        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        mTextHeight = fontMetrics.bottom;
-    }
-
-
     private int r;
     private int g;
     private int b;
@@ -165,19 +140,6 @@ public class MyView extends View {
         int contentWidth = getWidth() - paddingLeft - paddingRight;
         int contentHeight = getHeight() - paddingTop - paddingBottom;
 
-/*        // Draw the text.
-        canvas.drawText(mExampleString,
-                paddingLeft + (contentWidth - mTextWidth) / 2,
-                paddingTop + (contentHeight + mTextHeight) / 2,
-                mTextPaint);
-
-        // Draw the example drawable on top of the text.
-        if (mExampleDrawable != null) {
-            mExampleDrawable.setBounds(paddingLeft, paddingTop,
-                    paddingLeft + contentWidth, paddingTop + contentHeight);
-            mExampleDrawable.draw(canvas);
-        }*/
-
         Paint paint = new Paint();
         paint.setARGB(255, r, g, b);
         float density = getResources().getDisplayMetrics().density;
@@ -186,84 +148,5 @@ public class MyView extends View {
 
 
         // canvas.drawBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.ic_android_black_24dp),0,0,paint);
-    }
-
-    /**
-     * Gets the example string attribute value.
-     *
-     * @return The example string attribute value.
-     */
-    public String getExampleString() {
-        return mExampleString;
-    }
-
-    /**
-     * Sets the view's example string attribute value. In the example view, this string
-     * is the text to draw.
-     *
-     * @param exampleString The example string attribute value to use.
-     */
-    public void setExampleString(String exampleString) {
-        mExampleString = exampleString;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example color attribute value.
-     *
-     * @return The example color attribute value.
-     */
-    public int getExampleColor() {
-        return mExampleColor;
-    }
-
-    /**
-     * Sets the view's example color attribute value. In the example view, this color
-     * is the font color.
-     *
-     * @param exampleColor The example color attribute value to use.
-     */
-    public void setExampleColor(int exampleColor) {
-        mExampleColor = exampleColor;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example dimension attribute value.
-     *
-     * @return The example dimension attribute value.
-     */
-    public float getExampleDimension() {
-        return mExampleDimension;
-    }
-
-    /**
-     * Sets the view's example dimension attribute value. In the example view, this dimension
-     * is the font size.
-     *
-     * @param exampleDimension The example dimension attribute value to use.
-     */
-    public void setExampleDimension(float exampleDimension) {
-        mExampleDimension = exampleDimension;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example drawable attribute value.
-     *
-     * @return The example drawable attribute value.
-     */
-    public Drawable getExampleDrawable() {
-        return mExampleDrawable;
-    }
-
-    /**
-     * Sets the view's example drawable attribute value. In the example view, this drawable is
-     * drawn above the text.
-     *
-     * @param exampleDrawable The example drawable attribute value to use.
-     */
-    public void setExampleDrawable(Drawable exampleDrawable) {
-        mExampleDrawable = exampleDrawable;
     }
 }

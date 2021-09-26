@@ -25,6 +25,9 @@ buildscript {
 
 		// 统计方法耗时插件
 		classpath("gradle.plugin.cn.cxzheng.methodTracePlugin:tracemanplugin:1.0.4")
+
+		classpath(files("plugin/plugin.jar"))
+		classpath("org.javassist:javassist:3.20.0-GA")
 	}
 }
 
