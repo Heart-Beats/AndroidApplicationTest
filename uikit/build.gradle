@@ -1,0 +1,30 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.5.21'
+    ext.androidx_version = '1.1.0'
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        google()
+        maven { url = uri("https://maven.aliyun.com/repository/central") }
+        maven { url = uri("https://maven.aliyun.com/repository/jcenter") }
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+
+        maven { url = uri("https://jitpack.io") }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply {
+    from("../common_build.gradle.kts")
+}
+
+allprojects {
+    //给所有的子模块添加组
+    group = "com.hl.uikit"
+}
