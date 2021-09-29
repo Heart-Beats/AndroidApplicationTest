@@ -9,7 +9,7 @@ import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.databinding.FragmentThirdBinding
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
 import com.example.zhanglei.myapplication.hilt.*
-import com.example.zhanglei.myapplication.widgets.refresh.LottieRefreshHeaderFooter
+import com.hl.uikit.refresh.LottieRefreshHeaderFooter
 import com.hl.utils.DeviceInfoUtil
 import com.hl.utils.reqPermissions
 import com.scwang.smart.refresh.layout.constant.SpinnerStyle

@@ -7,7 +7,7 @@ import android.webkit.WebView
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
-import com.example.zhanglei.myapplication.widgets.refresh.CommonRefreshHeader
+import com.hl.uikit.refresh.CommonRefreshHeader
 import com.hl.shadow.Shadow
 import com.hl.shadow.logger.AndroidLoggerFactory
 import com.hl.utils.MyNetworkCallback

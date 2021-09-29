@@ -19,5 +19,10 @@ fun RepositoryHandler.commonRepository() {
 
 
 tasks.register("clean", Delete::class) {
-	this.delete(rootProject.buildDir)
+
+	rootProject.buildDir.run {
+		if (this.exists()) {
+			this.delete()
+		}
+	}
 }

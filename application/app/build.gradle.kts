@@ -133,10 +133,11 @@ dependencies {
 	implementation("com.hl.shadow:shadow-init")
 	implementation("com.hl.shadow:plugin-aidl")
 	implementation("com.hl.shadow:shadow-lib")
+	implementation("com.hl.uikit:uikit")
 
 	implementation("androidx.legacy:legacy-support-v4:1.0.0")
 	implementation("com.google.android.material:material:1.4.0-alpha02")
-	implementation(project(mapOf("path" to ":nativelib")))
+	implementation(project(":nativelib"))
 
 	// Module 有 Flavor ，依赖时必须添加 configuration 参数
 	implementation(project(path = ":api", configuration = "default"))
