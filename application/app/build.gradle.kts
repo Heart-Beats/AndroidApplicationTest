@@ -89,9 +89,17 @@ android {
 		this.viewBinding = true //启动viewBinding
 	}
 
-	tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).all {
-		kotlinOptions {
-			this.jvmTarget = "1.8"
+	kotlinOptions{
+		this.jvmTarget = "1.8"
+	}
+
+
+	/*
+	* 相关资源文件重定向
+	* */
+	sourceSets{
+		this.getByName("main"){
+			// this.jniLibs.srcDir()
 		}
 	}
 }

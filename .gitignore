@@ -3,3 +3,4 @@ shadow/build
 /shadow/.gradle/
 /.idea/
 /.gradle/
+/local.properties
