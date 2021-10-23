@@ -7,3 +7,4 @@ include(":api")
 include(":nativelib")
 
 includeBuild("../shadow")
+includeBuild("../uikit")

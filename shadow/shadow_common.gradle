@@ -37,6 +37,11 @@ repositories{
     maven {
         url "https://repo.rdc.aliyun.com/repository/39749-release-oGtrdD"
 
+        credentials {
+            username 'hl6idx'
+            password 'Ukdr3Dsn2f'
+        }
+
         if(project.hasProperty("maven_user") && project.hasProperty("maven_pwd")){
             credentials {
                 username maven_user

@@ -25,12 +25,12 @@ class OpenCameraFragment : ViewBindingBaseFragment<FragmentOpenCameraBinding>() 
 
 		this.openCamera.onClick {
 			isBackOpen = !isBackOpen
-			cameraXFragment.cameraId = if (isBackOpen) {
+			cameraXFragment.cameraType = if (isBackOpen) {
 				openCamera.text = "打开前置摄像头"
-				"0"
+				CameraType.CAMERA_BACK
 			} else {
 				openCamera.text = "打开后置摄像头"
-				"1"
+				CameraType.CAMERA_FRONT
 			}
 		}
 	}

@@ -47,7 +47,7 @@ class ThirdFragment : ViewBindingBaseFragment<FragmentThirdBinding>() {
 		val lottieRefreshHeader = object : LottieRefreshHeaderFooter(requireContext()) {
 
 			override val headerOrFooterLayout: Int
-				get() = R.layout.layout_lottie_refresh_header
+				get() = R.layout.uikit_layout_lottie_refresh_header
 
 			override val hasLottieAnimationView: Boolean
 				get() = true
