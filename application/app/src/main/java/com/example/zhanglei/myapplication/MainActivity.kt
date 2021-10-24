@@ -1,6 +1,8 @@
 package com.example.zhanglei.myapplication
 
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.IdRes
@@ -16,6 +18,7 @@ import com.example.zhanglei.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.hl.utils.StatusBarUtil
 import com.hl.utils.navigation.MyNavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.firstChild
@@ -33,6 +36,20 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
     }
 
     override fun ActivityMainBinding.onViewCreated(savedInstanceState: Bundle?) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            //注意要清除 FLAG_TRANSLUCENT_STATUS flag
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.statusBarColor = Color.TRANSPARENT
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
+        }
+
         val myNavHostFragment = getFragmentById(R.id.nav_host_fragment) as MyNavHostFragment
         myNavHostFragment.run {
             this.setCommonNavAnimations {
