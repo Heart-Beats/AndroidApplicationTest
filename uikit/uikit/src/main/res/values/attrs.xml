@@ -219,6 +219,7 @@
             <enum name="stroke_radius4" value="4" />
             <enum name="capsule" value="5" />
             <enum name="capsule_stroke" value="6" />
+            <enum name="custom" value="7" />
         </attr>
     </declare-styleable>
 

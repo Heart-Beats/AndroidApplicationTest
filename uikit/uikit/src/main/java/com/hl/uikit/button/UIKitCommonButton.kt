@@ -21,6 +21,7 @@ class UIKitCommonButton : AppCompatButton {
         const val STROKE_RADIUS4 = 4
         const val CAPSULE = 5
         const val CAPSULE_STROKE = 6
+        const val CUSTOM = 7
     }
 
     private var buttonStyle: Int = SOLID_COLOR1_RADIUS4
@@ -76,6 +77,10 @@ class UIKitCommonButton : AppCompatButton {
                     setBackgroundResource(R.drawable.uikit_stroke_capsule_button_selector)
                     setTextColor(ContextCompat.getColor(context, R.color.uikit_color_1))
                 }
+            }
+
+            CUSTOM ->{
+                minHeight = 50.dpInt
             }
         }
 

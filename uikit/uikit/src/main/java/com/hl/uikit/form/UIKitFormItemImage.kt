@@ -86,7 +86,7 @@ class UIKitFormItemImage : UIKitFormItemView {
 
     fun setImageText(txt: CharSequence?) {
         if (txt.isNullOrEmpty()) {
-            text.visibility = View.INVISIBLE
+            text.visibility = View.GONE
         } else {
             text.visibility = View.VISIBLE
             text.text = txt
