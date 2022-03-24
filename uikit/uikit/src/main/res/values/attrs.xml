@@ -12,7 +12,7 @@
     <attr name="uikit_formItemInputSmsCodeStyle" format="reference" />
     <attr name="uikit_formItemToggleButtonStyle" format="reference" />
     <attr name="uikit_formItemVerticalTextStyle" format="reference" />
-    <attr name="uikit_dividerColor" format="reference" />
+    <attr name="uikit_dividerColor" format="color" />
     <attr name="uikit_positiveButtonStyle" format="reference" />
     <attr name="uikit_strokeButtonStyle" format="reference" />
     <attr name="uikit_dividerViewStyle" format="reference" />
@@ -254,12 +254,12 @@
     </declare-styleable>
     <declare-styleable name="UIKitOptionRadio" />
 
-    <declare-styleable name="LottieRefreshHeaderFooter">
-        <attr name="pull_lottie_animation_res" format="reference" />
-        <attr name="pull_lottie_animation_url" format="string|reference" />
-        <attr name="refresh_lottie_animation_res" format="reference" />
-        <attr name="refresh_lottie_animation_url" format="string|reference" />
-        <attr name="primary_background" format="color|reference" />
+    <declare-styleable name="UIKitLottieRefreshHeaderFooter">
+        <attr name="uikit_pull_lottie_animation_res" format="reference" />
+        <attr name="uikit_pull_lottie_animation_url" format="string|reference" />
+        <attr name="uikit_refresh_lottie_animation_res" format="reference" />
+        <attr name="uikit_refresh_lottie_animation_url" format="string|reference" />
+        <attr name="uikit_primary_background" format="color|reference" />
     </declare-styleable>
 
     <!-- ViewGroup 本身定义可用的属性 -->
@@ -275,5 +275,26 @@
             <flag name="leftBottom" value="0x04" />
             <flag name="rightBottom" value="0x08" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="UIKitDividerView">
+
+        <!--分隔线背景-->
+        <attr name="uikit_dividerColor" />
+
+        <!--分隔线高度-->
+        <attr name="uikit_dividerHeight" format="dimension" />
+
+        <!--分隔线类型-->
+        <attr name="uikit_dividerLineType" format="enum">
+            <enum name="solid_path" value="0" />
+            <enum name="dash_path" value="1" />
+        </attr>
+
+        <!--当分隔线类型为 dash_path 时使用  -->
+        <attr name="uikit_dashWidth" format="dimension" />
+
+        <!--当分隔线类型为 dash_path 时使用  -->
+        <attr name="uikit_dashSpaceWidth" format="dimension" />
     </declare-styleable>
 </resources>

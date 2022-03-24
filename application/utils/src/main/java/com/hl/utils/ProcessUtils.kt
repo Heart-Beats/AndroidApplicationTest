@@ -22,3 +22,5 @@ fun Context.isProcess(processName: String): Boolean {
 
 	return currentProcessName.endsWith(processName)
 }
+
+fun Context.isMainProcess() = isProcess(this.applicationContext.packageName)

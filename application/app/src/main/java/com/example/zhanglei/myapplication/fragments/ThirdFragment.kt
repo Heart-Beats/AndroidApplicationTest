@@ -8,11 +8,13 @@ import com.elvishew.xlog.XLog
 import com.example.zhanglei.myapplication.R
 import com.example.zhanglei.myapplication.databinding.FragmentThirdBinding
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
-import com.example.zhanglei.myapplication.hilt.*
-import com.hl.uikit.refresh.LottieRefreshHeaderFooter
+import com.example.zhanglei.myapplication.hilt.AIMultiBindingsImpl
+import com.example.zhanglei.myapplication.hilt.Bind
+import com.example.zhanglei.myapplication.hilt.IMultiBindings
+import com.example.zhanglei.myapplication.hilt.TestEntryPoint
+import com.hl.uikit.refresh.CommonRefreshHeader
 import com.hl.utils.DeviceInfoUtil
 import com.hl.utils.reqPermissions
-import com.scwang.smart.refresh.layout.constant.SpinnerStyle
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import javax.inject.Inject
@@ -44,19 +46,23 @@ class ThirdFragment : ViewBindingBaseFragment<FragmentThirdBinding>() {
 
 	override fun FragmentThirdBinding.onViewCreated(savedInstanceState: Bundle?) {
 
-		val lottieRefreshHeader = object : LottieRefreshHeaderFooter(requireContext()) {
+		// val lottieRefreshHeader = object : LottieRefreshHeaderFooter(requireContext()) {
+		//
+		// 	override val headerOrFooterLayout: Int
+		// 		get() = R.layout.uikit_layout_lottie_refresh_header
+		//
+		// 	override val hasLottieAnimationView: Boolean
+		// 		get() = true
+		//
+		// 	override fun getSpinnerStyle(): SpinnerStyle {
+		// 		return SpinnerStyle.Translate
+		// 	}
+		// }
 
-			override val headerOrFooterLayout: Int
-				get() = R.layout.uikit_layout_lottie_refresh_header
+		val lottieRefreshHeader = CommonRefreshHeader(requireContext())
 
-			override val hasLottieAnimationView: Boolean
-				get() = true
-
-			override fun getSpinnerStyle(): SpinnerStyle {
-				return SpinnerStyle.FixedFront
-			}
-		}
-		lottieRefreshHeader.setPullAnimation(url = "https://assets4.lottiefiles.com/private_files/lf30_hp2n68rf.json")
+		// lottieRefreshHeader.setPullAnimation(url = "https://assets4.lottiefiles.com/private_files/lf30_hp2n68rf.json")
+		lottieRefreshHeader.setPullAnimation(url = "https://assets6.lottiefiles.com/packages/lf20_lmk0pfms.json")
 		lottieRefreshHeader.setRefreshAnimation(url = "https://assets3.lottiefiles.com/packages/lf20_R6y0Xw.json")
 		smartRefreshLayout.setRefreshHeader(lottieRefreshHeader)
 		smartRefreshLayout.setHeaderMaxDragRate(1f) //最大下拉高度与Header标准高度的倍数

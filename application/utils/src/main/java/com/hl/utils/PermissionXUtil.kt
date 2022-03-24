@@ -17,25 +17,29 @@ val permissionsList = arrayOf(
 		Manifest.permission.READ_PHONE_STATE
 )
 
-fun FragmentActivity.reqPermissions(vararg permissions: String = permissionsList, allGrantedAction: (List<String>) -> Unit = {},
-									deniedAction: (List<String>) -> Unit = {}) {
+fun FragmentActivity.reqPermissions(
+	vararg permissions: String = permissionsList,
+	deniedAction: (List<String>) -> Unit = {}, allGrantedAction: (List<String>) -> Unit = {},
+) {
 	PermissionX.init(this)
-			.permissions(*permissions)
-			// .explainReasonBeforeRequest()
-			.onExplainRequestReason { scope, deniedList ->
-				val message = "本应用需要您同意以下权限才能正常使用"
-				scope.showRequestReasonDialog(deniedList, message, "确定", "取消")
+		.permissions(*permissions)
+		// .explainReasonBeforeRequest()
+		.onExplainRequestReason { scope, deniedList ->
+			val message = "本应用需要您同意以下权限才能正常使用"
+			scope.showRequestReasonDialog(deniedList, message, "确定", "取消")
+		}
+		.request { allGranted, grantedList, deniedList ->
+			if (allGranted) {
+				allGrantedAction(grantedList)
+			} else {
+				deniedAction(deniedList)
 			}
-			.request { allGranted, grantedList, deniedList ->
-				if (allGranted) {
-					allGrantedAction(grantedList)
-				} else {
-					deniedAction(deniedList)
-				}
-			}
+		}
 }
 
-fun Fragment.reqPermissions(vararg permissions: String = permissionsList, allGrantedAction: (List<String>) -> Unit = {},
-							deniedAction: (List<String>) -> Unit = {}) {
+fun Fragment.reqPermissions(
+	vararg permissions: String = permissionsList, deniedAction: (List<String>) -> Unit = {},
+	allGrantedAction: (List<String>) -> Unit = {},
+) {
 	requireActivity().reqPermissions(*permissions, allGrantedAction = allGrantedAction, deniedAction = deniedAction)
 }

@@ -44,23 +44,23 @@ abstract class LottieRefreshHeaderFooter : FrameLayout, RefreshHeader, RefreshFo
 	constructor(context: Context) : this(context, null)
 	constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 	constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-		context.obtainStyledAttributes(attrs, R.styleable.LottieRefreshHeaderFooter, defStyleAttr, 0).also {
+		context.obtainStyledAttributes(attrs, R.styleable.UIKitLottieRefreshHeaderFooter, defStyleAttr, 0).also {
 			val pullLottieAnimationRes =
-				it.getResourceId(R.styleable.LottieRefreshHeaderFooter_pull_lottie_animation_res, 0)
-			val pullLottieAnimationUrl = it.getString(R.styleable.LottieRefreshHeaderFooter_pull_lottie_animation_url)
+				it.getResourceId(R.styleable.UIKitLottieRefreshHeaderFooter_uikit_pull_lottie_animation_res, 0)
+			val pullLottieAnimationUrl = it.getString(R.styleable.UIKitLottieRefreshHeaderFooter_uikit_pull_lottie_animation_url)
 			if (pullLottieAnimationRes != 0 || pullLottieAnimationUrl != null) {
 				setPullAnimation(rawRes = pullLottieAnimationRes, url = pullLottieAnimationUrl)
 			}
 
 			val refreshLottieAnimationRes =
-				it.getResourceId(R.styleable.LottieRefreshHeaderFooter_refresh_lottie_animation_res, 0)
+				it.getResourceId(R.styleable.UIKitLottieRefreshHeaderFooter_uikit_refresh_lottie_animation_res, 0)
 			val refreshLottieAnimationUrl =
-				it.getString(R.styleable.LottieRefreshHeaderFooter_pull_lottie_animation_url)
+				it.getString(R.styleable.UIKitLottieRefreshHeaderFooter_uikit_pull_lottie_animation_url)
 			if (refreshLottieAnimationRes != 0 || refreshLottieAnimationUrl != null) {
 				setRefreshAnimation(rawRes = refreshLottieAnimationRes, url = refreshLottieAnimationUrl)
 			}
 
-			it.getDrawable(R.styleable.LottieRefreshHeaderFooter_primary_background)?.run {
+			it.getDrawable(R.styleable.UIKitLottieRefreshHeaderFooter_uikit_primary_background)?.run {
 				this@LottieRefreshHeaderFooter.background = this
 			}
 		}.recycle()

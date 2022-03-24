@@ -8,11 +8,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.R
 
 /**
- * @Author  张磊  on  2020/12/30 at 16:23
- * Email: 913305160@qq.com
- */
-
-/**
  * @Author  张磊  on  2020/12/02 at 14:02
  * Email: 913305160@qq.com
  */

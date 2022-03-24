@@ -32,7 +32,7 @@ android {
 			keyPassword = "123456"
 		}
 	}
-	compileSdk = 30
+	compileSdk = 31
 	defaultConfig {
 		applicationId = "com.example.zhanglei.myapplication"
 		minSdk = 22
@@ -42,9 +42,13 @@ android {
 		testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 		multiDexEnabled = true
 
-		// manifestPlaceholders["QQ_APPID"] = "101939940"
+
+		// UniApp 需要配置的宿主包名
+		val hostPackageName = "apk.applicationId" to (applicationId ?: "")
+
 		addManifestPlaceholders(
 			mapOf(
+				hostPackageName,
 				"QQ_APPID" to "101939940",
 				"SINA_REDIRECT_URI" to "",
 				"SINA_SECRET" to "",
@@ -160,11 +164,10 @@ dependencies {
 	implementation("androidx.core:core-ktx:1.5.0")
 	implementation("org.jetbrains.anko:anko-commons:0.10.8")
 
-	val lifecycleVersion = "2.2.0"
+	val lifecycleVersion = "2.4.0"
 	implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 	implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 	implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-	implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
 
 	implementation("androidx.core:core:1.5.0")
 	implementation("androidx.appcompat:appcompat:1.3.0")
@@ -181,7 +184,7 @@ dependencies {
 
 	implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
 
-	implementation("com.github.Heart-Beats:Downloader:v1.0.1")
+	implementation("com.github.Heart-Beats:Downloader:v1.0.5")
 
 	implementation("me.weishu:epic:0.11.0")
 

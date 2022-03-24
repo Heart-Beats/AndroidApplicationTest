@@ -1,5 +1,6 @@
 package com.hl.utils
 
+import android.graphics.Rect
 import android.os.SystemClock
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,18 @@ fun <T : View> View.traverseFindFirstChildView(findViewType: Class<T>): T? {
 		}
 		return null
 	}
+}
+
+fun View.touchOnView(x: Int, y: Int): Boolean {
+	val rect = Rect()
+	getDrawingRect(rect)
+	val location = IntArray(2)
+	getLocationOnScreen(location)
+	rect.left = location[0]
+	rect.top = location[1]
+	rect.right = rect.right + location[0]
+	rect.bottom = rect.bottom + location[1]
+	return rect.contains(x, y)
 }
 
 /**

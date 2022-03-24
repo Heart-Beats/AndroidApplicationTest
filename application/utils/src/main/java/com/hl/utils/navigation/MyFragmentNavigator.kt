@@ -26,6 +26,11 @@ class MyFragmentNavigator(private val myNavHostFragment: MyNavHostFragment, priv
                 this.setExitAnim(exitAnim)
                 this.setPopEnterAnim(popEnterAnim)
                 this.setPopExitAnim(popExitAnim)
+                navOptions?.also {
+                    this.setLaunchSingleTop(it.shouldLaunchSingleTop())
+                    this.setPopUpTo(it.popUpTo, it.isPopUpToInclusive)
+                }
+
             }.build()
             Log.d("MyFragmentNavigator", "navigate: 处理后的动画 == ${navOptions?.toAnimString()}")
             return super.navigate(destination, args, newNavOptions, navigatorExtras)

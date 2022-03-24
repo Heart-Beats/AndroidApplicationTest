@@ -18,7 +18,6 @@ import com.example.zhanglei.myapplication.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.hl.utils.StatusBarUtil
 import com.hl.utils.navigation.MyNavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.firstChild
@@ -79,6 +78,9 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
             }
         }
         bottomNavigationView.run {
+            // 去除对图标的默认着色
+            itemIconTintList = null
+
             setupWithNavController(findNavController)
             initTouchHandle()
         }
@@ -86,10 +88,42 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
 
     private fun BottomNavigationView.setupWithNavController(navController: NavController) {
         setOnNavigationItemSelectedListener { item ->
+            setMenuItemSelectIcon(this, item)
+
             if (!item.isChecked) {
                 onNavDestinationSelected(item, navController)
             } else {
                 true
+            }
+        }
+
+        this.selectedItemId = R.id.mainFragment
+    }
+
+    private fun setMenuItemSelectIcon(bottomNavigationView: BottomNavigationView, item: MenuItem) {
+        bottomNavigationView.menu.children.forEach {
+            val iconId: Int? = if (it.itemId == item.itemId) {
+                // 设置选中图标
+                when (it.itemId) {
+                    // R.id.customerFragment -> R.drawable.icon_customer_select
+                    // R.id.performanceFragment -> R.drawable.icon_performance_select
+                    // R.id.taskFragment -> R.drawable.icon_task_select
+                    // R.id.meFragment -> R.drawable.icon_me_select
+                    else -> null
+                }
+
+            } else {
+                when (it.itemId) {
+                    // R.id.customerFragment -> R.drawable.icon_customer_normal
+                    // R.id.performanceFragment -> R.drawable.icon_performance_normal
+                    // R.id.taskFragment -> R.drawable.icon_task_normal
+                    // R.id.meFragment -> R.drawable.icon_me_normal
+                    else -> null
+                }
+            }
+
+            iconId?.run {
+                it.setIcon(this)
             }
         }
     }
@@ -102,6 +136,13 @@ class MainActivity : ViewBindingBaseActivity<ActivityMainBinding>() {
             .setPopEnterAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM)
             .setPopExitAnim(com.hl.utils.navigation.NavAnimations.NO_ANIM).apply {
                 if (item.order and Menu.CATEGORY_SECONDARY == 0) {
+                    /*
+					*
+					导航堆栈： A-->B---> C ---> A
+						   setPopUpTo(A, true)： 弹出 A 与目的地之间的堆栈，同时也弹出 A，堆栈中仅有一个目的地
+						   setPopUpTo(A, false) ： 弹出 A 与目的地之间的堆栈，不弹出 A，堆栈中有两个目的地
+					*
+					* */
                     setPopUpTo(findStartDestination(navController.graph)?.id ?: -1, true)
                 }
             }

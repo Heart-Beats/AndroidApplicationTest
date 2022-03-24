@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import com.example.zhanglei.myapplication.databinding.FragmentOpenCameraBinding
 import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
 import com.hl.utils.onClick
+import com.youma.health.ui.fragments.camera.CameraType
+import com.youma.health.ui.fragments.camera.CameraXFragment
 
 
 class OpenCameraFragment : ViewBindingBaseFragment<FragmentOpenCameraBinding>() {

@@ -73,9 +73,6 @@ abstract class BaseFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		Log.d(TAG, "onViewCreated =====> $this")
-		val activity = activity
-		val callback = onBackPressed()
-		activity?.onBackPressedDispatcher?.addCallback(owner = viewLifecycleOwner, onBackPressed = callback)
 	}
 
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -86,7 +83,7 @@ abstract class BaseFragment : Fragment() {
 			requireActivity().window.navigationBarColor = getNavigationBarColor()
 		}
 
-		requireActivity().onBackPressedDispatcher.addCallback(owner = viewLifecycleOwner, onBackPressed = onBackPressed())
+		requireActivity().onBackPressedDispatcher.addCallback(owner = viewLifecycleOwner, onBackPressed = backPressed())
 
 		//Activity 创建之后设置toolbar
 		val appCompatActivity = activity as? AppCompatActivity
@@ -167,7 +164,11 @@ abstract class BaseFragment : Fragment() {
 		Log.d(TAG, "onDetach =====> $this")
 	}
 
-	protected open fun onBackPressed(): OnBackPressedCallback.() -> Unit = {
+	private fun backPressed(): OnBackPressedCallback.() -> Unit = {
+		onBackPressed()
+	}
+
+	protected open fun onBackPressed() {
 		try {
 			findNavController().popBackStack()
 		} catch (e: Exception) {

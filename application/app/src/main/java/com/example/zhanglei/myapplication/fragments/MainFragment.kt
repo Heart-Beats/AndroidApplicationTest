@@ -251,11 +251,11 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
             is MainMenu.DownLoadAction -> {
                 val downloadUrl = "http://down.qq.com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk"
                 // String downloadUrl = "https://images.pexels.com/photos/4993088/pexels-photo-4993088.jpeg?cs=srgb&dl=pexels-rachel-claire-4993088.jpg&fm=jpg";
-                startDownLoad(MyApplication.getInstance(), downloadUrl, object : DownloadListener() {
+                startDownLoad(MyApplication.getInstance(), downloadUrl, 3, null, null, object : DownloadListener() {
                     override fun downloadIng(progress: String) {
                         println(progress)
                     }
-                }, 3)
+                })
             }
             is MainMenu.NotificationAction -> {
                 findNavController().navigate(R.id.action_mainFragment_to_notifyFragment)
@@ -384,6 +384,8 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
     }
 
     private fun releaseAndStartApp(appid: String, wgtPath: String) {
+        Log.d(TAG, "releaseAndStartApp: 开始启动 UniApp")
+        Log.d(TAG, "releaseAndStartApp: uniAppSdk == ${uniAppSdk}")
         uniAppSdk?.releaseWgtToRunPathFromePath(appid, wgtPath) { code, pArgs ->
             println("code = [${code}], pArgs = [${pArgs}]")
             if (code == 1 && uniAppSdk?.isExistsApp(appid) == true) {

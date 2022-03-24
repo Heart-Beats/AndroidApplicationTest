@@ -7,9 +7,9 @@ import android.webkit.WebView
 import com.elvishew.xlog.LogConfiguration
 import com.elvishew.xlog.LogLevel
 import com.elvishew.xlog.XLog
-import com.hl.uikit.refresh.CommonRefreshHeader
 import com.hl.shadow.Shadow
 import com.hl.shadow.logger.AndroidLoggerFactory
+import com.hl.uikit.refresh.CommonRefreshHeader
 import com.hl.utils.MyNetworkCallback
 import com.hl.utils.copyAssets2Path
 import com.hl.utils.isProcess
@@ -43,20 +43,22 @@ class MyApplication : Application() {
 		super.onCreate()
 		mApplication = this
 
-		// 小程序进程
-		if (RuningAcitvityUtil.getAppName(baseContext).contains("io.dcloud.unimp")) {
-			initUniApp {
-				val item = MenuActionSheetItem("关于", "gy")
-				val sheetItems: MutableList<MenuActionSheetItem> = ArrayList()
-				sheetItems.add(item)
+		// 初始化 uniMPSDK
+		initUniApp {
+			val item = MenuActionSheetItem("关于", "gy")
+			val sheetItems: MutableList<MenuActionSheetItem> = ArrayList()
+			sheetItems.add(item)
 
-				this.setCapsule(true)
-					.setMenuDefFontSize("16px")
-					.setMenuDefFontColor("#ff00ff")
-					.setMenuDefFontWeight("normal")
-					.setMenuActionSheetItems(sheetItems)
-			}
-		} else {
+			this.setCapsule(true)
+				.setMenuDefFontSize("16px")
+				.setMenuDefFontColor("#ff00ff")
+				.setMenuDefFontWeight("normal")
+				.setMenuActionSheetItems(sheetItems)
+		}
+
+
+		// 小程序进程
+		if (!RuningAcitvityUtil.getAppName(baseContext).contains("io.dcloud.unimp")) {
 			// 非小程序进程初始化其他三方SDK
 
 			if (mApplication.isProcess(":plugin")) {
@@ -81,7 +83,7 @@ class MyApplication : Application() {
 			} else {
 				val logConfig = LogConfiguration.Builder()
 					.logLevel(if (isEnvTDebug()) LogLevel.ALL else LogLevel.INFO)
-					.st(1)
+					.enableStackTrace(1)
 					.addInterceptor {
 						//......
 						it

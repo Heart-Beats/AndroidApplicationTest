@@ -41,10 +41,8 @@ class VideoFragment : ViewBindingBaseFragment<FragmentVideoBinding>() {
 		})
 	}
 
-	override fun onBackPressed(): OnBackPressedCallback.() -> Unit {
-		return {
-			back()
-		}
+	override fun onBackPressed() {
+		back()
 	}
 
 

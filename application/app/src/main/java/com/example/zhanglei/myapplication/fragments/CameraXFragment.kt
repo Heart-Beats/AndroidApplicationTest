@@ -1,21 +1,24 @@
-package com.example.zhanglei.myapplication.fragments
+package com.youma.health.ui.fragments.camera
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.camera.camera2.internal.Camera2CameraInfoImpl
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.zhanglei.myapplication.R
-import com.example.zhanglei.myapplication.fragments.base.BaseFragment
+import com.example.zhanglei.myapplication.databinding.FragmentCameraXBinding
+import com.example.zhanglei.myapplication.fragments.base.ViewBindingBaseFragment
+import com.hl.utils.reqPermissions
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,12 +33,10 @@ enum class CameraType(val cameraId: String) {
 	CAMERA_BACK("0"), CAMERA_FRONT("1")
 }
 
-class CameraXFragment : BaseFragment() {
+class CameraXFragment : ViewBindingBaseFragment<FragmentCameraXBinding>() {
 
 	private companion object {
 		private const val TAG = "CameraXFragment"
-		private const val REQUEST_CODE_PERMISSIONS = 10
-		private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
 	}
 
 	var cameraType = CameraType.CAMERA_BACK
@@ -55,21 +56,21 @@ class CameraXFragment : BaseFragment() {
 	private var analyzeListener: ((image: ImageProxy) -> Unit)? = null
 
 
-	override val layoutResId: Int
-		get() = R.layout.fragment_camera_x
-
-	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-		super.onViewCreated(view, savedInstanceState)
-		// 请求相机权限
-		if (allPermissionsGranted()) {
-			startCamera(view)
-		} else {
-			ActivityCompat.requestPermissions(requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
-		}
+	override fun createViewBinding(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): FragmentCameraXBinding {
+		return FragmentCameraXBinding.inflate(inflater, container, false)
 	}
 
-	private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-		ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
+	override fun FragmentCameraXBinding.onViewCreated(savedInstanceState: Bundle?) {
+		// 请求相机权限
+		reqPermissions(Manifest.permission.CAMERA, deniedAction = {
+			Toast.makeText(requireContext(), "您拒绝了相机权限，将无法正常使用", Toast.LENGTH_SHORT).show()
+		}) {
+			startCamera(this.root)
+		}
 	}
 
 
@@ -97,14 +98,14 @@ class CameraXFragment : BaseFragment() {
 			// 初始化图像分析实例
 			val imageAnalyzer = ImageAnalysis.Builder()
 				.build().also {
-					it.setAnalyzer(cameraExecutor, { image ->
+					it.setAnalyzer(cameraExecutor) { image ->
 						Thread.sleep(10)
 
 						analyzeListener?.invoke(image)
 
 						// 必须关闭资源，否则不会收到后续回调
 						image.close()
-					})
+					}
 				}
 
 			try {
@@ -136,20 +137,6 @@ class CameraXFragment : BaseFragment() {
 		super.onDestroy()
 	}
 
-	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-		if (requestCode == REQUEST_CODE_PERMISSIONS) {
-			if (allPermissionsGranted()) {
-				startCamera(requireView())
-			} else {
-				Toast.makeText(requireContext(), "权限未被用户授予", Toast.LENGTH_SHORT).show()
-
-				parentFragmentManager.beginTransaction().also {
-					it.remove(this)
-				}.commit()
-			}
-		}
-	}
-
 	fun setAnalyzerListener(imageAnalyzer: (imageProxy: ImageProxy) -> Unit) {
 		analyzeListener = imageAnalyzer
 	}
@@ -161,7 +148,7 @@ class CameraXFragment : BaseFragment() {
 		// 获取保存照片的格式化路径
 		val photoFile = File(
 			getOutputDirectory(),
-			SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis()) + ".jpg"
+			SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date()) + ".jpg"
 		)
 
 		// 创建一个 OutputFileOptions对象。可以在此对象中指定有关输出结果的方式
@@ -172,11 +159,11 @@ class CameraXFragment : BaseFragment() {
 	}
 
 	private fun getOutputDirectory(): File {
-		val mediaDir = requireContext().getExternalMediaDirs().firstOrNull()?.let {
-			File(it, requireContext().packageName.split(".").lastOrNull() ?: "").apply {
-				mkdirs()
+		val outputDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.also {
+			if (!it.exists() && it.isDirectory) {
+				it.mkdirs()
 			}
 		}
-		return if (mediaDir != null && mediaDir.exists()) mediaDir else requireContext().filesDir
+		return outputDir ?: requireContext().filesDir
 	}
 }
