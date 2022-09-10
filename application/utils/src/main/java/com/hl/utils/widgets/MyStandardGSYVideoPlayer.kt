@@ -19,7 +19,7 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
  */
 class MyStandardGSYVideoPlayer : StandardGSYVideoPlayer, LifecycleEventObserver {
 
-	var orientationUtils: OrientationUtils? = null
+	var orientationUtils: OrientationUtils? = null	
 		private set
 
 	private var play: ImageView? = null

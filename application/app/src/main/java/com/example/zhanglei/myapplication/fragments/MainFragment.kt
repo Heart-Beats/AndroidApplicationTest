@@ -31,7 +31,7 @@ import com.hl.downloader.DownloadManager
 import com.hl.downloader.DownloadManager.cancelDownload
 import com.hl.downloader.DownloadManager.startDownLoad
 import com.hl.shadow.Shadow
-import com.hl.shadow.lib.Constants
+import com.hl.shadow.lib.ShadowConstants
 import com.hl.utils.MyNetworkCallback
 import com.hl.utils.copyAssets2Path
 import com.hl.utils.onClick
@@ -41,7 +41,6 @@ import io.dcloud.feature.sdk.DCUniMPSDK
 import org.jetbrains.anko.Android
 import java.io.File
 import java.lang.Math.PI
-import java.util.*
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -304,38 +303,38 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                     val pluginZipPath =
                         requireContext().copyAssets2Path("plugins/plugin-debug.zip", pluginSavePath)
 
-                    putString(Constants.KEY_PLUGIN_ZIP_PATH, pluginZipPath)
+                    putString(ShadowConstants.KEY_PLUGIN_ZIP_PATH, pluginZipPath)
                 }
 
                 when (index) {
                     0 -> {
                         //启动插件中的对应的 Activity
                         bundle.putString(
-                            Constants.KEY_CLASSNAME,
+                            ShadowConstants.KEY_CLASSNAME,
                             "com.google.samples.apps.sunflower.GardenActivity"
                         )
 
                         // partKey 每个插件都有自己的 partKey 用来区分多个插件，需要与插件打包脚本中的 packagePlugin{ partKey xxx} 一致
-                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "sunflower")
-                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_START_ACTIVITY)
+                        bundle.putString(ShadowConstants.KEY_PLUGIN_PART_KEY, "sunflower")
+                        bundle.putLong(ShadowConstants.KEY_FROM_ID, ShadowConstants.FROM_ID_START_ACTIVITY)
                     }
                     1 -> {
-                        bundle.putString(Constants.KEY_CLASSNAME, "com.hl.myplugin.MainActivity")
-                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
-                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_START_ACTIVITY)
+                        bundle.putString(ShadowConstants.KEY_CLASSNAME, "com.hl.myplugin.MainActivity")
+                        bundle.putString(ShadowConstants.KEY_PLUGIN_PART_KEY, "test")
+                        bundle.putLong(ShadowConstants.KEY_FROM_ID, ShadowConstants.FROM_ID_START_ACTIVITY)
                     }
                     2 -> {
                         bundle.putString(
-                            Constants.KEY_CLASSNAME,
+                            ShadowConstants.KEY_CLASSNAME,
                             "com.tsinglink.android.update.CheckUpdateIntentService"
                         )
-                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
-                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_CALL_SERVICE)
+                        bundle.putString(ShadowConstants.KEY_PLUGIN_PART_KEY, "test")
+                        bundle.putLong(ShadowConstants.KEY_FROM_ID, ShadowConstants.FROM_ID_CALL_SERVICE)
                         bundle.putString(
-                            Constants.KEY_INTENT_ACTION,
+                            ShadowConstants.KEY_INTENT_ACTION,
                             "com.tsinglink.android.update.ACTION_START_DOWNLOAD"
                         )
-                        bundle.putBundle(Constants.KEY_EXTRAS, Bundle().apply {
+                        bundle.putBundle(ShadowConstants.KEY_EXTRAS, Bundle().apply {
                             this.putString(
                                 "com.tsinglink.android.update.extra.DOWNLOAD_URL", "http://down.qq" +
                                         ".com/qqweb/QQ_1/android_apk/Androidqq_8.4.10.4875_537065980.apk"
@@ -343,31 +342,31 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
                         })
                     }
                     3 -> {
-                        bundle.putString(Constants.KEY_CLASSNAME, "com.hl.myplugin.TestService")
-                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
-                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_CALL_SERVICE)
+                        bundle.putString(ShadowConstants.KEY_CLASSNAME, "com.hl.myplugin.TestService")
+                        bundle.putString(ShadowConstants.KEY_PLUGIN_PART_KEY, "test")
+                        bundle.putLong(ShadowConstants.KEY_FROM_ID, ShadowConstants.FROM_ID_CALL_SERVICE)
                     }
                     4 -> {
 
                         val receiver: ResultReceiver = TestResultReceiver(Handler(Looper.getMainLooper()))
 
-                        bundle.putString(Constants.KEY_CLASSNAME, "com.hl.myplugin.TestIntentService")
-                        bundle.putString(Constants.KEY_PLUGIN_PART_KEY, "test")
-                        bundle.putLong(Constants.KEY_FROM_ID, Constants.FROM_ID_CALL_SERVICE)
+                        bundle.putString(ShadowConstants.KEY_CLASSNAME, "com.hl.myplugin.TestIntentService")
+                        bundle.putString(ShadowConstants.KEY_PLUGIN_PART_KEY, "test")
+                        bundle.putLong(ShadowConstants.KEY_FROM_ID, ShadowConstants.FROM_ID_CALL_SERVICE)
 
                         bundle.putString(
-                            Constants.KEY_INTENT_ACTION,
+                            ShadowConstants.KEY_INTENT_ACTION,
                             "com.hl.myplugin.action.FOO"
                         )
-                        bundle.putBundle(Constants.KEY_EXTRAS, Bundle().apply {
+                        bundle.putBundle(ShadowConstants.KEY_EXTRAS, Bundle().apply {
                             this.putString("com.hl.myplugin.extra.PARAM1", "我是参数1")
                             this.putParcelable("com.hl.myplugin.extra.PARAM2", receiver)
                         })
                     }
                 }
 
-                if (bundle.getBundle(Constants.KEY_EXTRAS) == null) {
-                    bundle.putBundle(Constants.KEY_EXTRAS, Bundle().apply {
+                if (bundle.getBundle(ShadowConstants.KEY_EXTRAS) == null) {
+                    bundle.putBundle(ShadowConstants.KEY_EXTRAS, Bundle().apply {
                         this.putString("测试数据", "我是宿主传过来的数据")
                     })
                 }
@@ -397,7 +396,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
     }
 
     private fun startShadowPlugin(context: Context, bundle: Bundle) {
-        val pluginManager = Shadow.getPluginManager(needDynamic = false, context = context)
+        val pluginManager = Shadow.getMyPluginManager(context)
 
         /**
          * context context
@@ -405,7 +404,7 @@ class MainFragment : ViewBindingBaseFragment<FragmentMainBinding>() {
          * bundle  参数列表, 建议在参数列表加入自己的验证
          * callback 用于从PluginManager实现中返回View
          */
-        pluginManager?.enter(context, bundle.getLong(Constants.KEY_FROM_ID), bundle, object : EnterCallback {
+        pluginManager?.enter(context, bundle.getLong(ShadowConstants.KEY_FROM_ID), bundle, object : EnterCallback {
             override fun onShowLoadingView(view: View?) {}
             override fun onCloseLoadingView() {}
             override fun onEnterComplete() {

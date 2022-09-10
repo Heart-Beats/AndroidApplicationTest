@@ -22,39 +22,47 @@ object Shadow {
      */
     private var dynamicPluginManager: PluginManager? = null
 
-    private var pluginManagerImpl: PluginManagerImpl? = null
 
     /**
-     * 获取对应的 PluginManager， 动态 APK 或者静态类加载
-     * @param  needDynamic 是否需要动态 PluginManager
-     * @param  context 默认为 null，不需要动态 PluginManager 时一定要传入
+     * 静态实现的插件管理类
+     */
+    private var pluginManagerImpl: PluginManagerImpl? = null
+
+
+    /**
+     * 获取静态的 PluginManager， 无需动态 APK 进行加载
+     *
+     * @param  context           上下文对象
      * @return PluginManager
      */
-    fun getPluginManager(needDynamic: Boolean = true, context: Context? = null): PluginManager? {
-        return if (needDynamic) {
-            dynamicPluginManager
-        } else {
-            if (context == null) {
-                throw Exception("非动态获取插件 Manager 需要传入 context")
-            }
-
-            try {
-                LoggerFactory.getILoggerFactory()
-            } catch (e: Exception) {
-                LoggerFactory.setILoggerFactory(AndroidLoggerFactory.getInstance())
-            }
-
-            if (pluginManagerImpl == null) {
-                // val className = "com.tencent.shadow.dynamic.impl.ManagerFactoryImpl"
-                // val newInstance = Class.forName(className).newInstance()
-                // pluginManagerImpl = ManagerFactory::class.cast(newInstance).buildManager(context)
-                pluginManagerImpl = MyPluginManager(context)
-            }
-            pluginManagerImpl
+    fun getMyPluginManager(context: Context): PluginManager? {
+        try {
+            LoggerFactory.getILoggerFactory()
+        } catch (e: Exception) {
+            LoggerFactory.setILoggerFactory(AndroidLoggerFactory.getInstance())
         }
+
+        if (pluginManagerImpl == null) {
+            // 动态获取是通过反射机制获取的
+            // val className = "com.tencent.shadow.dynamic.impl.ManagerFactoryImpl"
+            // val newInstance = Class.forName(className).newInstance()
+            // pluginManagerImpl = ManagerFactory::class.cast(newInstance).buildManager(context)
+            pluginManagerImpl = MyPluginManager(context)
+        }
+        return pluginManagerImpl
     }
 
+
+    /**
+     * 初始化动态的插件 Manager，可以动态更新的
+     *
+     * @param pluginManagerPath    插件 Manager 所在的绝对路径
+     */
     fun initDynamicPluginManager(pluginManagerPath: String) {
+        if (dynamicPluginManager != null) {
+
+        }
+
         //Log接口Manager也需要使用，所以主进程也初始化。
         LoggerFactory.setILoggerFactory(AndroidLoggerFactory.getInstance())
         File(pluginManagerPath).run {
@@ -78,7 +86,14 @@ object Shadow {
                 if (logger.isDebugEnabled) {
                     logger.debug("PluginManager APK 未找到")
                 }
+
+                throw ExceptionInInitializerError("PluginManager APK 未找到")
             }
         }
     }
+
+    /**
+     * 获取动态的 PluginManager ， [initDynamicPluginManager] 若调用成功，则返回 null
+     */
+    fun getDynamicPluginManager() = dynamicPluginManager
 }

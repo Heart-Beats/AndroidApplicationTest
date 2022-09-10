@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.*
 import android.util.Log
-import com.hl.shadow.lib.Constants
+import com.hl.shadow.lib.ShadowConstants
 import com.tencent.shadow.core.manager.installplugin.InstalledPlugin
 import com.tencent.shadow.core.manager.installplugin.InstalledType
 import com.tencent.shadow.dynamic.host.EnterCallback
@@ -25,6 +25,9 @@ import java.util.concurrent.*
  * Email: 913305160@qq.com
  */
 class MyPluginManager(context: Context?) : PluginManagerThatUseDynamicLoader(context) {
+	companion object {
+		private const val TAG = "MyPluginManager"
+	}
 
 	private val installPluginExecutorService: ExecutorService = ThreadPoolExecutor(1,
 		1,
@@ -48,21 +51,21 @@ class MyPluginManager(context: Context?) : PluginManagerThatUseDynamicLoader(con
 	 * @return PluginManager实现的别名，用于区分不同PluginManager实现的数据存储路径
 	 */
 	override fun getName(): String {
-		return Constants.PLUGIN_MANAGER_NAME
+		return ShadowConstants.PLUGIN_MANAGER_NAME
 	}
 
 	/**
 	 * @return demo插件so的abi
 	 */
 	override fun getAbi(): String {
-		return Constants.ABI
+		return ShadowConstants.ABI
 	}
 
 	/**
 	 * @return 宿主中注册的PluginProcessService实现的类名
 	 */
 	private fun getPluginProcessServiceName(): String {
-		return Constants.PLUGIN_PROCESS_SERVICE_NAME
+		return ShadowConstants.PLUGIN_PROCESS_SERVICE_NAME
 	}
 
 
@@ -76,18 +79,18 @@ class MyPluginManager(context: Context?) : PluginManagerThatUseDynamicLoader(con
 		Log.d(TAG, "enter: 开始进入插件 -------------- \n formId == $fromId，传入bundle == $bundle")
 
 		// 插件 zip 包地址，可以直接写在这里，也用Bundle可以传进来
-		val pluginZipPath = bundle.getString(Constants.KEY_PLUGIN_ZIP_PATH) ?: return
-		val partKey = bundle.getString(Constants.KEY_PLUGIN_PART_KEY)
-		val className = bundle.getString(Constants.KEY_CLASSNAME)
-		val intentAction = bundle.getString(Constants.KEY_INTENT_ACTION)
-		val extras = bundle.getBundle(Constants.KEY_EXTRAS)
+		val pluginZipPath = bundle.getString(ShadowConstants.KEY_PLUGIN_ZIP_PATH) ?: return
+		val partKey = bundle.getString(ShadowConstants.KEY_PLUGIN_PART_KEY)
+		val className = bundle.getString(ShadowConstants.KEY_CLASSNAME)
+		val intentAction = bundle.getString(ShadowConstants.KEY_INTENT_ACTION)
+		val extras = bundle.getBundle(ShadowConstants.KEY_EXTRAS)
 		if (className == null) {
 			throw NullPointerException("className == null")
 		}
 
 		// 打开 Activity 示例
 		when (fromId) {
-			Constants.FROM_ID_START_ACTIVITY -> {
+			ShadowConstants.FROM_ID_START_ACTIVITY -> {
 				// 开始加载插件了，实现加载布局
 				callback?.onShowLoadingView(null)
 
@@ -95,7 +98,7 @@ class MyPluginManager(context: Context?) : PluginManagerThatUseDynamicLoader(con
 					launchPluginActivity(context, callback, pluginZipPath, partKey, className, intentAction, extras)
 				}
 			}
-			Constants.FROM_ID_CALL_SERVICE -> {
+			ShadowConstants.FROM_ID_CALL_SERVICE -> {
 				// 打开Server示例
 				installPluginExecutorService.execute {
 					launchPluginService(context, pluginZipPath, partKey, className, intentAction, extras)
@@ -311,9 +314,5 @@ class MyPluginManager(context: Context?) : PluginManagerThatUseDynamicLoader(con
 		Log.d(TAG, "载入 Loader -------------------")
 		loadPluginLoader(uuid)
 		Log.d(TAG, "--------------- Loader  加载结束")
-	}
-
-	companion object {
-		private const val TAG = "MyPluginManager"
 	}
 }

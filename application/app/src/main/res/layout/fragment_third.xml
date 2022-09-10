@@ -9,7 +9,7 @@
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/smart_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -26,5 +26,7 @@
             android:text="我是刷新内容" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

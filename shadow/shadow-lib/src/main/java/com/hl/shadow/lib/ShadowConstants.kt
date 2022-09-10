@@ -1,6 +1,6 @@
 package com.hl.shadow.lib
 
-object Constants {
+object ShadowConstants {
 
 	/**
 	 * PluginManager 实现的别名, 用于区分不同PluginManager实现的数据存储路径
